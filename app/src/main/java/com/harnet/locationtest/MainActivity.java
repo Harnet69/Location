@@ -17,6 +17,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView latTextView;
     private TextView lngTextView;
     private TextView placeTextView;
+    private ImageView bgr_ImageView;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         latTextView = findViewById(R.id.lat_textView);
         lngTextView = findViewById(R.id.lng_textView);
         placeTextView = findViewById(R.id.place_textView);
+        bgr_ImageView = findViewById(R.id.bgr_imageView);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
@@ -93,7 +99,14 @@ public class MainActivity extends AppCompatActivity {
             Log.i("TestLoc:", "Permission was granted already ");
         }
         locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
+//        rotation background image
+        RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(100000);
+        rotate.setInterpolator(new LinearInterpolator());
 
+        ImageView image= (ImageView) findViewById(R.id.bgr_imageView);
+
+        image.startAnimation(rotate);
     }
 
     @Override

@@ -8,16 +8,18 @@
     android:background="@android:color/holo_blue_bright">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="424dp"
-        android:layout_height="542dp"
-        android:scaleType="matrix"
+        android:id="@+id/bgr_imageView"
+        android:layout_width="531dp"
+        android:layout_height="597dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="300dp"
+        android:foregroundGravity="bottom"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/bgrimage" />
 
     <TextView
