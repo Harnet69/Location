@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -46,22 +47,25 @@ public class MainActivity extends AppCompatActivity {
         placeTextView = findViewById(R.id.place_textView);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        provider = locationManager.getBestProvider(new Criteria(), false);
 //
 //        provider = locationManager.getBestProvider(new Criteria(), false);
         geocoder = new Geocoder(this, Locale.getDefault());
 
         locationListener = new LocationListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
+//                latTextView.setText("Holla");
                 List<Address> address = null;
                 try {
                     address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                latTextView.setText("Longitude: " + String.valueOf(location.getLatitude()));
-                lngTextView.setText("Latitude: " + String.valueOf(location.getLongitude()));
+                latTextView.setText("Longitude: " + location.getLatitude());
+                lngTextView.setText("Latitude: " + location.getLongitude());
                 placeTextView.setText("Place: " + address.get(0).getAddressLine(0).toString());
             }
 
@@ -88,10 +92,8 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.i("TestLoc:", "Permission was granted already ");
         }
+        locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
 
-        if(provider != null){
-            locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
-        }
     }
 
     @Override
@@ -114,16 +116,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //TODO update user location(you can define time or distance for saving battery life)
                     // refresh activity after permission granted
-//                    finish();
-//                    startActivity(getIntent());
+                    finish();
+                    startActivity(getIntent());
 
                     Log.i("TestLoc:", "onRequestPermissionsResult: Refresh the page");
                     // location-related task you need to do.
                     provider = locationManager.getBestProvider(new Criteria(), false);
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        //Request location updates:
-                        if (provider != null) {
-                            locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
+                        // location-related task you need to do.
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            //Request location updates:
+                            if(provider != null){
+                                locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
+                            }
                         }
                     }
                 } else {
