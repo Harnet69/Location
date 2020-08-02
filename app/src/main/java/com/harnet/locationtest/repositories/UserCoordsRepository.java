@@ -2,14 +2,14 @@ package com.harnet.locationtest.repositories;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.harnet.locationtest.models.User;
+import com.harnet.locationtest.models.UserCoords;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersRepository {
     private static UsersRepository instance = null;
-    private List<User> usersDataSet = new ArrayList<>();
+    private List<UserCoords> usersDataSet = new ArrayList<>();
 
     private UsersRepository() {
     }
@@ -21,8 +21,8 @@ public class UsersRepository {
         return instance;
     }
 
-    public MutableLiveData<List<User>> getUsersDataSet() {
-        MutableLiveData<List<User>> data = new MutableLiveData<>();
+    public MutableLiveData<List<UserCoords>> getUsersDataSet() {
+        MutableLiveData<List<UserCoords>> data = new MutableLiveData<>();
         data.setValue(usersDataSet);
         return data;
     }
