@@ -7,16 +7,23 @@ import com.harnet.locationtest.models.UserCoords;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersRepository {
-    private static UsersRepository instance = null;
+
+public class UserCoordsRepository {
+    private static UserCoordsRepository instance = null;
     private List<UserCoords> usersDataSet = new ArrayList<>();
 
-    private UsersRepository() {
+    private UserCoordsRepository() {
+        // TODO think about getting last known coordinates from mainActivity
+        setUser(20,40);
     }
 
-    public static UsersRepository getInstance() {
+    private void setUser(double lat, double lng){
+        usersDataSet.add(new UserCoords(lat, lng));
+    }
+
+    public static UserCoordsRepository getInstance() {
         if(instance == null){
-            instance = new UsersRepository();
+            instance = new UserCoordsRepository();
         }
         return instance;
     }

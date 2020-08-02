@@ -26,11 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.harnet.locationtest.models.User;
+import com.harnet.locationtest.models.UserCoords;
 import com.harnet.locationtest.viewmodels.MainActivityViewModel;
 
 import java.io.IOException;
-import java.security.Provider;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
 
+        //TODO MVVM
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         mMainActivityViewModel.init();
 
-        mMainActivityViewModel.getmPersons().observe(this, new Observer<List<User>>() {
-
+        mMainActivityViewModel.getmPersons().observe(this, new Observer<List<UserCoords>>() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onChanged(List<User> people) {
-
+            public void onChanged(List<UserCoords> coords) {
+                Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
+                updateView(coords.get(0).getLat(), coords.get(0).getLng());
             }
         });
 
@@ -83,16 +83,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
-//                latTextView.setText("Holla");
-                List<Address> address = null;
-                try {
-                    address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                latTextView.setText("Longitude: " + location.getLatitude());
-                lngTextView.setText("Latitude: " + location.getLongitude());
-                placeTextView.setText("Place: " + address.get(0).getAddressLine(0).toString());
+                //TODO MVVM
+                mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
             }
 
             @Override
@@ -172,6 +164,19 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "User location unknown", Toast.LENGTH_LONG).show();
                 }
             }
+        }
+    }
+    private void updateView(double lat, double lng){
+        List<Address> address = null;
+        try {
+            address = geocoder.getFromLocation(lat, lng, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        latTextView.setText("Longitude: " + lat);
+        lngTextView.setText("Latitude: " + lng);
+        if(address.size()>0){
+            placeTextView.setText("Place: " + address.get(0).getAddressLine(0).toString());
         }
     }
 }

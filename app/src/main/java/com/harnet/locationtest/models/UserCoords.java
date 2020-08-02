@@ -1,10 +1,10 @@
 package com.harnet.locationtest.models;
 
-public class User {
+public class UserCoords {
     private double lat;
     private double lng;
 
-    public User(double lat, double lng) {
+    public UserCoords(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
     }
