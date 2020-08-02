@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
 //        rotation background image
-        RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(100000);
+        RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(1000000);
         rotate.setInterpolator(new LinearInterpolator());
 
-        ImageView image= (ImageView) findViewById(R.id.bgr_imageView);
+        ImageView image= (ImageView) bgr_ImageView;
 
         image.startAnimation(rotate);
     }
