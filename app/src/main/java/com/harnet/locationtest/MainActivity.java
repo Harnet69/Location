@@ -18,6 +18,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -111,14 +113,23 @@ public class MainActivity extends AppCompatActivity {
             Log.i("TestLoc:", "Permission was granted already ");
         }
         locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
+
 //        rotation background image
-        RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(1000000);
-        rotate.setInterpolator(new LinearInterpolator());
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(100000);
+                rotate.setInterpolator(new LinearInterpolator());
 
-        ImageView image= (ImageView) bgr_ImageView;
+                ImageView image= (ImageView) bgr_ImageView;
 
-        image.startAnimation(rotate);
+                image.startAnimation(rotate);
+            }
+        });
+
+
     }
 
     @Override
