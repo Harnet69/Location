@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,6 +26,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.harnet.locationtest.models.User;
+import com.harnet.locationtest.viewmodels.MainActivityViewModel;
+
 import java.io.IOException;
 import java.security.Provider;
 import java.util.List;
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView lngTextView;
     private TextView placeTextView;
     private ImageView bgr_ImageView;
+
+    private MainActivityViewModel mMainActivityViewModel;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -51,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
         lngTextView = findViewById(R.id.lng_textView);
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
+
+        mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        mMainActivityViewModel.init();
+
+        mMainActivityViewModel.getmPersons().observe(this, new Observer<List<User>>() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onChanged(List<User> people) {
+
+            }
+        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UsersRepository {
     private static UsersRepository instance = null;
-    private List<User> userDataSet = new ArrayList<>();
+    private List<User> usersDataSet = new ArrayList<>();
 
     private UsersRepository() {
     }
@@ -21,9 +21,9 @@ public class UsersRepository {
         return instance;
     }
 
-    public MutableLiveData<List<User>> getPersonsDataSet() {
+    public MutableLiveData<List<User>> getUsersDataSet() {
         MutableLiveData<List<User>> data = new MutableLiveData<>();
-        data.setValue(userDataSet);
+        data.setValue(usersDataSet);
         return data;
     }
 }
