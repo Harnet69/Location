@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,14 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+        checkPermissions();
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-        }else {
-            Log.i("TestLoc:", "Permission was granted already ");
-        }
         locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
 
 //        rotation background image
@@ -130,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void checkPermissions(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+        }else {
+            Log.i("TestLoc:", "Permission was granted already ");
+        }
     }
 
     @Override
@@ -168,15 +173,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    // permission denied, boo! Disable a functionality that depends on this permission.
-//                    Intent mainActivityIntent = new Intent(this, MainActivity.class);
-//                    startActivity(mainActivityIntent);
+                    // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(this, "User location unknown", Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
+
+    // update view by model coordinates
     private void updateView(double lat, double lng){
         List<Address> address = null;
         try {
