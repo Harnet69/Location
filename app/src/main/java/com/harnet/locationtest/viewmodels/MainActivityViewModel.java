@@ -59,5 +59,4 @@ public class MainActivityViewModel extends ViewModel {
                 }
             }.execute();
         }
-
 }

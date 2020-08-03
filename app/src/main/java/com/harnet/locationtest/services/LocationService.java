@@ -45,6 +45,7 @@ public class LocationService {
     }
 
     // initiate needed location stuff
+    @SuppressLint("MissingPermission")
     private void initiateLocationTools(){
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);

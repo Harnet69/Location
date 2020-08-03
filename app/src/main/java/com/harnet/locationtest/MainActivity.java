@@ -46,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationService locationService;
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private String provider;
-    private Geocoder geocoder;
-    private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
-
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,40 +73,6 @@ public class MainActivity extends AppCompatActivity {
         // location service starts automatically
         locationService = new LocationService(this, MainActivity.this, mMainActivityViewModel);
 
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//        provider = locationManager.getBestProvider(new Criteria(), false);
-//
-//        provider = locationManager.getBestProvider(new Criteria(), false);
-//        geocoder = new Geocoder(this, Locale.getDefault());
-
-//        locationListener = new LocationListener() {
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                Log.i("TestLoc:", "onLocationChanged: " + location);
-//                //TODO MVVM
-//                mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String provider) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String provider) {
-//
-//            }
-//        };
-//        checkPermissions();
-
-//        locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
-
 //        rotation background image
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -130,66 +89,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void checkPermissions(){
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    MY_PERMISSIONS_REQUEST_LOCATION);
-//        }else {
-//            Log.i("TestLoc:", "Permission was granted already ");
-//        }
-//    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         locationService.getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        Log.i("TestLoc:", "Ask for permission: ");
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_LOCATION: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
-//
-//                    // permission was granted, yay!
-//                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                            != PackageManager.PERMISSION_GRANTED
-//                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        return;
-//                    }
-//                    //TODO update user location(you can define time or distance for saving battery life)
-//                    // refresh activity after permission granted
-//                    finish();
-//                    startActivity(getIntent());
-//
-//                    Log.i("TestLoc:", "onRequestPermissionsResult: Refresh the page");
-//                    // location-related task you need to do.
-//                    provider = locationManager.getBestProvider(new Criteria(), false);
-//                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                        // location-related task you need to do.
-//                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                            //Request location updates:
-//                            if(provider != null){
-//                                locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    // permission denied, boo! Disable a functionality that depends on this permission
-//                    Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
-//                    Toast.makeText(this, "User location unknown", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }
-//    }
 
     // update view by model coordinates
     private void updateView(double lat, double lng){
@@ -199,10 +104,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        latTextView.setText("Longitude: " + lat);
-        lngTextView.setText("Latitude: " + lng);
-        if(address.size()>0){
-            placeTextView.setText("Place: " + address.get(0).getAddressLine(0).toString());
+        latTextView.setText(String.format("%s%s", getString(R.string.Lat), lat));
+        lngTextView.setText(String.format("%s%s", getString(R.string.Long), lng));
+        assert address != null;
+        if(address.size()>0) {
+            placeTextView.setText(String.format("%s%s", getString(R.string.place), address.get(0).getAddressLine(0)));
         }
     }
 }
