@@ -19,9 +19,16 @@ public class PermissionService {
     private Context context;
     private Activity activity;
 
-    public PermissionService(Context context, Activity activity) {
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String provider;
+
+    public PermissionService(Context context, Activity activity, LocationManager locationManager, LocationListener locationListener, String provider) {
         this.context = context;
         this.activity = activity;
+        this.locationManager =locationManager;
+        this.locationListener = locationListener;
+        this.provider = provider;
     }
 
     public void checkPermissions(){
@@ -34,7 +41,7 @@ public class PermissionService {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, String provider, LocationManager locationManager, LocationListener locationListener) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.i("TestLoc:", "Ask for permission: ");
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {

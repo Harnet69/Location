@@ -33,9 +33,15 @@ public class LocationService {
         this.activity = activity;
         this.mMainActivityViewModel = mMainActivityViewModel;
 
-        permissionService = new PermissionService(context, activity);
-
         initiateLocationTools();
+    }
+
+    public PermissionService getPermissionService() {
+        return permissionService;
+    }
+
+    public Geocoder getGeocoder() {
+        return geocoder;
     }
 
     // initiate needed location stuff
@@ -68,6 +74,7 @@ public class LocationService {
 
             }
         };
+        permissionService = new PermissionService(context, activity, locationManager, locationListener, provider);
         permissionService.checkPermissions();
     }
 }
