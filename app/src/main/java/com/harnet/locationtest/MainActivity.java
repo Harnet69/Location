@@ -123,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 image.startAnimation(rotate);
             }
         });
-
-
     }
 
     private void checkPermissions(){
