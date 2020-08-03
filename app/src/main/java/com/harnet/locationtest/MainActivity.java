@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO MVVM
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-
         mMainActivityViewModel.init();
 
         mMainActivityViewModel.getmPersons().observe(this, new Observer<List<UserCoords>>() {
@@ -73,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         // location service starts automatically
         locationService = new LocationService(this, MainActivity.this, mMainActivityViewModel);
 
+        //TODO can be a fail
+        Location location = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
+        Log.i("TestLoc:", "Last known location: " + location);
+        if(location != null){
+            mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
+        }
 //        rotation background image
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {

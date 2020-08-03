@@ -14,7 +14,7 @@ public class UserCoordsRepository {
 
     private UserCoordsRepository() {
         // TODO think about getting last known coordinates from mainActivity
-        setUser(20,40);
+        setUser(0, 0);
     }
 
     private void setUser(double lat, double lng){

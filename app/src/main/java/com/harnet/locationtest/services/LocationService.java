@@ -40,6 +40,14 @@ public class LocationService {
         return permissionService;
     }
 
+    public LocationManager getLocationManager() {
+        return locationManager;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
     public Geocoder getGeocoder() {
         return geocoder;
     }

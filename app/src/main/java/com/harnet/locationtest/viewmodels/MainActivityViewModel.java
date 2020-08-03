@@ -1,6 +1,7 @@
 package com.harnet.locationtest.viewmodels;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -51,7 +52,7 @@ public class MainActivityViewModel extends ViewModel {
                 protected Void doInBackground(Void... voids) {
 
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(0);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
