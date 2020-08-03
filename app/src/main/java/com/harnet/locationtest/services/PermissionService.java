@@ -3,6 +3,7 @@ package com.harnet.locationtest.services;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationListener;
@@ -41,7 +42,7 @@ public class PermissionService {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
         Log.i("TestLoc:", "Ask for permission: ");
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
@@ -59,7 +60,7 @@ public class PermissionService {
                     }
                     //TODO how to send Intent?
                     activity.finish();
-//                    activity.startActivity();
+                    activity.startActivity(intent);
 
                     Log.i("TestLoc:", "onRequestPermissionsResult: Refresh the page");
                     // location-related task you need to do.

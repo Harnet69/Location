@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        locationService.getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults);
+        locationService.getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
     }
 
     // update view by model coordinates
