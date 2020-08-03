@@ -55,8 +55,10 @@ public class LocationService {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
-                //TODO MVVM
-                mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
+                //TODO don't get mMain
+                if(mMainActivityViewModel != null){
+                    mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
+                }
             }
 
             @Override
@@ -76,5 +78,6 @@ public class LocationService {
         };
         permissionService = new PermissionService(context, activity, locationManager, locationListener, provider);
         permissionService.checkPermissions();
+        locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
     }
 }

@@ -57,8 +57,8 @@ public class PermissionService {
                             && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    activity.finish();
                     //TODO how to send Intent?
+                    activity.finish();
 //                    activity.startActivity();
 
                     Log.i("TestLoc:", "onRequestPermissionsResult: Refresh the page");

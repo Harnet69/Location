@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         lngTextView = findViewById(R.id.lng_textView);
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
-        // location service starts automatically
-        locationService = new LocationService(this, MainActivity.this, mMainActivityViewModel);
 
         //TODO MVVM
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -79,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 updateView(coords.get(0).getLat(), coords.get(0).getLng());
             }
         });
+        // location service starts automatically
+        locationService = new LocationService(this, MainActivity.this, mMainActivityViewModel);
 
 //        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 //        provider = locationManager.getBestProvider(new Criteria(), false);
