@@ -27,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private TextView latTextView;
     private TextView lngTextView;
+    private TextView altTextView;
     private TextView placeTextView;
     private ImageView bgr_ImageView;
     private ProgressBar progressBar;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         latTextView = findViewById(R.id.lat_textView);
         lngTextView = findViewById(R.id.lng_textView);
+        altTextView = findViewById(R.id.alt_textView);
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
         progressBar = findViewById(R.id.progress_bar);
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<UserCoords> coords) {
                 Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
-                updateView(coords.get(0).getLat(), coords.get(0).getLng());
+                updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
             }
         });
 
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // update view by model coordinates
-    private void updateView(double lat, double lng){
+    private void updateView(double lat, double lng, double alt){
         List<Address> address = null;
         try {
             address = mMainActivityViewModel.getLocationService().getGeocoder().getFromLocation(lat, lng, 1);
@@ -100,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
         }
         latTextView.setText(String.format("%s%s", getString(R.string.Lat), lat));
         lngTextView.setText(String.format("%s%s", getString(R.string.Long), lng));
+        altTextView.setText(String.format("%s%s", getString(R.string.Alt), alt));
         assert address != null;
-        if(address.size()>0) {
+        if(address.size() > 0) {
             placeTextView.setText(String.format("%s%s", getString(R.string.place), address.get(0).getAddressLine(0)));
         }
     }

@@ -3,10 +3,12 @@ package com.harnet.locationtest.models;
 public class UserCoords {
     private double lat;
     private double lng;
+    private double alt;
 
-    public UserCoords(double lat, double lng) {
+    public UserCoords(double lat, double lng, double alt) {
         this.lat = lat;
         this.lng = lng;
+        this.alt = alt;
     }
 
     public double getLat() {
@@ -23,5 +25,13 @@ public class UserCoords {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public double getAlt() {
+        return alt;
+    }
+
+    public void setAlt(double alt) {
+        this.alt = alt;
     }
 }

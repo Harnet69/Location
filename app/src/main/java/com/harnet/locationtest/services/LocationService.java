@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.harnet.locationtest.viewmodels.MainActivityViewModel;
 
+import java.util.Date;
 import java.util.Locale;
 
 public class LocationService {
@@ -64,9 +65,10 @@ public class LocationService {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
+                Log.i("TestLoc:", "Time: " + new Date(location.getTime()).toString());
                 //TODO don't get mMain
                 if(mMainActivityViewModel != null){
-                    mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude());
+                    mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
             }
 

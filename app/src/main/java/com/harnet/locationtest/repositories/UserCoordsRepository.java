@@ -15,8 +15,8 @@ public class UserCoordsRepository {
     private UserCoordsRepository() {
     }
 
-    public void initiateUser(double lat, double lng){
-        usersDataSet.add(new UserCoords(lat, lng));
+    public void initiateUser(double lat, double lng, double alt){
+        usersDataSet.add(new UserCoords(lat, lng, alt));
     }
 
     public static UserCoordsRepository getInstance() {

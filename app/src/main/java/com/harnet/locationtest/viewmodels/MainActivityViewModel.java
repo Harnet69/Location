@@ -54,7 +54,7 @@ public class MainActivityViewModel extends ViewModel {
 
 
     @SuppressLint("StaticFieldLeak")
-    public void changeUserCoords(final double lat, final double lng) {
+    public void changeUserCoords(final double lat, final double lng, final double alt) {
         mIsUpdating.setValue(true);
 
         new AsyncTask<Void, Void, Void>() {
@@ -66,6 +66,7 @@ public class MainActivityViewModel extends ViewModel {
                 assert currentPlaces != null;
                 currentPlaces.get(0).setLat(lat);
                 currentPlaces.get(0).setLng(lng);
+                currentPlaces.get(0).setAlt(alt);
                 mUsers.postValue(currentPlaces);
                 mIsUpdating.postValue(false);
             }
@@ -92,7 +93,7 @@ public class MainActivityViewModel extends ViewModel {
         }
 
         if (lastKnownLocation != null) {
-            mUsersRepository.initiateUser(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            mUsersRepository.initiateUser(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), lastKnownLocation.getAltitude());
         }
     }
 }

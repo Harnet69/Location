@@ -2,5 +2,7 @@
     <string name="app_name">Location Test</string>
     <string name="Lat">Latitude: </string>
     <string name="Long">Longitude: </string>
+    <string name="Alt">Altitude: </string>
     <string name="place">Place: </string>
+    <string name="Title">User location</string>
 </resources>
