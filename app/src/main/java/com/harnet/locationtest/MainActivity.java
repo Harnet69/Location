@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.harnet.locationtest.models.UserCoords;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView lngTextView;
     private TextView placeTextView;
     private ImageView bgr_ImageView;
+    private ProgressBar progressBar;
+
+    private int progressCounter;
 
     private MainActivityViewModel mMainActivityViewModel;
 
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         lngTextView = findViewById(R.id.lng_textView);
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
+        progressBar = findViewById(R.id.progress_bar);
 
         //MVVM observer
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -49,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<UserCoords> coords) {
                 Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
                 updateView(coords.get(0).getLat(), coords.get(0).getLng());
+
+                // turn off progress bar
+                if(progressCounter == 1){
+                    progressBar.setVisibility(View.INVISIBLE);
+                    bgr_ImageView.clearAnimation();
+                }
+                progressCounter++;
             }
         });
 
