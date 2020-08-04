@@ -67,7 +67,7 @@ public class MainActivityViewModel extends ViewModel {
                 currentPlaces.get(0).setLat(lat);
                 currentPlaces.get(0).setLng(lng);
                 mUsers.postValue(currentPlaces);
-//                mIsUpdating.postValue(false);
+                mIsUpdating.postValue(false);
             }
 
             @Override

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // observe is coordinates were gotten in the first time
         mMainActivityViewModel.getmIsUpdated().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
