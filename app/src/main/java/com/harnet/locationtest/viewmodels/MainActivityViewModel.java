@@ -66,23 +66,27 @@ public class MainActivityViewModel extends ViewModel {
 
             @Override
             protected Void doInBackground(Void... voids) {
-
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 return null;
             }
         }.execute();
     }
 
-    private void getLastKnownLocation(){
-        //TODO can be a fail
-        @SuppressLint("MissingPermission") Location lastKnownLocation = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
-        Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
-        if(lastKnownLocation != null){
-            changeUserCoords(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+    @SuppressLint("MissingPermission")
+    private void getLastKnownLocation() {
+        Location lastKnownLocation = null;
+        if (locationService != null) {
+            lastKnownLocation = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
+            Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
+        }
+
+        if (lastKnownLocation != null) {
+            mUsersRepository.initiateUser(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
         }
     }
 }

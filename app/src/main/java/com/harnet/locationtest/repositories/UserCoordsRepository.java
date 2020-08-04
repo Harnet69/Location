@@ -13,11 +13,9 @@ public class UserCoordsRepository {
     private List<UserCoords> usersDataSet = new ArrayList<>();
 
     private UserCoordsRepository() {
-        // TODO think about getting last known coordinates from mainActivity
-        setUser(0, 0);
     }
 
-    private void setUser(double lat, double lng){
+    public void initiateUser(double lat, double lng){
         usersDataSet.add(new UserCoords(lat, lng));
     }
 
