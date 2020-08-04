@@ -87,6 +87,7 @@ public class LocationService {
         };
         permissionService = new PermissionService(context, activity, locationManager, locationListener, provider);
         permissionService.checkPermissions();
+
         if(locationManager != null && provider != null){
             locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
         }
