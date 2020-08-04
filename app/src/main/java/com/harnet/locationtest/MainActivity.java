@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView bgr_ImageView;
     private ProgressBar progressBar;
 
-    private int progressCounter;
-
     private MainActivityViewModel mMainActivityViewModel;
 
     @Override
@@ -55,13 +53,16 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<UserCoords> coords) {
                 Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
                 updateView(coords.get(0).getLat(), coords.get(0).getLng());
+            }
+        });
 
-                // turn off progress bar
-                if(progressCounter == 1){
+        mMainActivityViewModel.getmIsUpdated().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
                     progressBar.setVisibility(View.INVISIBLE);
                     bgr_ImageView.clearAnimation();
                 }
-                progressCounter++;
             }
         });
 

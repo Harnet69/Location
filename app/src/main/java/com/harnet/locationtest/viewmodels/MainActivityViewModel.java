@@ -47,6 +47,12 @@ public class MainActivityViewModel extends ViewModel {
         return mUsers;
     }
 
+    public LiveData<Boolean> getmIsUpdated() {
+        return mIsUpdating;
+    }
+
+
+
     @SuppressLint("StaticFieldLeak")
     public void changeUserCoords(final double lat, final double lng) {
         mIsUpdating.setValue(true);
@@ -61,7 +67,7 @@ public class MainActivityViewModel extends ViewModel {
                 currentPlaces.get(0).setLat(lat);
                 currentPlaces.get(0).setLng(lng);
                 mUsers.postValue(currentPlaces);
-                mIsUpdating.postValue(false);
+//                mIsUpdating.postValue(false);
             }
 
             @Override
