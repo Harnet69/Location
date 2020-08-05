@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel;
 import com.harnet.locationtest.models.UserCoords;
 import com.harnet.locationtest.repositories.UserCoordsRepository;
 import com.harnet.locationtest.services.LocationService;
+import com.harnet.locationtest.services.SoundService;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MainActivityViewModel extends ViewModel {
     private UserCoordsRepository mUsersRepository;
 
     private LocationService locationService;
+    private SoundService soundService;
 
     private MutableLiveData<List<UserCoords>> mUsers;
     private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
@@ -39,6 +41,9 @@ public class MainActivityViewModel extends ViewModel {
 
         // location service starts automatically
         locationService = new LocationService(context, activity, this);
+        // sounds
+        soundService = new SoundService();
+        soundService.playSound(context, "findingLocation");
         // location
         getLastKnownLocation();
     }
