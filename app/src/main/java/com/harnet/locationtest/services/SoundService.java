@@ -55,9 +55,13 @@ public class SoundService {
     }
 
     //TODO how to get sound from repository
-    public void playSound(){
+    public void playSound(String soundName){
         Log.i("Soundd:", "playSound: " + soundsInPool[0]);
-        soundPool.play(soundsInPool[0], 1, 1, 0, 0, 1);
+        switch (soundName){
+            case "findingLocation":
+                soundPool.play(soundsInPool[0], 0.3f, 0.3f, 0, 0, 1);
+                break;
+        }
 
 //        MediaPlayer media = MediaPlayer.create(context, soundRepo.getSounds().get(0).getSource());
 //        media.start();

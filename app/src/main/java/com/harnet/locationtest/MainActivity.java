@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 if(aBoolean){
                     progressBar.setVisibility(View.INVISIBLE);
                     bgr_ImageView.clearAnimation();
-                    mMainActivityViewModel.getSoundService().playSound();
+                    mMainActivityViewModel.getSoundService().playSound("findingLocation");
                 }
             }
         });
