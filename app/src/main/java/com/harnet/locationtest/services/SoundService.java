@@ -54,18 +54,17 @@ public class SoundService {
         }
     }
 
-    private List<Sound> findSound(final String soundName){
-        return soundRepo.getSounds().stream()
-                .filter(x -> x.getName().equals(soundName))
-                .collect(Collectors.toList());
-    }
-
     //TODO how to get sound from repository
-    public void playSound(Context mContext, String sound){
+    public void playSound(){
         Log.i("Soundd:", "playSound: " + soundsInPool[0]);
         soundPool.play(soundsInPool[0], 1, 1, 0, 0, 1);
 
-        MediaPlayer media = MediaPlayer.create(context, soundRepo.getSounds().get(0).getSource());
-        media.start();
+//        MediaPlayer media = MediaPlayer.create(context, soundRepo.getSounds().get(0).getSource());
+//        media.start();
+    }
+
+    public void releaseSoundPool(){
+        soundPool.release();
+        soundPool = null;
     }
 }

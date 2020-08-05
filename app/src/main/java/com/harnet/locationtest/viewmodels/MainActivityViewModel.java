@@ -31,6 +31,10 @@ public class MainActivityViewModel extends ViewModel {
         return locationService;
     }
 
+    public SoundService getSoundService() {
+        return soundService;
+    }
+
     public void init(Context context, Activity activity) {
         if (mUsers != null) {
             return;
@@ -44,7 +48,6 @@ public class MainActivityViewModel extends ViewModel {
 
         // sounds
         soundService = new SoundService(context);
-        soundService.playSound(context, "findingLocation");
 
         // last known location
         getLastKnownLocation();
@@ -81,7 +84,7 @@ public class MainActivityViewModel extends ViewModel {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 if(aBoolean){
                     progressBar.setVisibility(View.INVISIBLE);
                     bgr_ImageView.clearAnimation();
+                    mMainActivityViewModel.getSoundService().playSound();
                 }
             }
         });
@@ -109,5 +110,11 @@ public class MainActivity extends AppCompatActivity {
         if(address.size() > 0) {
             placeTextView.setText(String.format("%s%s", getString(R.string.place), address.get(0).getAddressLine(0)));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainActivityViewModel.getSoundService().releaseSoundPool();
     }
 }
