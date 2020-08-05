@@ -43,7 +43,7 @@ public class MainActivityViewModel extends ViewModel {
         locationService = new LocationService(context, activity, this);
 
         // sounds
-        soundService = new SoundService();
+        soundService = new SoundService(context);
         soundService.playSound(context, "findingLocation");
 
         // last known location
