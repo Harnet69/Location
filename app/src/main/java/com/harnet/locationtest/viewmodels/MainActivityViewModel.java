@@ -41,10 +41,12 @@ public class MainActivityViewModel extends ViewModel {
 
         // location service starts automatically
         locationService = new LocationService(context, activity, this);
+
         // sounds
         soundService = new SoundService();
         soundService.playSound(context, "findingLocation");
-        // location
+
+        // last known location
         getLastKnownLocation();
     }
 

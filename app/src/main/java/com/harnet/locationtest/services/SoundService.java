@@ -1,13 +1,7 @@
 package com.harnet.locationtest.services;
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
 
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Sound;
@@ -17,19 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //TODO Make the class Asynch
-public class SoundService extends Service {
+public class SoundService {
     private SoundRepository soundRepo = SoundRepository.getInstance();
-    private MediaPlayer sonarSound;
+    private MediaPlayer mPlayer;
 
 
     public SoundService() {
         soundRepoInit();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     private void soundRepoInit(){
@@ -42,9 +30,9 @@ public class SoundService extends Service {
                 .collect(Collectors.toList());
     }
 
-    //TODO can be cause of problems
+    //TODO how to get sound from repository
     public void playSound(Context mContext, String sound){
-        sonarSound = MediaPlayer.create(mContext, R.raw.sonar);
-        sonarSound.start();
+        mPlayer = MediaPlayer.create(mContext, findSound(sound).get(0).getSource());
+        mPlayer.start();
     }
 }

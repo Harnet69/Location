@@ -53,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<UserCoords> coords) {
-                Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
-                updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
+                if(coords != null && coords.size() > 0){
+                    Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
+                    updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
+                }
             }
         });
 
