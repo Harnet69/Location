@@ -31,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView placeTextView;
     private ImageView bgr_ImageView;
     private ProgressBar progressBar;
+    private ImageView muteBtn;
+
 
     private MainActivityViewModel mMainActivityViewModel;
+
+    private boolean isMuted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         placeTextView = findViewById(R.id.place_textView);
         bgr_ImageView = findViewById(R.id.bgr_imageView);
         progressBar = findViewById(R.id.progress_bar);
+        muteBtn = findViewById(R.id.mute_btn_imageView);
 
         //MVVM observer
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -67,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
                 if(aBoolean){
                     progressBar.setVisibility(View.INVISIBLE);
                     bgr_ImageView.clearAnimation();
-                    mMainActivityViewModel.getSoundService().playSound("findingLocation");
+                    //
+                    if(!isMuted){
+                        mMainActivityViewModel.getSoundService().playSound("findingLocation");
+                    }
                 }
             }
         });
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 image.startAnimation(rotate);
             }
         });
+        muteSound();
     }
 
     @Override
@@ -110,6 +119,21 @@ public class MainActivity extends AppCompatActivity {
         if(address.size() > 0) {
             placeTextView.setText(String.format("%s%s", getString(R.string.place), address.get(0).getAddressLine(0)));
         }
+    }
+
+    public void muteSound(){
+        muteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isMuted){
+                    muteBtn.setImageResource(R.drawable.unmute_btn);
+                    isMuted = true;
+                }else{
+                    muteBtn.setImageResource(R.drawable.mute_btn);
+                    isMuted = false;
+                }
+            }
+        });
     }
 
     @Override
