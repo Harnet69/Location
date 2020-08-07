@@ -3,28 +3,9 @@ package com.harnet.locationtest.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import android.annotation.SuppressLint;
-import android.location.Address;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.harnet.locationtest.R;
-import com.harnet.locationtest.models.UserCoords;
-import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
-
-import java.io.IOException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener {
     private Fragment fragment;
@@ -53,7 +34,17 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onMessageSend(String message) {
         exchangeBundle.putString("message", message);
-//        System.out.println(message);
+        switch (message){
+            case "location" : startGameFragment();
+                break;
+        }
+    }
+
+    private void startGameFragment(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_view_tag, new LocationFragment())
+                .commit();
     }
 
     @Override
