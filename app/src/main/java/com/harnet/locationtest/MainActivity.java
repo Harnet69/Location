@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         // observe is coordinates were gotten in the first time
         mMainActivityViewModel.getmIsUpdated().observe(this, new Observer<Boolean>() {
@@ -128,9 +131,11 @@ public class MainActivity extends AppCompatActivity {
                 if(!isMuted){
                     muteBtn.setImageResource(R.drawable.unmute_btn);
                     isMuted = true;
+                    mMainActivityViewModel.getSoundService().playSound("muteOn");
                 }else{
                     muteBtn.setImageResource(R.drawable.mute_btn);
                     isMuted = false;
+                    mMainActivityViewModel.getSoundService().playSound("muteOff");
                 }
             }
         });

@@ -29,6 +29,8 @@ public class SoundService {
 
     private void soundRepoInit(){
         soundRepo.getSounds().add(new Sound("findingLocation", R.raw.sonar));
+        soundRepo.getSounds().add(new Sound("muteOn", R.raw.click_on));
+        soundRepo.getSounds().add(new Sound("muteOff", R.raw.click_off));
     }
 
     private void soundPoolInit(){
@@ -56,10 +58,18 @@ public class SoundService {
 
     //TODO how to get sound from repository
     public void playSound(String soundName){
-        Log.i("Soundd:", "playSound: " + soundsInPool[0]);
+        Log.i("Sound:", "playSound: " + soundsInPool[0]);
         switch (soundName){
             case "findingLocation":
                 soundPool.play(soundsInPool[0], 0.3f, 0.3f, 0, 0, 1);
+                break;
+
+            case "muteOn":
+                soundPool.play(soundsInPool[1], 0.7f, 0.7f, 0, 0, 1);
+                break;
+
+            case "muteOff":
+                soundPool.play(soundsInPool[2], 0.7f, 0.7f, 0, 0, 1);
                 break;
         }
 

@@ -98,8 +98,10 @@ public class MainActivityViewModel extends ViewModel {
     private void getLastKnownLocation() {
         Location lastKnownLocation = null;
         if (locationService != null) {
-            lastKnownLocation = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
-            Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
+            if(locationService.getProvider() != null){
+                lastKnownLocation = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
+                Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
+            }
         }
 
         if (lastKnownLocation != null) {
