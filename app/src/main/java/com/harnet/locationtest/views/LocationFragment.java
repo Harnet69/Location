@@ -1,32 +1,37 @@
-package com.harnet.locationtest;
+package com.harnet.locationtest.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.location.Address;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.UserCoords;
-import com.harnet.locationtest.viewmodels.MainActivityViewModel;
+import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
 
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class LocationFragment extends Fragment {
     private TextView latTextView;
     private TextView lngTextView;
     private TextView altTextView;
@@ -35,33 +40,49 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ImageView muteBtn;
 
-
-    private MainActivityViewModel mMainActivityViewModel;
+    private LocationActivityViewModel mLocationActivityViewModel;
 
     private boolean isMuted;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    OnMessageSendListener onMessageSendListener;
 
-        latTextView = findViewById(R.id.lat_textView);
-        lngTextView = findViewById(R.id.lng_textView);
-        altTextView = findViewById(R.id.alt_textView);
-        placeTextView = findViewById(R.id.place_textView);
-        bgr_ImageView = findViewById(R.id.bgr_imageView);
-        progressBar = findViewById(R.id.progress_bar);
-        muteBtn = findViewById(R.id.mute_btn_imageView);
+
+    // interface for exchanging data between fragments
+    public interface OnMessageSendListener{
+
+        public void onMessageSend(String message);
+    }
+
+    public LocationFragment() {
+    }
+
+    public LocationActivityViewModel getmLocationActivityViewModel() {
+        return mLocationActivityViewModel;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_location, container, false);
+
+        latTextView = view.findViewById(R.id.lat_textView);
+        lngTextView = view.findViewById(R.id.lng_textView);
+        altTextView = view.findViewById(R.id.alt_textView);
+        placeTextView = view.findViewById(R.id.place_textView);
+        bgr_ImageView = view.findViewById(R.id.bgr_imageView);
+        progressBar = view.findViewById(R.id.progress_bar);
+        muteBtn = view.findViewById(R.id.mute_btn_imageView);
 
         //MVVM observer
-        mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        mMainActivityViewModel.init(this, this);
-        mMainActivityViewModel.getmPersons().observe(this, new Observer<List<UserCoords>>() {
+        mLocationActivityViewModel = new ViewModelProvider(this).get(LocationActivityViewModel.class);
+        mLocationActivityViewModel.init(getContext(), getActivity());
+        mLocationActivityViewModel.getmPersons().observe(getActivity(), new Observer<List<UserCoords>>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<UserCoords> coords) {
-                if(coords != null && coords.size() > 0){
-                    Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() +":"+ coords.get(0).getLng());
+                if (coords != null && coords.size() > 0) {
+                    Log.i("TestLoc:", "Coordinates were changed" + coords.get(0).getLat() + ":" + coords.get(0).getLng());
                     updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
                 }
             }
@@ -69,15 +90,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         // observe is coordinates were gotten in the first time
-        mMainActivityViewModel.getmIsUpdated().observe(this, new Observer<Boolean>() {
+        mLocationActivityViewModel.getmIsUpdated().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isChanged) {
-                if(isChanged){
+                if (isChanged) {
                     progressBar.setVisibility(View.INVISIBLE);
                     bgr_ImageView.clearAnimation();
                     //
-                    if(!isMuted){
-                        mMainActivityViewModel.getSoundService().playSound("findingLocation");
+                    if (!isMuted) {
+                        mLocationActivityViewModel.getSoundService().playSound("findingLocation");
                     }
                 }
             }
@@ -92,26 +113,21 @@ public class MainActivity extends AppCompatActivity {
                 rotate.setDuration(100000);
                 rotate.setInterpolator(new LinearInterpolator());
 
-                ImageView image= (ImageView) bgr_ImageView;
+                ImageView image = (ImageView) bgr_ImageView;
 
                 image.startAnimation(rotate);
             }
         });
+
         muteSound();
+
+        return view;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        mMainActivityViewModel.getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
-    }
-
-    // update view by model coordinates
     private void updateView(double lat, double lng, double alt){
         List<Address> address = null;
         try {
-            address = mMainActivityViewModel.getLocationService().getGeocoder().getFromLocation(lat, lng, 1);
+            address = mLocationActivityViewModel.getLocationService().getGeocoder().getFromLocation(lat, lng, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,19 +147,24 @@ public class MainActivity extends AppCompatActivity {
                 if(!isMuted){
                     muteBtn.setImageResource(R.drawable.unmute_btn);
                     isMuted = true;
-                    mMainActivityViewModel.getSoundService().playSound("muteOn");
+                    mLocationActivityViewModel.getSoundService().playSound("muteOn");
                 }else{
                     muteBtn.setImageResource(R.drawable.mute_btn);
                     isMuted = false;
-                    mMainActivityViewModel.getSoundService().playSound("muteOff");
+                    mLocationActivityViewModel.getSoundService().playSound("muteOff");
                 }
             }
         });
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mMainActivityViewModel.getSoundService().releaseSoundPool();
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Activity activity = (Activity) context;
+        try {
+            onMessageSendListener = (OnMessageSendListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()+ "must implemented onMessageSend");
+        }
     }
 }

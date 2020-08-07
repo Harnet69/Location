@@ -11,13 +11,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.harnet.locationtest.viewmodels.MainActivityViewModel;
+import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
 
 import java.util.Date;
 import java.util.Locale;
 
 public class LocationService {
-    MainActivityViewModel mMainActivityViewModel;
+    LocationActivityViewModel mLocationActivityViewModel;
 
     private Context context;
     private Activity activity;
@@ -29,10 +29,10 @@ public class LocationService {
     private String provider;
     private Geocoder geocoder;
 
-    public LocationService(Context context, Activity activity, MainActivityViewModel mMainActivityViewModel) {
+    public LocationService(Context context, Activity activity, LocationActivityViewModel mLocationActivityViewModel) {
         this.context = context;
         this.activity = activity;
-        this.mMainActivityViewModel = mMainActivityViewModel;
+        this.mLocationActivityViewModel = mLocationActivityViewModel;
 
         initiateLocationTools();
     }
@@ -67,8 +67,8 @@ public class LocationService {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
                 Log.i("TestLoc:", "Time: " + new Date(location.getTime()).toString());
                 //TODO don't get mMain
-                if(mMainActivityViewModel != null){
-                    mMainActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
+                if(mLocationActivityViewModel != null){
+                    mLocationActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
             }
 

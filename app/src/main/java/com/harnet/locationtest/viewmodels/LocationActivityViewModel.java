@@ -18,7 +18,7 @@ import com.harnet.locationtest.services.SoundService;
 
 import java.util.List;
 
-public class MainActivityViewModel extends ViewModel {
+public class LocationActivityViewModel extends ViewModel {
     private UserCoordsRepository mUsersRepository;
 
     private LocationService locationService;
@@ -73,12 +73,13 @@ public class MainActivityViewModel extends ViewModel {
                 super.onPostExecute(aVoid);
 
                 List<UserCoords> currentPlaces = mUsers.getValue();
-                assert currentPlaces != null;
-                currentPlaces.get(0).setLat(lat);
-                currentPlaces.get(0).setLng(lng);
-                currentPlaces.get(0).setAlt(alt);
-                mUsers.postValue(currentPlaces);
-                mIsUpdating.postValue(false);
+                if(currentPlaces != null && currentPlaces.size() > 0){
+                    currentPlaces.get(0).setLat(lat);
+                    currentPlaces.get(0).setLng(lng);
+                    currentPlaces.get(0).setAlt(alt);
+                    mUsers.postValue(currentPlaces);
+                    mIsUpdating.postValue(false);
+                }
             }
 
             @Override
