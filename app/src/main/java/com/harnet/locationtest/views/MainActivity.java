@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.harnet.locationtest.R;
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragment = new LocationFragment();
+        fragment = new MainMenuFragment();
 
         exchangeBundle = new Bundle();
         //display default fragment1
@@ -34,16 +35,17 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onMessageSend(String message) {
         exchangeBundle.putString("message", message);
+        Log.i("Fragments", "onMessageSend: " + message);
         switch (message){
-            case "location" : startGameFragment();
+            case "location" : startLocationFragment();
                 break;
         }
     }
 
-    private void startGameFragment(){
+    private void startLocationFragment(){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container_view_tag, new LocationFragment())
+                .replace(R.id.fragmentCont, new LocationFragment())
                 .commit();
     }
 
