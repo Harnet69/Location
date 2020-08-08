@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Location Test</string>
+    <string name="app_name">Your location manager</string>
     <string name="Lat">Latitude: </string>
     <string name="Long">Longitude: </string>
     <string name="Alt">Altitude: </string>

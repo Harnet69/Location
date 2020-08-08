@@ -3,6 +3,8 @@ package com.harnet.locationtest.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -42,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         }
     }
 
+    // start Location fragment with back stack (button) functionality
     private void startLocationFragment(){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCont, new LocationFragment())
-                .commit();
+        final LocationFragment locationFragment = new LocationFragment();
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentCont, new LocationFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
