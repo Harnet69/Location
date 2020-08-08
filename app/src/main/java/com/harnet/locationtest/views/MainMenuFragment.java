@@ -11,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.harnet.locationtest.R;
 
 public class MainMenuFragment extends Fragment {
-    private Button locationBtn;
+    private ImageButton locationBtn;
     LocationFragment.OnMessageSendListener onMessageSendListener;
 
     public MainMenuFragment() {
@@ -33,7 +34,7 @@ public class MainMenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_main_menu, container, false);
-        locationBtn = view.findViewById(R.id.location_button);
+        locationBtn = view.findViewById(R.id.location_imageButton);
 
         goLocation();
 
