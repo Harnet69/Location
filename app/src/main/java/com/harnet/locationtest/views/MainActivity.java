@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationFragment.getmLocationActivityViewModel().getSoundService().releaseSoundPool();
+        if(locationFragment != null){
+            locationFragment.getmLocationActivityViewModel().getSoundService().releaseSoundPool();
+        }
     }
 }

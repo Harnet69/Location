@@ -134,8 +134,7 @@ public class LocationFragment extends Fragment {
         latTextView.setText(String.format("%s%s", getString(R.string.Lat), lat));
         lngTextView.setText(String.format("%s%s", getString(R.string.Long), lng));
         altTextView.setText(String.format("%s%s", getString(R.string.Alt), alt));
-        assert address != null;
-        if(address.size() > 0) {
+        if(address != null && address.size() > 0) {
             placeTextView.setText(String.format("%s%s", getString(R.string.place), address.get(0).getAddressLine(0)));
         }
     }
