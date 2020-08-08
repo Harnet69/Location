@@ -12,6 +12,7 @@ import com.harnet.locationtest.R;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener {
     private Fragment fragment;
+    private final static String TAG_FRAGMENT = "TAG_FRAGMENT";
     private Bundle exchangeBundle; // bundle to keep data for exchanging
 
     private LocationFragment locationFragment;
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
     // start Location fragment with back stack (button) functionality
     private void startLocationFragment(){
-        final LocationFragment locationFragment = new LocationFragment();
-        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentCont, new LocationFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        fragment = new LocationFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .commit();
     }
 
     @Override
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
         locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
     }
-
 
     @Override
     protected void onDestroy() {

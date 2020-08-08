@@ -41,12 +41,13 @@ public class LocationFragment extends Fragment {
     private ProgressBar progressBar;
     private ImageView muteBtn;
 
+    private Context mContext;
+
     private LocationActivityViewModel mLocationActivityViewModel;
 
     private boolean isMuted;
 
     OnMessageSendListener onMessageSendListener;
-
 
     // interface for exchanging data between fragments
     public interface OnMessageSendListener{
@@ -160,10 +161,17 @@ public class LocationFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Activity activity = (Activity) context;
+        mContext = context;
         try {
             onMessageSendListener = (OnMessageSendListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()+ "must implemented onMessageSend");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
     }
 }
