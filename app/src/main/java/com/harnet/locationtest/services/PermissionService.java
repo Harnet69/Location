@@ -44,6 +44,7 @@ public class PermissionService {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
         Log.i("TestLoc:", "Ask for permission: ");
         switch (requestCode) {
@@ -60,7 +61,6 @@ public class PermissionService {
                             && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    //TODO how to send Intent?
                     activity.finish();
                     activity.startActivity(intent);
 
