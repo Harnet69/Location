@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.UserCoords;
@@ -28,6 +29,9 @@ import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
+    private GoogleMap mMap;
+    private Marker userMarker;
+
     private LocationActivityViewModel mLocationActivityViewModel;
     OnMessageSendListener onMessageSendListener;
 
@@ -47,9 +51,15 @@ public class MapsFragment extends Fragment {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap = googleMap;
+            // set initial user previous coordinates
+            if(mLocationActivityViewModel != null && mLocationActivityViewModel.getmPersons().getValue().size() > 0){
+                LatLng userCoords = new LatLng(mLocationActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationActivityViewModel.getmPersons().getValue().get(0).getLng());
+                userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+            }
         }
     };
 
@@ -69,6 +79,9 @@ public class MapsFragment extends Fragment {
                 if (coords != null && coords.size() > 0) {
                     Log.i("TestLoc:", "Coordinates on a map were changed" + coords.get(0).getLat() + ":" + coords.get(0).getLng());
 //                    updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
+                    if(userMarker != null){
+                        userMarker.setPosition(new LatLng(coords.get(0).getLat(), coords.get(0).getLng()));
+                    }
                     //TODO Update user positionon the map
                 }
             }
@@ -86,6 +99,8 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
     }
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
