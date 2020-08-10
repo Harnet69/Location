@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
-
-import java.util.Date;
 import java.util.Locale;
 
 public class LocationService {
