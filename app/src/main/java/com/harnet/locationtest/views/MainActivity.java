@@ -1,36 +1,30 @@
 package com.harnet.locationtest.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.harnet.locationtest.R;
 
-public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener {
+public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
     private Fragment fragment;
-    private final static String TAG_FRAGMENT = "TAG_FRAGMENT";
     private Bundle exchangeBundle; // bundle to keep data for exchanging
 
     private LocationFragment locationFragment;
+    private MapsFragment mapsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragment = new MainMenuFragment();
-
         exchangeBundle = new Bundle();
-        //display default fragment1
+        //display default menu
         if(savedInstanceState == null){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentCont, fragment)
-                    .commit();
+            startMainMenuFragment();
         }
     }
 
@@ -42,12 +36,25 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         switch (message){
             case "location" : startLocationFragment();
                 break;
+            case "maps" : startMapsFragment();
+                break;
+            default: startMainMenuFragment();
         }
+    }
+
+    // start MainMenuFragment
+    private void startMainMenuFragment(){
+        fragment = new MainMenuFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .commit();
     }
 
     // start Location fragment with back stack (button) functionality
     private void startLocationFragment(){
         fragment = new LocationFragment();
+        locationFragment = (LocationFragment) fragment; // for correct work of location
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
@@ -55,18 +62,25 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 .commit();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
+    // start Maps fragment with back stack (button) functionality
+    private void startMapsFragment(){
+        fragment = new MapsFragment();
+        mapsFragment = (MapsFragment) fragment; // for correct work of location
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .addToBackStack("maps")
+                .commit();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(locationFragment != null){
-            locationFragment.getmLocationActivityViewModel().getSoundService().releaseSoundPool();
+            locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
+        }
+        else if(mapsFragment != null){
+            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
         }
     }
 }

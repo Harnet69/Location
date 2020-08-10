@@ -5,13 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -24,6 +17,11 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.UserCoords;
@@ -169,7 +167,7 @@ public class LocationFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("AppState", "onDestroy: ");
         mLocationActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationActivityViewModel.getLocationService().getLocationListener());
+        mLocationActivityViewModel.getSoundService().releaseSoundPool();
     }
 }

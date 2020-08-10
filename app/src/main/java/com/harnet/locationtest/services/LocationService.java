@@ -1,8 +1,10 @@
 package com.harnet.locationtest.services;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,9 +13,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+
 import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
 
-import java.util.Date;
 import java.util.Locale;
 
 public class LocationService {
@@ -59,7 +62,7 @@ public class LocationService {
 
     // initiate needed location stuff
     @SuppressLint("MissingPermission")
-    private void initiateLocationTools(){
+    private void initiateLocationTools() {
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         geocoder = new Geocoder(context, Locale.getDefault());
@@ -69,9 +72,8 @@ public class LocationService {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
-                Log.i("TestLoc:", "Time: " + new Date(location.getTime()).toString());
-                //TODO don't get mMain
-                if(mLocationActivityViewModel != null){
+
+                if (mLocationActivityViewModel != null) {
                     mLocationActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
             }
@@ -94,8 +96,22 @@ public class LocationService {
         permissionService = new PermissionService(context, activity, locationManager, locationListener, provider);
         permissionService.checkPermissions();
 
-        if(locationManager != null && provider != null){
+        if (locationManager != null && provider != null) {
             locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
         }
+    }
+
+    // finding last known location
+    public Location getLastKnownLocation() {
+        Location lastKnownLocation = null;
+        if (provider != null) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissionService.checkPermissions();
+            }
+            lastKnownLocation = locationManager.getLastKnownLocation(provider);
+                Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
+            }
+
+        return lastKnownLocation;
     }
 }
