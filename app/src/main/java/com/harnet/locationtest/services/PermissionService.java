@@ -36,9 +36,7 @@ public class PermissionService {
 
     public void checkPermissions(){
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
         }else {
             Log.i("TestLoc:", "Permission was granted already ");
         }
@@ -64,7 +62,6 @@ public class PermissionService {
                     activity.finish();
                     activity.startActivity(intent);
 
-                    Log.i("TestLoc:", "onRequestPermissionsResult: Refresh the page");
                     // location-related task you need to do.
                     provider = locationManager.getBestProvider(new Criteria(), false);
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
