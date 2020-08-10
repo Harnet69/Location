@@ -18,6 +18,7 @@ import com.harnet.locationtest.R;
 public class MainMenuFragment extends Fragment {
     private ImageButton locationBtn;
     private ImageButton mapsBtn;
+    private ImageButton qrBtn;
 
     LocationFragment.OnMessageSendListener onMessageSendListener;
 
@@ -36,9 +37,11 @@ public class MainMenuFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_main_menu, container, false);
         locationBtn = view.findViewById(R.id.location_imageButton);
         mapsBtn = view.findViewById(R.id.maps_imageButton);
+        qrBtn = view.findViewById(R.id.qr_imageButton);
 
         goLocation();
         goMaps();
+        goQR();
 
         return view;
     }
@@ -59,6 +62,16 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onMessageSendListener.onMessageSend("maps");
+            }
+        });
+    }
+
+    // QR scanner click listener
+    private void goQR(){
+        qrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMessageSendListener.onMessageSend("qr");
             }
         });
     }

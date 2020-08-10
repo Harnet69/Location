@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.harnet.locationtest.R;
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
     private LocationFragment locationFragment;
     private MapsFragment mapsFragment;
+    private QRFragment qrFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             case "location" : startLocationFragment();
                 break;
             case "maps" : startMapsFragment();
+                break;
+            case "qr" : startQRFragment();
                 break;
             default: startMainMenuFragment();
         }
@@ -72,6 +76,18 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 .addToBackStack("maps")
                 .commit();
     }
+
+    // start QR fragment with back stack (button) functionality
+    private void startQRFragment(){
+        fragment = new QRFragment();
+        qrFragment = (QRFragment) fragment; // for correct work of location
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .addToBackStack("qr")
+                .commit();
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
