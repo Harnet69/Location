@@ -41,8 +41,6 @@ public class LocationFragment extends Fragment {
     private ProgressBar progressBar;
     private ImageView muteBtn;
 
-    private Context mContext;
-
     private LocationActivityViewModel mLocationActivityViewModel;
 
     private boolean isMuted;
@@ -120,8 +118,8 @@ public class LocationFragment extends Fragment {
                 image.startAnimation(rotate);
             }
         });
-
         muteSound();
+
         return view;
     }
 
@@ -161,7 +159,6 @@ public class LocationFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Activity activity = (Activity) context;
-        mContext = context;
         try {
             onMessageSendListener = (OnMessageSendListener) activity;
         } catch (ClassCastException e) {
@@ -170,8 +167,9 @@ public class LocationFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mContext = null;
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("AppState", "onDestroy: ");
+        mLocationActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationActivityViewModel.getLocationService().getLocationListener());
     }
 }

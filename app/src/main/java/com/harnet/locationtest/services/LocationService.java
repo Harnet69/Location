@@ -45,6 +45,10 @@ public class LocationService {
         return locationManager;
     }
 
+    public LocationListener getLocationListener() {
+        return locationListener;
+    }
+
     public String getProvider() {
         return provider;
     }

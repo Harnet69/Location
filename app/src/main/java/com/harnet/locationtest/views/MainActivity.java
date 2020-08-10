@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
+                .addToBackStack("location")
                 .commit();
     }
 
