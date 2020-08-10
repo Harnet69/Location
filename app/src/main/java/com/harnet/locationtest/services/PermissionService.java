@@ -86,6 +86,7 @@ public class PermissionService {
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
                             activity.finish();
+                            activity.startActivity(intent);
                         }
                         @Override
                         protected Void doInBackground(Void... voids) {

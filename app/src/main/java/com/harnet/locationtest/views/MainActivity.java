@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     // start Location fragment with back stack (button) functionality
     private void startLocationFragment(){
         fragment = new LocationFragment();
+        locationFragment = (LocationFragment) fragment; // for correct work of location
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     // start Maps fragment with back stack (button) functionality
     private void startMapsFragment(){
         fragment = new MapsFragment();
+        locationFragment = (LocationFragment) fragment; // for correct work of location
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
@@ -77,15 +79,8 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         if(locationFragment != null){
-            locationFragment.getmLocationActivityViewModel().getSoundService().releaseSoundPool();
+            locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
         }
     }
 }
