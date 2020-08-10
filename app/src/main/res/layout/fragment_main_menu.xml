@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.LocationFragment"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/location_imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_margin="5dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:srcCompat="@drawable/location_ico"/>
+
+    <ImageButton
+        android:id="@+id/map_imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_margin="5dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:srcCompat="@drawable/maps_ico"/>
+
+    <ImageButton
+        android:id="@+id/qr_imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_margin="5dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:srcCompat="@drawable/qr_ico"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

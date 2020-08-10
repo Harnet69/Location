@@ -1,6 +1,7 @@
 package com.harnet.locationtest.services;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class PermissionService {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
         Log.i("TestLoc:", "Ask for permission: ");
         switch (requestCode) {
@@ -58,7 +61,6 @@ public class PermissionService {
                             && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    //TODO how to send Intent?
                     activity.finish();
                     activity.startActivity(intent);
 
@@ -78,6 +80,24 @@ public class PermissionService {
                     // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(context, "User location unknown", Toast.LENGTH_LONG).show();
+                    new AsyncTask<Void, Void, Void>() {
+                        @SuppressLint("StaticFieldLeak")
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            activity.finish();
+                        }
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            return null;
+                        }
+
+                    }.execute();
                 }
             }
         }
