@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.harnet.locationtest.MapsFragment;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.repositories.UserCoordsRepository;
 
@@ -23,15 +24,10 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragment = new MainMenuFragment();
-
         exchangeBundle = new Bundle();
         //display default fragment1
         if(savedInstanceState == null){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentCont, fragment)
-                    .commit();
+            startMainMenuFragment();
         }
     }
 
@@ -43,7 +39,19 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         switch (message){
             case "location" : startLocationFragment();
                 break;
+            case "maps" : startMapsFragment();
+                break;
+            default: startMainMenuFragment();
         }
+    }
+
+    // start MainMenuFragment
+    private void startMainMenuFragment(){
+        fragment = new MainMenuFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .commit();
     }
 
     // start Location fragment with back stack (button) functionality
@@ -53,6 +61,16 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
                 .addToBackStack("location")
+                .commit();
+    }
+
+    // start Maps fragment with back stack (button) functionality
+    private void startMapsFragment(){
+        fragment = new MapsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCont, fragment)
+                .addToBackStack("maps")
                 .commit();
     }
 

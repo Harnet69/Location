@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/location_ico"/>
 
     <ImageButton
-        android:id="@+id/map_imageButton"
+        android:id="@+id/maps_imageButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

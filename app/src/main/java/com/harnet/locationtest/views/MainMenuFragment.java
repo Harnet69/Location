@@ -17,10 +17,11 @@ import com.harnet.locationtest.R;
 
 public class MainMenuFragment extends Fragment {
     private ImageButton locationBtn;
+    private ImageButton mapsBtn;
+
     LocationFragment.OnMessageSendListener onMessageSendListener;
 
     public MainMenuFragment() {
-        // Required empty public constructor
     }
 
     // interface for exchanging data between fragments
@@ -29,23 +30,35 @@ public class MainMenuFragment extends Fragment {
         public void onMessageSend(String message);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_main_menu, container, false);
         locationBtn = view.findViewById(R.id.location_imageButton);
+        mapsBtn = view.findViewById(R.id.maps_imageButton);
 
         goLocation();
+        goMaps();
 
         return view;
     }
 
+    // location click listener
     private void goLocation(){
         locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onMessageSendListener.onMessageSend("location");
+            }
+        });
+    }
+
+    // maps click listener
+    private void goMaps(){
+        mapsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMessageSendListener.onMessageSend("maps");
             }
         });
     }
