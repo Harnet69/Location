@@ -7,10 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.harnet.locationtest.MapsFragment;
 import com.harnet.locationtest.R;
 
-public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener {
+public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
     private Fragment fragment;
     private Bundle exchangeBundle; // bundle to keep data for exchanging
 
@@ -81,8 +80,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
         }
         else if(mapsFragment != null){
-            // TODO implement method
-//            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
+            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
         }
     }
 }
