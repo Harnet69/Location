@@ -69,8 +69,7 @@ public class LocationService {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
-                Log.i("TestLoc:", "Time: " + new Date(location.getTime()).toString());
-                //TODO don't get mMain
+
                 if(mLocationActivityViewModel != null){
                     mLocationActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
@@ -97,5 +96,17 @@ public class LocationService {
         if(locationManager != null && provider != null){
             locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
         }
+    }
+
+    // finding last known location
+    @SuppressLint("MissingPermission")
+    public Location getLastKnownLocation() {
+        Location lastKnownLocation = null;
+            if(provider != null){
+                lastKnownLocation = locationManager.getLastKnownLocation(provider);
+                Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
+            }
+
+        return lastKnownLocation;
     }
 }

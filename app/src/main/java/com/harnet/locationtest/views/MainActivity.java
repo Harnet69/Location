@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.repositories.UserCoordsRepository;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener {
     private Fragment fragment;

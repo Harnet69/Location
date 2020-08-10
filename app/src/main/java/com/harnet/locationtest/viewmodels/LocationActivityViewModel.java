@@ -50,7 +50,10 @@ public class LocationActivityViewModel extends ViewModel {
         soundService = new SoundService(context);
 
         // last known location
-        getLastKnownLocation();
+        Location lastKnownLocation = locationService.getLastKnownLocation();
+        if (lastKnownLocation != null) {
+            mUsersRepository.initiateUser(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), lastKnownLocation.getAltitude());
+        }
     }
 
     public LiveData<List<UserCoords>> getmPersons() {
@@ -60,8 +63,6 @@ public class LocationActivityViewModel extends ViewModel {
     public LiveData<Boolean> getmIsUpdated() {
         return mIsUpdating;
     }
-
-
 
     @SuppressLint("StaticFieldLeak")
     public void changeUserCoords(final double lat, final double lng, final double alt) {
@@ -93,20 +94,5 @@ public class LocationActivityViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-    }
-
-    @SuppressLint("MissingPermission")
-    private void getLastKnownLocation() {
-        Location lastKnownLocation = null;
-        if (locationService != null) {
-            if(locationService.getProvider() != null){
-                lastKnownLocation = locationService.getLocationManager().getLastKnownLocation(locationService.getProvider());
-                Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
-            }
-        }
-
-        if (lastKnownLocation != null) {
-            mUsersRepository.initiateUser(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), lastKnownLocation.getAltitude());
-        }
     }
 }
