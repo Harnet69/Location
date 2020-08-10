@@ -78,11 +78,13 @@ public class MapsFragment extends Fragment {
             public void onChanged(List<UserCoords> coords) {
                 if (coords != null && coords.size() > 0) {
                     Log.i("TestLoc:", "Coordinates on a map were changed" + coords.get(0).getLat() + ":" + coords.get(0).getLng());
-//                    updateView(coords.get(0).getLat(), coords.get(0).getLng(), coords.get(0).getAlt());
-                    if(userMarker != null){
-                        userMarker.setPosition(new LatLng(coords.get(0).getLat(), coords.get(0).getLng()));
+                        //update user position on a map
+                    if(userMarker != null && mMap != null){
+                        LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
+                        userMarker.setPosition(userCoords);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
                     }
-                    //TODO Update user positionon the map
                 }
             }
         });
@@ -100,8 +102,6 @@ public class MapsFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -117,6 +117,5 @@ public class MapsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mLocationActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationActivityViewModel.getLocationService().getLocationListener());
-//        mLocationActivityViewModel.getSoundService().releaseSoundPool();
     }
 }
