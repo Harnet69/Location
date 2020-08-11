@@ -18,10 +18,8 @@ public class QRFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static QRFragment newInstance(String param1, String param2) {
-        QRFragment fragment = new QRFragment();
-
-        return fragment;
+    public QRActivityViewModel getQrActivityViewModel() {
+        return qrActivityViewModel;
     }
 
     @Override

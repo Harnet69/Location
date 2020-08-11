@@ -12,6 +12,10 @@ public class QRActivityViewModel extends ViewModel {
     private static final String TAG = "QRActivityViewModel";
     private CameraService cameraService;
 
+    public CameraService getCameraService() {
+        return cameraService;
+    }
+
     public void init(Context context, Activity activity) {
         Log.i(TAG, "init: ");
         cameraService = new CameraService(context, activity);
