@@ -18,8 +18,9 @@ public class CameraService {
 
     private PermissionService permissionService;
 
-    public CameraService(Context appContext) {
+    public CameraService(Context appContext, Activity activity) {
         this.appContext = appContext;
+        this.activity = activity;
         deviceCamera = new DeviceCamera("cam1", appContext);
         // TODO can be error
         barcodeDetector = new BarcodeDetector.Builder(appContext)
@@ -27,7 +28,7 @@ public class CameraService {
                             .build();
         deviceCamera.setCameraSource(barcodeDetector);
         // check camera permission
-        permissionService = new PermissionService(context, activity);
+        permissionService = new PermissionService(appContext, activity);
         permissionService.checkCameraPermissions();
     }
 
