@@ -35,6 +35,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.gms:play-services-vision:20.1.0'
 
     // Lifecycle components for MVVM
     def archLifecycleVersion = '1.1.1'

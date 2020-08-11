@@ -83,7 +83,7 @@ public class MapsFragment extends Fragment {
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
                         userMarker.setPosition(userCoords);
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 14));
                     }
                 }
             }
