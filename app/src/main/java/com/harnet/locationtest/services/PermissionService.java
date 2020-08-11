@@ -42,9 +42,7 @@ public class PermissionService {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // ask user for camera permission
             Log.i("TestLoc:", "checkCameraPermissions: ");
-            if(activity != null){
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-            }
         }else {
             Log.i("TestLoc:", "Permission was granted already ");
         }

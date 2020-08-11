@@ -105,6 +105,13 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             LocationListener locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
             String provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
             mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
+        }else if(qrFragment != null){
+            //TODO
+            Log.i("TestLoc:", "onRequestCameraPermissionsResult: ");
+//            LocationManager locationManager = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
+//            LocationListener locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
+//            String provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
+            qrFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
         }
     }
 }
