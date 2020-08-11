@@ -1,12 +1,13 @@
 package com.harnet.locationtest.views;
 
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.harnet.locationtest.R;
 
@@ -88,15 +89,22 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 .commit();
     }
 
-
+    // have to be here, because of a bug of requestPermissions from fragments
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //TODO make generic 'Fragment' class for avoiding repetitive code
         if(locationFragment != null){
-            locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
+            LocationManager locationManager = locationFragment.getmLocationActivityViewModel().getLocationService().getLocationManager();
+            LocationListener locationListener = locationFragment.getmLocationActivityViewModel().getLocationService().getLocationListener();
+            String provider = locationFragment.getmLocationActivityViewModel().getLocationService().getProvider();
+            locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
         }
         else if(mapsFragment != null){
-            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestPermissionsResult(requestCode, permissions, grantResults, getIntent());
+            LocationManager locationManager = mapsFragment.getmLocationActivityViewModel().getLocationService().getLocationManager();
+            LocationListener locationListener = mapsFragment.getmLocationActivityViewModel().getLocationService().getLocationListener();
+            String provider = mapsFragment.getmLocationActivityViewModel().getLocationService().getProvider();
+            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
         }
     }
 }

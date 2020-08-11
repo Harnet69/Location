@@ -93,8 +93,8 @@ public class LocationService {
 
             }
         };
-        permissionService = new PermissionService(context, activity, locationManager, locationListener, provider);
-        permissionService.checkPermissions();
+        permissionService = new PermissionService(context, activity);
+        permissionService.checkLocationPermissions();
 
         if (locationManager != null && provider != null) {
             locationManager.requestLocationUpdates(provider, 10000, 0, locationListener);
@@ -106,7 +106,7 @@ public class LocationService {
         Location lastKnownLocation = null;
         if (provider != null) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissionService.checkPermissions();
+                permissionService.checkLocationPermissions();
             }
             lastKnownLocation = locationManager.getLastKnownLocation(provider);
                 Log.i("TestLoc:", "Last known location: " + lastKnownLocation);

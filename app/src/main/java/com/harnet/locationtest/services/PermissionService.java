@@ -22,19 +22,12 @@ public class PermissionService {
     private Context context;
     private Activity activity;
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private String provider;
-
-    public PermissionService(Context context, Activity activity, LocationManager locationManager, LocationListener locationListener, String provider) {
+    public PermissionService(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
-        this.locationManager =locationManager;
-        this.locationListener = locationListener;
-        this.provider = provider;
     }
 
-    public void checkPermissions(){
+    public void checkLocationPermissions(){
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
         }else {
@@ -43,7 +36,7 @@ public class PermissionService {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
+    public void onRequestLocationPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent, LocationManager locationManager, LocationListener locationListener, String provider ) {
         Log.i("TestLoc:", "Ask for permission: ");
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
