@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 public class PermissionService {
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private final int MY_CAMERA_REQUEST_CODE = 100;
     private Context context;
     private Activity activity;
 
@@ -27,9 +28,20 @@ public class PermissionService {
         this.activity = activity;
     }
 
+    // check location permission
     public void checkLocationPermissions(){
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+        }else {
+            Log.i("TestLoc:", "Permission was granted already ");
+        }
+    }
+
+    // check camera permission
+    public void checkCameraPermissions(){
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // ask user for camera permission
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         }else {
             Log.i("TestLoc:", "Permission was granted already ");
         }
@@ -70,27 +82,46 @@ public class PermissionService {
                     // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(context, "User location unknown", Toast.LENGTH_LONG).show();
-                    new AsyncTask<Void, Void, Void>() {
-                        @SuppressLint("StaticFieldLeak")
-                        @Override
-                        protected void onPostExecute(Void aVoid) {
-                            super.onPostExecute(aVoid);
-                            activity.finish();
-                            activity.startActivity(intent);
-                        }
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            return null;
-                        }
-
-                    }.execute();
+                    pauseBeforeRedirect(intent);
                 }
             }
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void onRequestCameraPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(context, "camera permission granted", Toast.LENGTH_LONG).show();
+                activity.finish();
+                activity.startActivity(intent);
+            } else {
+                Toast.makeText(context, "camera permission denied", Toast.LENGTH_LONG).show();
+                Log.i("TestLoc:", "onRequestCameraPermissionsResult: Camera permission denied");
+                pauseBeforeRedirect(intent);
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void pauseBeforeRedirect(Intent intent){
+        new AsyncTask<Void, Void, Void>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                activity.finish();
+                activity.startActivity(intent);
+            }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 }

@@ -1,5 +1,6 @@
 package com.harnet.locationtest.services;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.android.gms.vision.barcode.Barcode;
@@ -8,9 +9,14 @@ import com.harnet.locationtest.models.DeviceCamera;
 
 
 public class CameraService {
+    private Context context;
+    private Activity activity;
+
     private DeviceCamera deviceCamera;
     private BarcodeDetector barcodeDetector;
     private Context appContext;
+
+    private PermissionService permissionService;
 
     public CameraService(Context appContext) {
         this.appContext = appContext;
@@ -20,6 +26,9 @@ public class CameraService {
                             .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                             .build();
         deviceCamera.setCameraSource(barcodeDetector);
+        // check camera permission
+        permissionService = new PermissionService(context, activity);
+        permissionService.checkCameraPermissions();
     }
 
     public DeviceCamera getDeviceCamera() {

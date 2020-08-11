@@ -95,16 +95,16 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //TODO make generic 'Fragment' class for avoiding repetitive code
         if(locationFragment != null){
-            LocationManager locationManager = locationFragment.getmLocationActivityViewModel().getLocationService().getLocationManager();
-            LocationListener locationListener = locationFragment.getmLocationActivityViewModel().getLocationService().getLocationListener();
-            String provider = locationFragment.getmLocationActivityViewModel().getLocationService().getProvider();
-            locationFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
+            LocationManager locationManager = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
+            LocationListener locationListener = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
+            String provider = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
+            locationFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
         }
         else if(mapsFragment != null){
-            LocationManager locationManager = mapsFragment.getmLocationActivityViewModel().getLocationService().getLocationManager();
-            LocationListener locationListener = mapsFragment.getmLocationActivityViewModel().getLocationService().getLocationListener();
-            String provider = mapsFragment.getmLocationActivityViewModel().getLocationService().getProvider();
-            mapsFragment.getmLocationActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
+            LocationManager locationManager = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
+            LocationListener locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
+            String provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
+            mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, getIntent(), locationManager, locationListener, provider);
         }
     }
 }

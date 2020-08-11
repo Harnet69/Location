@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.UserCoords;
-import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
+import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +39,7 @@ public class LocationFragment extends Fragment {
     private ProgressBar progressBar;
     private ImageView muteBtn;
 
-    private LocationActivityViewModel mLocationActivityViewModel;
+    private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
 
     private boolean isMuted;
 
@@ -54,8 +54,8 @@ public class LocationFragment extends Fragment {
     public LocationFragment() {
     }
 
-    public LocationActivityViewModel getmLocationActivityViewModel() {
-        return mLocationActivityViewModel;
+    public LocationMapsActivityViewModel getmLocationMapsActivityViewModel() {
+        return mLocationMapsActivityViewModel;
     }
 
     @Override
@@ -73,9 +73,9 @@ public class LocationFragment extends Fragment {
         muteBtn = view.findViewById(R.id.mute_btn_imageView);
 
         //MVVM observer
-        mLocationActivityViewModel = new ViewModelProvider(this).get(LocationActivityViewModel.class);
-        mLocationActivityViewModel.init(getContext(), getActivity());
-        mLocationActivityViewModel.getmPersons().observe(getActivity(), new Observer<List<UserCoords>>() {
+        mLocationMapsActivityViewModel = new ViewModelProvider(this).get(LocationMapsActivityViewModel.class);
+        mLocationMapsActivityViewModel.init(getContext(), getActivity());
+        mLocationMapsActivityViewModel.getmPersons().observe(getActivity(), new Observer<List<UserCoords>>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<UserCoords> coords) {
@@ -88,7 +88,7 @@ public class LocationFragment extends Fragment {
 
 
         // observe is coordinates were gotten in the first time
-        mLocationActivityViewModel.getmIsUpdated().observe(getActivity(), new Observer<Boolean>() {
+        mLocationMapsActivityViewModel.getmIsUpdated().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isChanged) {
                 if (isChanged) {
@@ -96,7 +96,7 @@ public class LocationFragment extends Fragment {
                     bgr_ImageView.clearAnimation();
                     //
                     if (!isMuted) {
-                        mLocationActivityViewModel.getSoundService().playSound("findingLocation");
+                        mLocationMapsActivityViewModel.getSoundService().playSound("findingLocation");
                     }
                 }
             }
@@ -124,7 +124,7 @@ public class LocationFragment extends Fragment {
     private void updateView(double lat, double lng, double alt){
         List<Address> address = null;
         try {
-            address = mLocationActivityViewModel.getLocationService().getGeocoder().getFromLocation(lat, lng, 1);
+            address = mLocationMapsActivityViewModel.getLocationService().getGeocoder().getFromLocation(lat, lng, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,11 +143,11 @@ public class LocationFragment extends Fragment {
                 if(!isMuted){
                     muteBtn.setImageResource(R.drawable.unmute_btn);
                     isMuted = true;
-                    mLocationActivityViewModel.getSoundService().playSound("muteOn");
+                    mLocationMapsActivityViewModel.getSoundService().playSound("muteOn");
                 }else{
                     muteBtn.setImageResource(R.drawable.mute_btn);
                     isMuted = false;
-                    mLocationActivityViewModel.getSoundService().playSound("muteOff");
+                    mLocationMapsActivityViewModel.getSoundService().playSound("muteOff");
                 }
             }
         });
@@ -167,7 +167,7 @@ public class LocationFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLocationActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationActivityViewModel.getLocationService().getLocationListener());
-        mLocationActivityViewModel.getSoundService().releaseSoundPool();
+        mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
+        mLocationMapsActivityViewModel.getSoundService().releaseSoundPool();
     }
 }

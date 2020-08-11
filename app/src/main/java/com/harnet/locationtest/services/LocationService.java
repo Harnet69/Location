@@ -15,12 +15,12 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
-import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
+import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.util.Locale;
 
 public class LocationService {
-    LocationActivityViewModel mLocationActivityViewModel;
+    LocationMapsActivityViewModel mLocationMapsActivityViewModel;
 
     private Context context;
     private Activity activity;
@@ -32,10 +32,10 @@ public class LocationService {
     private String provider;
     private Geocoder geocoder;
 
-    public LocationService(Context context, Activity activity, LocationActivityViewModel mLocationActivityViewModel) {
+    public LocationService(Context context, Activity activity, LocationMapsActivityViewModel mLocationMapsActivityViewModel) {
         this.context = context;
         this.activity = activity;
-        this.mLocationActivityViewModel = mLocationActivityViewModel;
+        this.mLocationMapsActivityViewModel = mLocationMapsActivityViewModel;
 
         initiateLocationTools();
     }
@@ -73,8 +73,8 @@ public class LocationService {
             public void onLocationChanged(Location location) {
                 Log.i("TestLoc:", "onLocationChanged: " + location);
 
-                if (mLocationActivityViewModel != null) {
-                    mLocationActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
+                if (mLocationMapsActivityViewModel != null) {
+                    mLocationMapsActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
             }
 
