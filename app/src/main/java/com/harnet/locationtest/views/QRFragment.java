@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
@@ -70,7 +71,7 @@ public class QRFragment extends Fragment {
             @Override
             public void onChanged(List<Place> places) {
                 if (places != null && places.size() > 0) {
-                    Log.i("TestLoc:", "Place was added" );
+                    Log.i("TestLoc:", "Place was added" + places.get(places.size()-1).getLat() );
                     //TODO do something after adding new place
                 }
             }
@@ -146,7 +147,11 @@ public class QRFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     // TODO add functionality to "GO THERE" button
-                                    Log.i("TestLoc:", "onClick to GO THERE button: ");
+                                    String newPlaceCoord = qrCode.valueAt(0).displayValue;
+                                    double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
+                                    double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
+                                    Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
+                                    mQrActivityViewModel.addNewPlace("Place", new LatLng(newPlaceLat, newPlaceLng));
                                 }
                             });
                         }
