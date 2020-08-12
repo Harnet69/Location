@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class QRFragment extends Fragment {
+    private String name = "qr";
     private final int MY_CAMERA_REQUEST_CODE = 100;
 
     private QRActivityViewModel mQrActivityViewModel;
@@ -42,6 +43,10 @@ public class QRFragment extends Fragment {
     private Button goThereBtn;
 
     public QRFragment() {
+    }
+
+    public String getName() {
+        return name;
     }
 
     public QRActivityViewModel getmQrActivityViewModel() {

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class LocationFragment extends Fragment {
+    private String name = "location";
+
     private TextView latTextView;
     private TextView lngTextView;
     private TextView altTextView;
@@ -52,6 +54,10 @@ public class LocationFragment extends Fragment {
     }
 
     public LocationFragment() {
+    }
+
+    public String getName() {
+        return name;
     }
 
     public LocationMapsActivityViewModel getmLocationMapsActivityViewModel() {

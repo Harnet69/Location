@@ -83,6 +83,7 @@ public class PermissionService {
                     // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(context, "User location unknown", Toast.LENGTH_LONG).show();
+                    intent.putExtra("fragmentIntent", "main");
                     pauseBeforeRedirect(intent);
                 }
             }
@@ -99,6 +100,8 @@ public class PermissionService {
             } else {
                 Toast.makeText(context, "camera permission denied", Toast.LENGTH_LONG).show();
                 Log.i("TestLoc:", "onRequestCameraPermissionsResult: Camera permission denied");
+
+                intent.putExtra("fragmentIntent", "main");
                 pauseBeforeRedirect(intent);
             }
         }
@@ -111,6 +114,7 @@ public class PermissionService {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+
                 activity.finish();
                 activity.startActivity(intent);
             }
@@ -124,5 +128,7 @@ public class PermissionService {
                 return null;
             }
         }.execute();
+
+
     }
 }

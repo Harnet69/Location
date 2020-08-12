@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import com.harnet.locationtest.R;
 
 public class MainMenuFragment extends Fragment {
+    private String name = "menu";
+
     private ImageButton locationBtn;
     private ImageButton mapsBtn;
     private ImageButton qrBtn;
@@ -23,6 +25,10 @@ public class MainMenuFragment extends Fragment {
     LocationFragment.OnMessageSendListener onMessageSendListener;
 
     public MainMenuFragment() {
+    }
+
+    public String getName() {
+        return name;
     }
 
     // interface for exchanging data between fragments

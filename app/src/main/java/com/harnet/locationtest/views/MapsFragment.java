@@ -29,6 +29,8 @@ import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
+    private String name = "maps";
+
     private GoogleMap mMap;
     private Marker userMarker;
 
@@ -41,6 +43,10 @@ public class MapsFragment extends Fragment {
     }
 
     public MapsFragment(){
+    }
+
+    public String getName() {
+        return name;
     }
 
     public LocationMapsActivityViewModel getmLocationMapsActivityViewModel() {
