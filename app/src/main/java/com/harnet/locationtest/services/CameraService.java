@@ -48,6 +48,4 @@ public class CameraService {
     public PermissionService getPermissionService() {
         return permissionService;
     }
-
-    //TODO move here camera functionality from QRFragment
 }

@@ -71,32 +71,20 @@ public class QRFragment extends Fragment {
             @Override
             public void onChanged(List<Place> places) {
                 if (places != null && places.size() > 0) {
-                    Log.i("TestLoc:", "Place was added" + places.get(places.size()-1).getLat() );
+                    Log.i("TestLoc:", "Place was added" + places.get(places.size() - 1).getLat());
                     //TODO do something after adding new place
                 }
             }
         });
 
+        prepareAndStartCamera();
+        prepareAndStartBarcodeDetector();
 
-//        // observe is coordinates were gotten in the first time
-//        mLocationMapsActivityViewModel.getmIsUpdated().observe(getActivity(), new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean isChanged) {
-//                if (isChanged) {
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                    bgr_ImageView.clearAnimation();
-//                    //
-//                    if (!isMuted) {
-//                        mLocationMapsActivityViewModel.getSoundService().playSound("findingLocation");
-//                    }
-//                }
-//            }
-//        });
-//
-//
-//
+        return view;
+    }
 
-
+    //preparing and starting camera view
+    private void prepareAndStartCamera() {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -122,7 +110,9 @@ public class QRFragment extends Fragment {
                 mQrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().stop();
             }
         });
+    }
 
+    private void prepareAndStartBarcodeDetector() {
         mQrActivityViewModel.getCameraService().getBarcodeDetector().setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
@@ -151,7 +141,7 @@ public class QRFragment extends Fragment {
                                     double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
                                     double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                     Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
-                                    mQrActivityViewModel.addNewPlace("Place", new LatLng(newPlaceLat, newPlaceLng));
+                                    mQrActivityViewModel.addNewPlace("NewPlace", new LatLng(newPlaceLat, newPlaceLng));
                                 }
                             });
                         }
@@ -159,7 +149,5 @@ public class QRFragment extends Fragment {
                 }
             }
         });
-
-        return view;
     }
 }
