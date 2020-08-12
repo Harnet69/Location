@@ -6,11 +6,14 @@ import android.content.Context;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.harnet.locationtest.models.DeviceCamera;
+import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 
 public class CameraService {
     private Context context;
     private Activity activity;
+
+    private QRActivityViewModel qrActivityViewModel;
 
     private DeviceCamera deviceCamera;
     private BarcodeDetector barcodeDetector;
@@ -18,11 +21,13 @@ public class CameraService {
 
     private PermissionService permissionService;
 
+    //TODO add argument QRActivityViewModel qrActivityViewModel
     public CameraService(Context appContext, Activity activity) {
         this.appContext = appContext;
         this.activity = activity;
+
         deviceCamera = new DeviceCamera("cam1", appContext);
-        // TODO can be error
+
         barcodeDetector = new BarcodeDetector.Builder(appContext)
                             .setBarcodeFormats(Barcode.QR_CODE)
                             .build();
@@ -43,4 +48,6 @@ public class CameraService {
     public PermissionService getPermissionService() {
         return permissionService;
     }
+
+    //TODO move here camera functionality from QRFragment
 }

@@ -1,15 +1,17 @@
 package com.harnet.locationtest.views;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import android.os.Vibrator;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -22,32 +24,32 @@ import android.widget.TextView;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.models.UserCoords;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 import java.io.IOException;
+import java.util.List;
 
 public class QRFragment extends Fragment {
-    private QRActivityViewModel qrActivityViewModel;
     private final int MY_CAMERA_REQUEST_CODE = 100;
+
+    private QRActivityViewModel mQrActivityViewModel;
 
     private SurfaceView surfaceView;
     private TextView textView;
     private Button goThereBtn;
 
     public QRFragment() {
-        // Required empty public constructor
     }
 
-    public QRActivityViewModel getQrActivityViewModel() {
-        return qrActivityViewModel;
+    public QRActivityViewModel getmQrActivityViewModel() {
+        return mQrActivityViewModel;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -60,8 +62,39 @@ public class QRFragment extends Fragment {
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
 
         //TODO change on MVVM atchitecture after testing
-        qrActivityViewModel = new QRActivityViewModel();
-        qrActivityViewModel.init(getContext(), getActivity());
+        mQrActivityViewModel = new QRActivityViewModel();
+        mQrActivityViewModel.init(getContext(), getActivity());
+        mQrActivityViewModel.getmPlaces().observe(getActivity(), new Observer<List<Place>>() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onChanged(List<Place> places) {
+                if (places != null && places.size() > 0) {
+                    Log.i("TestLoc:", "Place was added" );
+                    //TODO do something after adding new place
+                }
+            }
+        });
+
+
+//        // observe is coordinates were gotten in the first time
+//        mLocationMapsActivityViewModel.getmIsUpdated().observe(getActivity(), new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean isChanged) {
+//                if (isChanged) {
+//                    progressBar.setVisibility(View.INVISIBLE);
+//                    bgr_ImageView.clearAnimation();
+//                    //
+//                    if (!isMuted) {
+//                        mLocationMapsActivityViewModel.getSoundService().playSound("findingLocation");
+//                    }
+//                }
+//            }
+//        });
+//
+//
+//
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -71,9 +104,9 @@ public class QRFragment extends Fragment {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
                     return;
                 }
-
                 try {
-                    qrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().start(holder);
+                    // turn on a camera
+                    mQrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().start(holder);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -81,16 +114,15 @@ public class QRFragment extends Fragment {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                qrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().stop();
+                mQrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().stop();
             }
         });
 
-        qrActivityViewModel.getCameraService().getBarcodeDetector().setProcessor(new Detector.Processor<Barcode>() {
+        mQrActivityViewModel.getCameraService().getBarcodeDetector().setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
             }
@@ -113,12 +145,8 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // TODO add place to list of recent places
-//                                    Log.d(TAG, "onClick: add new Place " + PlacesController.getInstance().getRecentPlaces());
-//                                    final Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
-//                                    mapIntent.putExtra("placeFromQR", PlacesController.getInstance().createPlace(qrCode.valueAt(0).displayValue));
-//                                    PlacesController.getInstance().addPlace(PlacesController.getInstance().createPlace(qrCode.valueAt(0).displayValue));
-//                                    startActivity(mapIntent);
+                                    // TODO add functionality to "GO THERE" button
+                                    Log.i("TestLoc:", "onClick to GO THERE button: ");
                                 }
                             });
                         }

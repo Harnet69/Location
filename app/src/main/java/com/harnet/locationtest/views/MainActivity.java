@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         }else if(qrFragment != null){
             Log.i("TestLoc:", "onRequestCameraPermissionsResult: ");
             //TODO make a correct chain to onRequestCameraPermissionsResult method
-            qrFragment.getQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, getIntent());
+            qrFragment.getmQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, getIntent());
         }
     }
 }

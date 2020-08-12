@@ -29,7 +29,7 @@
         android:layout_marginTop="10dp"
         android:text="Please focus on QR code"
         android:textAlignment="center"
-        android:textSize="18dp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,12 +39,14 @@
         android:id="@+id/go_there_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="GO there"
-        android:visibility="invisible"
+        android:layout_marginBottom="50dp"
+        android:padding="10dp"
         android:background="@android:color/holo_green_light"
+        android:text="GO there"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_preview_TextView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
