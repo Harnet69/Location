@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.harnet.locationtest.R;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
             // used to recognize which fragment asks for permission
             //TODO produces a bug which don't allow to return with backstack after granted permission
+                Log.i("fragmentIntent", "onCreate: " + getIntent().getStringExtra("fragmentIntent"));
             if(getIntent().getStringExtra("fragmentIntent") == null || getIntent().getStringExtra("fragmentIntent").equals("main")){
                 startMainMenuFragment();
             }else{
@@ -47,6 +49,21 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 }
             }
         }
+        listenBackStack();
+    }
+
+
+    // listen to a backstack
+    private void listenBackStack(){
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                int backCount = getSupportFragmentManager().getBackStackEntryCount();
+                Log.i("Backstask", "onBackStackChanged: "  + backCount);
+                if (backCount == 0){
+                    startMainMenuFragment();
+                }
+            }
+        });
     }
 
     // receive message from fragment1 and put it to exchange bundle

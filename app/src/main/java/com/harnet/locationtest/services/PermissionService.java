@@ -83,7 +83,7 @@ public class PermissionService {
                     // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(context, "User location unknown", Toast.LENGTH_LONG).show();
-                    intent.putExtra("fragmentIntent", "main");
+                    intent.removeExtra("fragmentIntent");
                     pauseBeforeRedirect(intent);
                 }
             }
@@ -95,6 +95,7 @@ public class PermissionService {
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(context, "camera permission granted", Toast.LENGTH_LONG).show();
+                Log.i("CameraPe", "onRequestCameraPermissionsResult: ");
                 activity.finish();
                 activity.startActivity(intent);
             } else {
@@ -102,6 +103,7 @@ public class PermissionService {
                 Log.i("TestLoc:", "onRequestCameraPermissionsResult: Camera permission denied");
 
                 intent.putExtra("fragmentIntent", "main");
+                intent.removeExtra("fragmentIntent");
                 pauseBeforeRedirect(intent);
             }
         }
