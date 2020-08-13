@@ -3,6 +3,7 @@ package com.harnet.locationtest.views;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -77,6 +78,12 @@ public class QRFragment extends Fragment {
             public void onChanged(List<Place> places) {
                 if (places != null && places.size() > 0) {
                     Log.i("TestLoc:", "Place was added" + places.get(places.size() - 1).getLat());
+
+//                    Intent fragmentIntent = getActivity().getIntent();
+//                    fragmentIntent.putExtra("fragmentIntent", "mapsFrag");
+//                    getActivity().finish();
+//                    getActivity().startActivity(fragmentIntent);
+
                     //TODO do something after adding new place
                 }
             }
@@ -147,6 +154,12 @@ public class QRFragment extends Fragment {
                                     double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                     Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
                                     mQrActivityViewModel.addNewPlace("NewPlace", new LatLng(newPlaceLat, newPlaceLng));
+
+                                    // redirect to maps fragment
+                                    Intent fragmentIntent = getActivity().getIntent();
+                                    fragmentIntent.putExtra("fragmentIntent", "mapsFrag");
+                                    getActivity().finish();
+                                    getActivity().startActivity(fragmentIntent);
                                 }
                             });
                         }
