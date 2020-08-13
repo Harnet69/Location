@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
             // used to recognize which fragment asks for permission
             //TODO produces a bug which don't allow to return with backstack after granted permission
-                Log.i("fragmentIntent", "onCreate: " + getIntent().getStringExtra("fragmentIntent"));
             if(getIntent().getStringExtra("fragmentIntent") == null || getIntent().getStringExtra("fragmentIntent").equals("main")){
                 startMainMenuFragment();
             }else{
@@ -131,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //TODO make generic 'Fragment' class for avoiding repetitive code
+        Log.i("CameraPerm", "QR fragment: " + qrFragment);
         if(locationFragment != null){
             Intent fragmentIntent = getIntent();
             fragmentIntent.putExtra("fragmentIntent", "locationFrag");
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         }else if(qrFragment != null){
             Intent fragmentIntent = getIntent();
             fragmentIntent.putExtra("fragmentIntent", "qrFrag");
-            Log.i("TestLoc:", "onRequestCameraPermissionsResult: ");
+            Log.i("CameraPerm", "onRequestCameraPermissionsResult: " + qrFragment);
             qrFragment.getmQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, fragmentIntent);
         }
     }

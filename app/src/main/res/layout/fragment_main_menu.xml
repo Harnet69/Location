@@ -9,6 +9,16 @@
     android:orientation="vertical">
 
     <ImageButton
+        android:id="@+id/qr_imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_margin="5dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:srcCompat="@drawable/qr_ico"/>
+
+    <ImageButton
         android:id="@+id/location_imageButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,15 +37,4 @@
         android:layout_margin="5dp"
         android:backgroundTint="@android:color/holo_blue_light"
         app:srcCompat="@drawable/maps_ico"/>
-
-    <ImageButton
-        android:id="@+id/qr_imageButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:scaleType="fitCenter"
-        android:layout_margin="5dp"
-        android:backgroundTint="@android:color/holo_blue_light"
-        app:srcCompat="@drawable/qr_ico"/>
-
 </androidx.appcompat.widget.LinearLayoutCompat>

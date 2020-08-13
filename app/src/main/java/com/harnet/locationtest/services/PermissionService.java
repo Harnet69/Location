@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 
 public class PermissionService {
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private final int MY_CAMERA_REQUEST_CODE = 100;
+    private final int MY_CAMERA_REQUEST_CODE = 98;
     private Context context;
     private Activity activity;
 
@@ -65,8 +65,8 @@ public class PermissionService {
                             && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    activity.finish();
-                    activity.startActivity(intent);
+//                    activity.finish();
+//                    activity.startActivity(intent);
 
                     // location-related task you need to do.
                     provider = locationManager.getBestProvider(new Criteria(), false);
@@ -83,29 +83,31 @@ public class PermissionService {
                     // permission denied, boo! Disable a functionality that depends on this permission
                     Log.i("TestLoc:", "onRequestPermissionsResult: Permission denied");
                     Toast.makeText(context, "User location unknown", Toast.LENGTH_LONG).show();
+
                     intent.removeExtra("fragmentIntent");
-                    pauseBeforeRedirect(intent);
                 }
+
+                pauseBeforeRedirect(intent);
             }
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
     public void onRequestCameraPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Intent intent) {
+        Log.i("CameraPerm", "request code: " + requestCode);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.i("CameraPerm", "onRequestCameraPermissionsResult: ");
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.i("CameraPerm", "onRequestCameraPermissionsResult: Camera permission granted");
                 Toast.makeText(context, "camera permission granted", Toast.LENGTH_LONG).show();
-                Log.i("CameraPe", "onRequestCameraPermissionsResult: ");
-                activity.finish();
-                activity.startActivity(intent);
+//                activity.finish();
+//                activity.startActivity(intent);
             } else {
                 Toast.makeText(context, "camera permission denied", Toast.LENGTH_LONG).show();
-                Log.i("TestLoc:", "onRequestCameraPermissionsResult: Camera permission denied");
+                Log.i("CameraPerm", "onRequestCameraPermissionsResult: Camera permission denied");
 
-                intent.putExtra("fragmentIntent", "main");
                 intent.removeExtra("fragmentIntent");
-                pauseBeforeRedirect(intent);
             }
+                pauseBeforeRedirect(intent);
         }
     }
 
