@@ -14,16 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.models.UserCoords;
+import com.harnet.locationtest.repositories.PlacesRepository;
 import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.util.List;
@@ -33,6 +37,7 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mMap;
     private Marker userMarker;
+    private Marker placeMarker;
 
     private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
     OnMessageSendListener onMessageSendListener;
@@ -60,11 +65,30 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
             // set initial user previous coordinates
             if(mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0){
+                // shows user position
                 LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
-                userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                if (userMarker == null) {
+                    MarkerOptions options = new MarkerOptions().position(userCoords)
+                            .title("User")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_marker));
+                    userMarker = mMap.addMarker(options);
+//            mMap.addMarker(new MarkerOptions().position(placeFromQR).title("Marker").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                }
+//                userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
+//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+
+                // shows place position
+                //TODO make comparison if last added place is equal to place from extra
+                List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
+                LatLng placeCoords = null;
+                if(lastPlaces != null && lastPlaces.size() > 0){
+                    placeCoords = new LatLng(lastPlaces.get(lastPlaces.size()-1).getLat(), lastPlaces.get(lastPlaces.size()-1).getLng());
+                    placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title("Place"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(placeCoords));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeCoords, 12));
+                }
             }
         }
     };
