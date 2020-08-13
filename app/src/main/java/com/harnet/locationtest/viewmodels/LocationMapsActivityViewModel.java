@@ -17,7 +17,7 @@ import com.harnet.locationtest.services.SoundService;
 
 import java.util.List;
 
-public class LocationActivityViewModel extends ViewModel {
+public class LocationMapsActivityViewModel extends ViewModel {
     private UserCoordsRepository mUsersRepository;
 
     private LocationService locationService;

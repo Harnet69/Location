@@ -24,15 +24,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.UserCoords;
-import com.harnet.locationtest.viewmodels.LocationActivityViewModel;
+import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.util.List;
 
 public class MapsFragment extends Fragment {
+    private String name = "maps";
+
     private GoogleMap mMap;
     private Marker userMarker;
 
-    private LocationActivityViewModel mLocationActivityViewModel;
+    private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
     OnMessageSendListener onMessageSendListener;
 
     // interface for exchanging data between fragments
@@ -43,8 +45,12 @@ public class MapsFragment extends Fragment {
     public MapsFragment(){
     }
 
-    public LocationActivityViewModel getmLocationActivityViewModel() {
-        return mLocationActivityViewModel;
+    public String getName() {
+        return name;
+    }
+
+    public LocationMapsActivityViewModel getmLocationMapsActivityViewModel() {
+        return mLocationMapsActivityViewModel;
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -53,8 +59,8 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             // set initial user previous coordinates
-            if(mLocationActivityViewModel != null && mLocationActivityViewModel.getmPersons().getValue().size() > 0){
-                LatLng userCoords = new LatLng(mLocationActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationActivityViewModel.getmPersons().getValue().get(0).getLng());
+            if(mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0){
+                LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
                 userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
@@ -70,9 +76,9 @@ public class MapsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         //MVVM observer
-        mLocationActivityViewModel = new ViewModelProvider(this).get(LocationActivityViewModel.class);
-        mLocationActivityViewModel.init(getContext(), getActivity());
-        mLocationActivityViewModel.getmPersons().observe(getActivity(), new Observer<List<UserCoords>>() {
+        mLocationMapsActivityViewModel = new ViewModelProvider(this).get(LocationMapsActivityViewModel.class);
+        mLocationMapsActivityViewModel.init(getContext(), getActivity());
+        mLocationMapsActivityViewModel.getmPersons().observe(getActivity(), new Observer<List<UserCoords>>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<UserCoords> coords) {
@@ -83,7 +89,7 @@ public class MapsFragment extends Fragment {
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
                         userMarker.setPosition(userCoords);
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 14));
                     }
                 }
             }
@@ -116,6 +122,6 @@ public class MapsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLocationActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationActivityViewModel.getLocationService().getLocationListener());
+        mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
 }
