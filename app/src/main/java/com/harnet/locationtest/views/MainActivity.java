@@ -118,26 +118,30 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            final String FRAGMENT_INTENT = "fragmentIntent";
+
+            Intent fragmentIntent = getIntent();
+            LocationManager locationManager;
+            LocationListener locationListener;
+            String provider;
+
         //TODO make abstract class 'Fragment' for avoiding repetitive code
         Log.i("CameraPerm", "QR fragment: " + qrFragment);
         if(locationFragment != null){
-            Intent fragmentIntent = getIntent();
-            fragmentIntent.putExtra("fragmentIntent", "locationFrag");
-            LocationManager locationManager = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
-            LocationListener locationListener = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
-            String provider = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
+            fragmentIntent.putExtra(FRAGMENT_INTENT, "locationFrag");
+            locationManager = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
+            locationListener = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
+            provider = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
             locationFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, fragmentIntent, locationManager, locationListener, provider);
         }
         else if(mapsFragment != null){
-            Intent fragmentIntent = getIntent();
-            fragmentIntent.putExtra("fragmentIntent", "mapsFrag");
-            LocationManager locationManager = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
-            LocationListener locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
-            String provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
+            fragmentIntent.putExtra(FRAGMENT_INTENT, "mapsFrag");
+            locationManager = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
+            locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
+            provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
             mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, fragmentIntent, locationManager, locationListener, provider);
         }else if(qrFragment != null){
-            Intent fragmentIntent = getIntent();
-            fragmentIntent.putExtra("fragmentIntent", "qrFrag");
+            fragmentIntent.putExtra(FRAGMENT_INTENT, "qrFrag");
             Log.i("CameraPerm", "onRequestCameraPermissionsResult: " + qrFragment);
             qrFragment.getmQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, fragmentIntent);
         }
