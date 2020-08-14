@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.LocationFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/background_main">
 
     <ImageButton
         android:id="@+id/qr_imageButton"
@@ -14,9 +15,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:scaleType="fitCenter"
-        android:layout_margin="5dp"
         android:backgroundTint="@android:color/holo_blue_light"
-        app:srcCompat="@drawable/qr_ico"/>
+        app:srcCompat="@drawable/qr_ico"
+        android:alpha="0.8"/>
 
     <ImageButton
         android:id="@+id/location_imageButton"
@@ -24,9 +25,10 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:scaleType="fitCenter"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
         android:backgroundTint="@android:color/holo_blue_light"
-        app:srcCompat="@drawable/location_ico"/>
+        app:srcCompat="@drawable/location_ico"
+        android:alpha="0.8"/>
 
     <ImageButton
         android:id="@+id/maps_imageButton"
@@ -34,7 +36,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:scaleType="fitCenter"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
         android:backgroundTint="@android:color/holo_blue_light"
-        app:srcCompat="@drawable/maps_ico"/>
+        app:srcCompat="@drawable/maps_ico"
+        android:alpha="0.8"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

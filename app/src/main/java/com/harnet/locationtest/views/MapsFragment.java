@@ -76,8 +76,8 @@ public class MapsFragment extends Fragment {
                 }
 //                userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
 //                googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
 
                 // shows place position
                 //TODO make comparison if last added place is equal to place from extra
@@ -112,8 +112,9 @@ public class MapsFragment extends Fragment {
                     if(userMarker != null && mMap != null){
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
                         userMarker.setPosition(userCoords);
+                        //TODO make user marker move
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 14));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
                     }
                 }
             }

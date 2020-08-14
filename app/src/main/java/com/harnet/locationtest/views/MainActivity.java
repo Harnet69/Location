@@ -27,30 +27,32 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         setContentView(R.layout.activity_main);
 
         exchangeBundle = new Bundle();
+
         //display default menu
         if(savedInstanceState == null){
-
             // used to recognize which fragment asks for permission
             //TODO produces a bug which don't allow to return with backstack after granted permission
             if(getIntent().getStringExtra("fragmentIntent") == null || getIntent().getStringExtra("fragmentIntent").equals("main")){
-                startMainMenuFragment();
+//                startMainMenuFragment();
+                startFragment(new MainMenuFragment(), "main");
             }else{
                 switch (getIntent().getStringExtra("fragmentIntent")){
                     case "locationFrag" :
-                        startLocationFragment();
+                        startFragment(new LocationFragment(), "location");
                         break;
                     case "mapsFrag" :
-                        startMapsFragment();
+                        startFragment(new MapsFragment(), "maps");
                         break;
                     case "qrFrag" :
-                        startQRFragment();
-                        break;
+                        startFragment(new QRFragment(), "gr");
+                    break;
+                    default:
+                        startFragment(new MainMenuFragment(), "main");
                 }
             }
         }
         listenBackStack();
     }
-
 
     // listen to a backstack
     private void listenBackStack(){
@@ -58,70 +60,57 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             public void onBackStackChanged() {
                 int backCount = getSupportFragmentManager().getBackStackEntryCount();
                 Log.i("Backstask", "onBackStackChanged: "  + backCount);
+                getIntent().removeExtra("fragmentIntent");
                 if (backCount == 0){
-                    startMainMenuFragment();
+                    startFragment(new MainMenuFragment(), "main");
                 }
             }
         });
     }
 
-    // receive message from fragment1 and put it to exchange bundle
+    // receive message from fragments and starts an appropriate fragment
     @Override
     public void onMessageSend(String message) {
         exchangeBundle.putString("message", message);
         Log.i("Fragments", "onMessageSend: " + message);
         switch (message){
-            case "location" : startLocationFragment();
+            case "location" :
+                //TODO ENUM of fragment names
+                startFragment(new LocationFragment(), "location");
                 break;
-            case "maps" : startMapsFragment();
+            case "maps" :
+                startFragment(new MapsFragment(), "maps");
                 break;
-            case "qr" : startQRFragment();
+            case "qr" :
+                startFragment(new QRFragment(), "gr");
                 break;
-            default: startMainMenuFragment();
+            default:
+                startFragment(new MainMenuFragment(), "main");
         }
     }
 
-    //TODO think about generic Fragment to avoid repetitive code
+    // common method for all fragments
+    private void startFragment(Fragment newFragment, String fragmentName){
+        fragment = newFragment;
 
-    // start MainMenuFragment
-    private void startMainMenuFragment(){
-        fragment = new MainMenuFragment();
+        switch (fragmentName){
+            case "main":
+                break;
+            case "location":
+                locationFragment = (LocationFragment) fragment; // for correct work of location
+                break;
+            case "maps":
+                mapsFragment = (MapsFragment) fragment; // for correct work of location
+                break;
+            case "gr":
+                qrFragment = (QRFragment) fragment; // for correct work of location
+                break;
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentCont, fragment)
-                .commit();
-    }
-
-    // start Location fragment with back stack (button) functionality
-    private void startLocationFragment(){
-        fragment = new LocationFragment();
-        locationFragment = (LocationFragment) fragment; // for correct work of location
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCont, fragment)
-                .addToBackStack("location")
-                .commit();
-    }
-
-    // start Maps fragment with back stack (button) functionality
-    private void startMapsFragment(){
-        fragment = new MapsFragment();
-        mapsFragment = (MapsFragment) fragment; // for correct work of location
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCont, fragment)
-                .addToBackStack("maps")
-                .commit();
-    }
-
-    // start QR fragment with back stack (button) functionality
-    private void startQRFragment(){
-        fragment = new QRFragment();
-        qrFragment = (QRFragment) fragment; // for correct work of location
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCont, fragment)
-                .addToBackStack("qr")
+                .addToBackStack(fragmentName)
                 .commit();
     }
 
@@ -129,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //TODO make generic 'Fragment' class for avoiding repetitive code
+        //TODO make abstract class 'Fragment' for avoiding repetitive code
         Log.i("CameraPerm", "QR fragment: " + qrFragment);
         if(locationFragment != null){
             Intent fragmentIntent = getIntent();
