@@ -71,8 +71,6 @@ public class LocationService {
             @SuppressLint("SetTextI18n")
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("TestLoc:", "onLocationChanged: " + location);
-
                 if (mLocationMapsActivityViewModel != null) {
                     mLocationMapsActivityViewModel.changeUserCoords(location.getLatitude(), location.getLongitude(), location.getAltitude());
                 }
@@ -109,7 +107,6 @@ public class LocationService {
                 permissionService.checkLocationPermissions();
             }
             lastKnownLocation = locationManager.getLastKnownLocation(provider);
-                Log.i("TestLoc:", "Last known location: " + lastKnownLocation);
             }
 
         return lastKnownLocation;

@@ -6,7 +6,6 @@ import android.content.Context;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.harnet.locationtest.models.DeviceCamera;
-import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 
 public class CameraService {

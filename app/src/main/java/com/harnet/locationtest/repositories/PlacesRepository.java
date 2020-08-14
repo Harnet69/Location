@@ -3,7 +3,6 @@ package com.harnet.locationtest.repositories;
 import androidx.lifecycle.MutableLiveData;
 
 import com.harnet.locationtest.models.Place;
-import com.harnet.locationtest.models.UserCoords;
 
 import java.util.ArrayList;
 import java.util.List;

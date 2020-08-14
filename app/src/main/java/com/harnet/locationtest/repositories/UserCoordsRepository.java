@@ -7,7 +7,6 @@ import com.harnet.locationtest.models.UserCoords;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class UserCoordsRepository {
     private static UserCoordsRepository instance = null;
     private List<UserCoords> usersDataSet = new ArrayList<>();

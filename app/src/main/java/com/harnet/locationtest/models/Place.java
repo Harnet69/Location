@@ -11,7 +11,6 @@ public class Place {
         this.lng = lng;
     }
 
-
     public String getName() {
         return name;
     }
