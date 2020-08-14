@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import com.harnet.locationtest.R;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
+    final String FRAGMENT_INTENT = "fragmentIntent";
     private Fragment fragment;
     private Bundle exchangeBundle; // bundle to keep data for exchanging
 
@@ -32,11 +33,11 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         if(savedInstanceState == null){
             // used to recognize which fragment asks for permission
             //TODO produces a bug which don't allow to return with backstack after granted permission
-            if(getIntent().getStringExtra("fragmentIntent") == null || getIntent().getStringExtra("fragmentIntent").equals("main")){
+            if(getIntent().getStringExtra(FRAGMENT_INTENT) == null || getIntent().getStringExtra(FRAGMENT_INTENT).equals("main")){
 //                startMainMenuFragment();
                 startFragment(new MainMenuFragment(), "main");
             }else{
-                switch (getIntent().getStringExtra("fragmentIntent")){
+                switch (getIntent().getStringExtra(FRAGMENT_INTENT)){
                     case "locationFrag" :
                         startFragment(new LocationFragment(), "location");
                         break;
@@ -59,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             public void onBackStackChanged() {
                 int backCount = getSupportFragmentManager().getBackStackEntryCount();
-                Log.i("Backstask", "onBackStackChanged: "  + backCount);
-                getIntent().removeExtra("fragmentIntent");
+                getIntent().removeExtra(FRAGMENT_INTENT);
                 if (backCount == 0){
                     startFragment(new MainMenuFragment(), "main");
                 }
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onMessageSend(String message) {
         exchangeBundle.putString("message", message);
-        Log.i("Fragments", "onMessageSend: " + message);
         switch (message){
             case "location" :
                 //TODO ENUM of fragment names
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            final String FRAGMENT_INTENT = "fragmentIntent";
 
             Intent fragmentIntent = getIntent();
             LocationManager locationManager;
@@ -126,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             String provider;
 
         //TODO make abstract class 'Fragment' for avoiding repetitive code
-        Log.i("CameraPerm", "QR fragment: " + qrFragment);
         if(locationFragment != null){
             fragmentIntent.putExtra(FRAGMENT_INTENT, "locationFrag");
             locationManager = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
@@ -142,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, fragmentIntent, locationManager, locationListener, provider);
         }else if(qrFragment != null){
             fragmentIntent.putExtra(FRAGMENT_INTENT, "qrFrag");
-            Log.i("CameraPerm", "onRequestCameraPermissionsResult: " + qrFragment);
             qrFragment.getmQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, fragmentIntent);
         }
     }

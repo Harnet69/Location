@@ -72,12 +72,7 @@ public class MapsFragment extends Fragment {
                             .title("User")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_marker));
                     userMarker = mMap.addMarker(options);
-//            mMap.addMarker(new MarkerOptions().position(placeFromQR).title("Marker").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
                 }
-//                userMarker = googleMap.addMarker(new MarkerOptions().position(userCoords).title("User"));
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
 
                 // shows place position
                 //TODO make comparison if last added place is equal to place from extra

@@ -6,11 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-
 import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
@@ -22,12 +17,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Place;
-import com.harnet.locationtest.models.UserCoords;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 import java.io.IOException;
@@ -78,12 +76,6 @@ public class QRFragment extends Fragment {
             public void onChanged(List<Place> places) {
                 if (places != null && places.size() > 0) {
                     Log.i("TestLoc:", "Place was added" + places.get(places.size() - 1).getLat());
-
-//                    Intent fragmentIntent = getActivity().getIntent();
-//                    fragmentIntent.putExtra("fragmentIntent", "mapsFrag");
-//                    getActivity().finish();
-//                    getActivity().startActivity(fragmentIntent);
-
                     //TODO do something after adding new place
                 }
             }
