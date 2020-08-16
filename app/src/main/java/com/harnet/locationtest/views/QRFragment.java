@@ -81,9 +81,11 @@ public class QRFragment extends Fragment {
                 }
             }
         });
-
-        prepareAndStartCamera();
-        prepareAndStartBarcodeDetector();
+        // if camera permission was granted - start camera
+        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+            prepareAndStartCamera();
+            prepareAndStartBarcodeDetector();
+        }
 
         return view;
     }
@@ -91,13 +93,9 @@ public class QRFragment extends Fragment {
     //preparing and starting camera view
     private void prepareAndStartCamera() {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @SuppressLint("MissingPermission")
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    // ask user for camera permission
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-                    return;
-                }
                 try {
                     // turn on a camera
                     mQrActivityViewModel.getCameraService().getDeviceCamera().getCameraSource().start(holder);
