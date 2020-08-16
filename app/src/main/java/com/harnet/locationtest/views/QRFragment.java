@@ -80,7 +80,7 @@ public class QRFragment extends Fragment {
             }
         });
         // if camera permission was granted - start camera
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             prepareAndStartCamera();
             prepareAndStartBarcodeDetector();
         }
@@ -142,7 +142,7 @@ public class QRFragment extends Fragment {
                                     double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
                                     double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                     Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
-                                    mQrActivityViewModel.addNewPlace("NewPlace", new LatLng(newPlaceLat, newPlaceLng));
+                                    mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng));
 
                                     // redirect to maps fragment
                                     Intent fragmentIntent = getActivity().getIntent();

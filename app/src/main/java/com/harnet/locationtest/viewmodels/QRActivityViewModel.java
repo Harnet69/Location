@@ -48,13 +48,24 @@ public class QRActivityViewModel extends ViewModel {
         barcodeService = new BarcodeService(context, cameraService.getDeviceCamera());
     }
 
+    // add new place to places
     public void addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
 
         List<Place> currentPlaces = mPlaces.getValue();
-        if (currentPlaces != null) {
+        if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, latLng)) {
             currentPlaces.add(newPlace);
         }
         mPlaces.postValue(currentPlaces);
+    }
+
+    // check if the place in places repository already
+    private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
+        for (Place place : places) {
+            if (placeCoords.latitude == place.getLat() && placeCoords.longitude == place.getLng()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

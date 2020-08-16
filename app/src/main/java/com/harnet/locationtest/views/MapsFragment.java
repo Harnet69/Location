@@ -75,15 +75,22 @@ public class MapsFragment extends Fragment {
                     userMarker = mMap.addMarker(options);
                 }
 
-                // shows place position from QR scanner
+                // shows place position from places list
                 //TODO make comparison if last added place is equal to place from extra
                 List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
                 LatLng placeCoords = null;
                 if(lastPlaces != null && lastPlaces.size() > 0){
-                    placeCoords = new LatLng(lastPlaces.get(lastPlaces.size()-1).getLat(), lastPlaces.get(lastPlaces.size()-1).getLng());
-                    placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title("Place"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(placeCoords));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeCoords, 12));
+//                    Log.i("Places", "onMapReady: " + lastPlaces);
+                    LatLng lastAddedPlace = null;
+                    for(Place place : lastPlaces){
+                        placeCoords = new LatLng(place.getLat(), place.getLng());
+                        placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
+                        lastAddedPlace = placeCoords;
+                    }
+                    if(lastAddedPlace != null){
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
+                    }
                 }
             }
         }
