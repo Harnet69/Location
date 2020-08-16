@@ -34,7 +34,6 @@ import java.util.List;
 
 public class QRFragment extends Fragment {
     private String name = "qr";
-    private final int MY_CAMERA_REQUEST_CODE = 100;
 
     private QRActivityViewModel mQrActivityViewModel;
 
@@ -67,7 +66,6 @@ public class QRFragment extends Fragment {
         textView = (TextView) view.findViewById(R.id.camera_preview_TextView);
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
 
-        //TODO change on MVVM atchitecture after testing
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
         mQrActivityViewModel.getmPlaces().observe(getActivity(), new Observer<List<Place>>() {
@@ -116,7 +114,7 @@ public class QRFragment extends Fragment {
     }
 
     private void prepareAndStartBarcodeDetector() {
-        mQrActivityViewModel.getCameraService().getBarcodeDetector().setProcessor(new Detector.Processor<Barcode>() {
+        mQrActivityViewModel.getBarcodeService().getBarcodeDetector().setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
             }

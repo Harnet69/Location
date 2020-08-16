@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.repositories.PlacesRepository;
+import com.harnet.locationtest.services.BarcodeService;
 import com.harnet.locationtest.services.CameraService;
 
 import java.util.List;
@@ -18,11 +19,16 @@ public class QRActivityViewModel extends ViewModel {
     private PlacesRepository mPlacesRepository;
 
     private CameraService cameraService;
+    private BarcodeService barcodeService;
 
     private MutableLiveData<List<Place>> mPlaces;
 
     public CameraService getCameraService() {
         return cameraService;
+    }
+
+    public BarcodeService getBarcodeService() {
+        return barcodeService;
     }
 
     public LiveData<List<Place>> getmPlaces() {
@@ -38,6 +44,8 @@ public class QRActivityViewModel extends ViewModel {
         mPlaces = mPlacesRepository.getUsersDataSet();
 
         cameraService = new CameraService(context, activity);
+
+        barcodeService = new BarcodeService(context, cameraService.getDeviceCamera());
     }
 
     public void addNewPlace(String name, LatLng latLng) {

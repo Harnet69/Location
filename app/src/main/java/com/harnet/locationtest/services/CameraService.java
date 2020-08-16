@@ -10,7 +10,7 @@ import com.harnet.locationtest.models.DeviceCamera;
 
 public class CameraService {
     private DeviceCamera deviceCamera;
-    private BarcodeDetector barcodeDetector;
+//    private BarcodeDetector barcodeDetector;
 
     private PermissionService permissionService;
 
@@ -19,10 +19,10 @@ public class CameraService {
 
         deviceCamera = new DeviceCamera("cam1", appContext);
 
-        barcodeDetector = new BarcodeDetector.Builder(appContext)
-                            .setBarcodeFormats(Barcode.QR_CODE)
-                            .build();
-        deviceCamera.setCameraSource(barcodeDetector);
+//        barcodeDetector = new BarcodeDetector.Builder(appContext)
+//                            .setBarcodeFormats(Barcode.QR_CODE)
+//                            .build();
+//        deviceCamera.setCameraSource(barcodeDetector);
         // check camera permission
         permissionService = new PermissionService(appContext, activity);
         permissionService.checkCameraPermissions();
@@ -32,9 +32,9 @@ public class CameraService {
         return deviceCamera;
     }
 
-    public BarcodeDetector getBarcodeDetector() {
-        return barcodeDetector;
-    }
+//    public BarcodeDetector getBarcodeDetector() {
+//        return barcodeDetector;
+//    }
 
     public PermissionService getPermissionService() {
         return permissionService;

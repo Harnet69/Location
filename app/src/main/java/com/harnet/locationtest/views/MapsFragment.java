@@ -65,6 +65,7 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
             // set initial user previous coordinates
             if(mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0){
+
                 // shows user position
                 LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
                 if (userMarker == null) {
@@ -74,7 +75,7 @@ public class MapsFragment extends Fragment {
                     userMarker = mMap.addMarker(options);
                 }
 
-                // shows place position
+                // shows place position from QR scanner
                 //TODO make comparison if last added place is equal to place from extra
                 List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
                 LatLng placeCoords = null;
