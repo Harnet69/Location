@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class QRFragment extends Fragment {
     private SurfaceView surfaceView;
     private TextView textView;
     private Button goThereBtn;
+    private Button saveAndGoBtn;
 
     public QRFragment() {
     }
@@ -66,6 +68,7 @@ public class QRFragment extends Fragment {
         surfaceView = (SurfaceView) view.findViewById(R.id.camera_preview_surfaceView);
         textView = (TextView) view.findViewById(R.id.camera_preview_TextView);
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
+        saveAndGoBtn = (Button) view.findViewById(R.id.save_go_button);
 
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
@@ -135,6 +138,7 @@ public class QRFragment extends Fragment {
                             // TODO do all work with received data here
                             textView.setText(qrCode.valueAt(0).displayValue);
                             goThereBtn.setVisibility(View.VISIBLE);
+                            saveAndGoBtn.setVisibility(View.VISIBLE);
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -152,7 +156,6 @@ public class QRFragment extends Fragment {
                                     }else{
                                         Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
                         }

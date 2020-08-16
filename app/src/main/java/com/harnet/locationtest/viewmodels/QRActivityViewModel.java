@@ -51,15 +51,14 @@ public class QRActivityViewModel extends ViewModel {
     // add new place to places
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
-
         List<Place> currentPlaces = mPlaces.getValue();
+
         if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, latLng)) {
             currentPlaces.add(newPlace);
-        }else{
-            return false;
+            mPlaces.postValue(currentPlaces);
+            return true;
         }
-        mPlaces.postValue(currentPlaces);
-        return true;
+        return false;
     }
 
     // check if the place in places repository already
