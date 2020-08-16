@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
@@ -149,7 +150,7 @@ public class QRFragment extends Fragment {
 
                                     // redirect to maps fragment
                                     Intent fragmentIntent = getActivity().getIntent();
-                                    fragmentIntent.putExtra("fragmentIntent", "mapsFrag");
+                                    fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
                                     getActivity().finish();
                                     getActivity().startActivity(fragmentIntent);
                                 }

@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.Fragments;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
     final String FRAGMENT_INTENT = "fragmentIntent";
@@ -33,22 +36,23 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         if(savedInstanceState == null){
             // used to recognize which fragment asks for permission
             //TODO produces a bug which don't allow to return with backstack after granted permission
-            if(getIntent().getStringExtra(FRAGMENT_INTENT) == null || getIntent().getStringExtra(FRAGMENT_INTENT).equals("main")){
+            if(getIntent().getStringExtra(FRAGMENT_INTENT) == null || getIntent().getStringExtra(FRAGMENT_INTENT).equals(Fragments.MAIN)){
 //                startMainMenuFragment();
-                startFragment(new MainMenuFragment(), "main");
+                startFragment(new MainMenuFragment(), Fragments.MAIN.toString());
             }else{
-                switch (getIntent().getStringExtra(FRAGMENT_INTENT)){
-                    case "locationFrag" :
-                        startFragment(new LocationFragment(), "location");
+                switch (Objects.requireNonNull(getIntent().getStringExtra(FRAGMENT_INTENT))){
+                    case "location" :
+                        startFragment(new LocationFragment(), Fragments.LOCATION.toString());
                         break;
-                    case "mapsFrag" :
-                        startFragment(new MapsFragment(), "maps");
+                    case "maps" :
+                        startFragment(new MapsFragment(), Fragments.MAPS.toString());
                         break;
-                    case "qrFrag" :
-                        startFragment(new QRFragment(), "gr");
+                    case "qr" :
+                        startFragment(new QRFragment(), Fragments.QR.toString());
                     break;
-                    default:
-                        startFragment(new MainMenuFragment(), "main");
+                    case "main":
+                        startFragment(new MainMenuFragment(), Fragments.MAIN.toString());
+                        break;
                 }
             }
         }
@@ -125,20 +129,20 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
         //TODO make abstract class 'Fragment' for avoiding repetitive code
         if(locationFragment != null){
-            fragmentIntent.putExtra(FRAGMENT_INTENT, "locationFrag");
+            fragmentIntent.putExtra(FRAGMENT_INTENT, Fragments.LOCATION.toString());
             locationManager = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
             locationListener = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
             provider = locationFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
             locationFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, fragmentIntent, locationManager, locationListener, provider);
         }
         else if(mapsFragment != null){
-            fragmentIntent.putExtra(FRAGMENT_INTENT, "mapsFrag");
+            fragmentIntent.putExtra(FRAGMENT_INTENT, Fragments.MAPS.toString());
             locationManager = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationManager();
             locationListener = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getLocationListener();
             provider = mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getProvider();
             mapsFragment.getmLocationMapsActivityViewModel().getLocationService().getPermissionService().onRequestLocationPermissionsResult(requestCode, permissions, grantResults, fragmentIntent, locationManager, locationListener, provider);
         }else if(qrFragment != null){
-            fragmentIntent.putExtra(FRAGMENT_INTENT, "qrFrag");
+            fragmentIntent.putExtra(FRAGMENT_INTENT, Fragments.QR.toString());
             qrFragment.getmQrActivityViewModel().getCameraService().getPermissionService().onRequestCameraPermissionsResult(requestCode, permissions, grantResults, fragmentIntent);
         }
     }
