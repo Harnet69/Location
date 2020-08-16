@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class QRFragment extends Fragment {
     private TextView textView;
     private Button goThereBtn;
     private Button saveAndGoBtn;
+    private EditText placeNameEditText;
 
     public QRFragment() {
     }
@@ -69,6 +71,7 @@ public class QRFragment extends Fragment {
         textView = (TextView) view.findViewById(R.id.camera_preview_TextView);
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
         saveAndGoBtn = (Button) view.findViewById(R.id.save_go_button);
+        placeNameEditText = (EditText) view.findViewById(R.id.editTextTextPlaceName);
 
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
@@ -139,29 +142,52 @@ public class QRFragment extends Fragment {
                             textView.setText(qrCode.valueAt(0).displayValue);
                             goThereBtn.setVisibility(View.VISIBLE);
                             saveAndGoBtn.setVisibility(View.VISIBLE);
+
+                            // get and parse plase coordinates
+                            String newPlaceCoord = qrCode.valueAt(0).displayValue;
+                            double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
+                            double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
+
+                            //JUST GO button
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     // TODO add functionality to "GO THERE" button
-                                    String newPlaceCoord = qrCode.valueAt(0).displayValue;
-                                    double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
-                                    double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
-                                    Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
-                                    if(mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))){
+                                        if(mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))){
                                         // redirect to maps fragment
-                                        Intent fragmentIntent = getActivity().getIntent();
-                                        fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
-                                        getActivity().finish();
-                                        getActivity().startActivity(fragmentIntent);
+                                        redirectToMaps();
                                     }else{
                                         Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
+
+                            //Save $ Go button
+                            saveAndGoBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // TODO add functionality to "GO THERE" button
+                                    if(mQrActivityViewModel.addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))){
+                                        // redirect to maps fragment
+                                        redirectToMaps();
+                                    }else{
+                                        Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
                         }
                     });
                 }
             }
         });
+    }
+
+    // redirect to a maps fragment
+    private void redirectToMaps(){
+        Intent fragmentIntent = getActivity().getIntent();
+        fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
+        getActivity().finish();
+        getActivity().startActivity(fragmentIntent);
     }
 }
