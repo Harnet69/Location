@@ -61,8 +61,21 @@ public class QRActivityViewModel extends ViewModel {
         return false;
     }
 
+    //TODO where it should be???
+    public void deleteUnnamedPlaces() {
+        List<Place> currentPlaces = mPlaces.getValue();
+
+        if (currentPlaces != null) {
+            for (Place place : currentPlaces) {
+                if (place.getName().equals("")) {
+                    currentPlaces.remove(place);
+                }
+            }
+        }
+    }
+
     // check if the place in places repository already
-    public boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
+    private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
         for (Place place : places) {
             if (placeCoords.latitude == place.getLat() && placeCoords.longitude == place.getLng()) {
                 return true;

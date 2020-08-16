@@ -154,7 +154,7 @@ public class QRFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     // TODO add functionality to "GO THERE" button, dlete last added place before looking
-                                    if (mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))) {
+                                    if (mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng))) {
                                         // redirect to maps fragment
                                         redirectToMaps();
                                     } else {

@@ -43,11 +43,11 @@ public class MapsFragment extends Fragment {
     OnMessageSendListener onMessageSendListener;
 
     // interface for exchanging data between fragments
-    public interface OnMessageSendListener{
+    public interface OnMessageSendListener {
         public void onMessageSend(String message);
     }
 
-    public MapsFragment(){
+    public MapsFragment() {
     }
 
     public String getName() {
@@ -64,7 +64,7 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             // set initial user previous coordinates
-            if(mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0){
+            if (mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0) {
 
                 // shows user position
                 LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
@@ -78,17 +78,17 @@ public class MapsFragment extends Fragment {
                 // shows places from places list on Google map
                 List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
                 LatLng placeCoords = null;
-                if(lastPlaces != null && lastPlaces.size() > 0){
+                if (lastPlaces != null && lastPlaces.size() > 0) {
 //                    Log.i("Places", "onMapReady: " + lastPlaces);
                     LatLng lastAddedPlace = null;
-                    for(Place place : lastPlaces){
+                    for (Place place : lastPlaces) {
                         placeCoords = new LatLng(place.getLat(), place.getLng());
                         placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
                         lastAddedPlace = placeCoords;
                     }
-                        // focus camera on the last added place
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
+                    // focus camera on the last added place
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
                 }
             }
         }
@@ -109,8 +109,8 @@ public class MapsFragment extends Fragment {
             public void onChanged(List<UserCoords> coords) {
                 if (coords != null && coords.size() > 0) {
                     Log.i("TestLoc:", "Coordinates on a map were changed" + coords.get(0).getLat() + ":" + coords.get(0).getLng());
-                        //update user position on a map
-                    if(userMarker != null && mMap != null){
+                    //update user position on a map
+                    if (userMarker != null && mMap != null) {
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
                         userMarker.setPosition(userCoords);
 
@@ -141,13 +141,24 @@ public class MapsFragment extends Fragment {
         try {
             onMessageSendListener = (OnMessageSendListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()+ "must implemented onMessageSend");
+            throw new ClassCastException(activity.toString() + "must implemented onMessageSend");
         }
     }
 
+    //TODO Problem with onDestroy!!! don't remove
     @Override
     public void onDestroy() {
         super.onDestroy();
+        List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
+        if (lastPlaces != null && lastPlaces.size() > 0) {
+            Place lastPlace = lastPlaces.get(lastPlaces.size() - 1);
+            Log.i("Last place", "onDestroy: " + lastPlace.getName());
+            // remove place from JUST GO button
+            if (lastPlace.getName() != null && lastPlace.getName().equals("")) {
+                lastPlaces.remove(lastPlace);
+            }
+        }
+
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
 }
