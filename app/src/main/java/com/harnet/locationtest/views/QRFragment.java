@@ -142,6 +142,7 @@ public class QRFragment extends Fragment {
                             textView.setText(qrCode.valueAt(0).displayValue);
                             goThereBtn.setVisibility(View.VISIBLE);
                             saveAndGoBtn.setVisibility(View.VISIBLE);
+                            placeNameEditText.setVisibility(View.VISIBLE);
 
                             // get and parse plase coordinates
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
@@ -152,11 +153,11 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // TODO add functionality to "GO THERE" button
-                                        if(mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))){
+                                    // TODO add functionality to "GO THERE" button, dlete last added place before looking
+                                    if (mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))) {
                                         // redirect to maps fragment
                                         redirectToMaps();
-                                    }else{
+                                    } else {
                                         Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -166,12 +167,16 @@ public class QRFragment extends Fragment {
                             saveAndGoBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // TODO add functionality to "GO THERE" button
-                                    if(mQrActivityViewModel.addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))){
-                                        // redirect to maps fragment
-                                        redirectToMaps();
-                                    }else{
-                                        Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
+                                    // checl if place name is empty and oif place exists in places
+                                    if (!placeNameEditText.getText().toString().equals("")) {
+                                        if (mQrActivityViewModel.addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
+                                            // redirect to maps fragment
+                                            redirectToMaps();
+                                        } else {
+                                        Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else {
+                                        Toast.makeText(getContext(), "Name is empty!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -184,7 +189,7 @@ public class QRFragment extends Fragment {
     }
 
     // redirect to a maps fragment
-    private void redirectToMaps(){
+    private void redirectToMaps() {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         getActivity().finish();

@@ -62,7 +62,7 @@ public class QRActivityViewModel extends ViewModel {
     }
 
     // check if the place in places repository already
-    private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
+    public boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
         for (Place place : places) {
             if (placeCoords.latitude == place.getLat() && placeCoords.longitude == place.getLng()) {
                 return true;
