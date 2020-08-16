@@ -75,8 +75,7 @@ public class MapsFragment extends Fragment {
                     userMarker = mMap.addMarker(options);
                 }
 
-                // shows place position from places list
-                //TODO make comparison if last added place is equal to place from extra
+                // shows places from places list on Google map
                 List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
                 LatLng placeCoords = null;
                 if(lastPlaces != null && lastPlaces.size() > 0){
@@ -87,10 +86,9 @@ public class MapsFragment extends Fragment {
                         placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
                         lastAddedPlace = placeCoords;
                     }
-                    if(lastAddedPlace != null){
+                        // focus camera on the last added place
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
-                    }
                 }
             }
         }
@@ -115,7 +113,7 @@ public class MapsFragment extends Fragment {
                     if(userMarker != null && mMap != null){
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
                         userMarker.setPosition(userCoords);
-                        //TODO make user marker move
+
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
                     }

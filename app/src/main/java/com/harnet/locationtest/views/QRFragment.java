@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -142,13 +143,16 @@ public class QRFragment extends Fragment {
                                     double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
                                     double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                     Log.i("TestLoc:", "onClick to GO THERE button: " + qrCode.valueAt(0).displayValue);
-                                    mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng));
+                                    if(mQrActivityViewModel.addNewPlace(null, new LatLng(newPlaceLat, newPlaceLng))){
+                                        // redirect to maps fragment
+                                        Intent fragmentIntent = getActivity().getIntent();
+                                        fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
+                                        getActivity().finish();
+                                        getActivity().startActivity(fragmentIntent);
+                                    }else{
+                                        Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
+                                    }
 
-                                    // redirect to maps fragment
-                                    Intent fragmentIntent = getActivity().getIntent();
-                                    fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
-                                    getActivity().finish();
-                                    getActivity().startActivity(fragmentIntent);
                                 }
                             });
                         }
