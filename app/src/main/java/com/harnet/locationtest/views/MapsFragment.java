@@ -28,6 +28,7 @@ import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.models.UserCoords;
 import com.harnet.locationtest.repositories.PlacesRepository;
+import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.util.List;
@@ -155,6 +156,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         MarkerOptions options = new MarkerOptions().position(latLng)
                 .title("New place");
         mMap.addMarker(options);
+        PlacesService.getInstance().addNewPlace("newPlace", latLng);
     }
 
     @Override
