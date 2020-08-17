@@ -14,6 +14,7 @@ public class PlacesRepository {
     private PlacesRepository() {
     }
 
+    //TODO check if something is in SharedPreferences and if it is - add it to placesDataSet
     public static PlacesRepository getInstance() {
         if(instance == null){
             instance = new PlacesRepository();

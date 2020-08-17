@@ -171,7 +171,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
 
             PlacesService.getInstance().addNewPlace(placesFromCoords.get(0).getThoroughfare(), latLng);
         }else{
-            Toast.makeText(getView().getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
         }
     }
 
