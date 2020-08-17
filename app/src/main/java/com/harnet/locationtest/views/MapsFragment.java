@@ -32,7 +32,7 @@ import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
 import java.util.List;
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickListener{
     private String name = "maps";
 
     private GoogleMap mMap;
@@ -41,6 +41,11 @@ public class MapsFragment extends Fragment {
 
     private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
     OnMessageSendListener onMessageSendListener;
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        Log.i("Clickkk", "onMapLongClick: ");
+    }
 
     // interface for exchanging data between fragments
     public interface OnMessageSendListener {
@@ -91,6 +96,15 @@ public class MapsFragment extends Fragment {
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
                 }
             }
+            // long click on a map
+            if(mMap != null){
+                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        longClickOnMap(latLng);
+                    }
+                });
+            }
         }
     };
 
@@ -120,7 +134,6 @@ public class MapsFragment extends Fragment {
                 }
             }
         });
-
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -132,6 +145,11 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+    }
+
+    // handle long click on a map
+    private void longClickOnMap(LatLng latLng){
+        Log.i("Clickkk", "onMapLongClick: " + latLng.latitude + " : " + latLng.longitude);
     }
 
     @Override
