@@ -148,8 +148,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     }
 
     // handle long click on a map
+    //TODO implement new place saving
     private void longClickOnMap(LatLng latLng){
         Log.i("Clickkk", "onMapLongClick: " + latLng.latitude + " : " + latLng.longitude);
+
+        MarkerOptions options = new MarkerOptions().position(latLng)
+                .title("New place");
+        mMap.addMarker(options);
     }
 
     @Override
