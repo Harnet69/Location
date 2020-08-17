@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import com.harnet.locationtest.repositories.PlacesRepository;
 import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickListener{
@@ -102,7 +105,11 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        longClickOnMap(latLng);
+                        try {
+                            longClickOnMap(latLng);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -150,13 +157,22 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
 
     // handle long click on a map
     //TODO implement new place saving
-    private void longClickOnMap(LatLng latLng){
+    @SuppressLint("ShowToast")
+    private void longClickOnMap(LatLng latLng) throws IOException {
         Log.i("Clickkk", "onMapLongClick: " + latLng.latitude + " : " + latLng.longitude);
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> placesFromCoords = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+        String placeAddress = placesFromCoords.get(0).getThoroughfare();
 
-        MarkerOptions options = new MarkerOptions().position(latLng)
-                .title("New place");
-        mMap.addMarker(options);
-        PlacesService.getInstance().addNewPlace("newPlace", latLng);
+        if(placeAddress!= null && !placeAddress.equals("")){
+            MarkerOptions options = new MarkerOptions().position(latLng)
+                    .title(placesFromCoords.get(0).getThoroughfare());
+            mMap.addMarker(options);
+
+            PlacesService.getInstance().addNewPlace(placesFromCoords.get(0).getThoroughfare(), latLng);
+        }else{
+            Toast.makeText(getView().getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
