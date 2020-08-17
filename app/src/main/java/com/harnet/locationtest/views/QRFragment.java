@@ -30,6 +30,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 import java.io.IOException;
@@ -153,8 +154,13 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
-                                    redirectToMaps();
+                                    //TODO fix a bug!!! redirect to a point from QR code, not to the last added
+//                                    mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
+                                    if(PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng))) {
+                                        redirectToMaps();
+                                    }else{
+                                        //TODO make some argument for a simple showing a saved point
+                                    }
                                 }
                             });
 
@@ -164,7 +170,8 @@ public class QRFragment extends Fragment {
                                 public void onClick(View v) {
                                     // checl if place name is empty and oif place exists in places
                                     if (!placeNameEditText.getText().toString().equals("")) {
-                                        if (mQrActivityViewModel.addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
+//                                        PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng));
+                                        if (PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
                                             // redirect to maps fragment
                                             redirectToMaps();
                                         } else {

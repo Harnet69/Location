@@ -85,8 +85,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                 }
 
                 // shows places from places list on Google map
-                List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
-                LatLng placeCoords = null;
+                //TODO can be a cause of some bug
+                List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
+                LatLng placeCoords;
                 if (lastPlaces != null && lastPlaces.size() > 0) {
 //                    Log.i("Places", "onMapReady: " + lastPlaces);
                     LatLng lastAddedPlace = null;
@@ -191,7 +192,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         super.onDestroy();
         //delete last scanned place without name
         //TODO move it to some sort map service
-        List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
+        List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
         if (lastPlaces != null && lastPlaces.size() > 0) {
             Place lastPlace = lastPlaces.get(lastPlaces.size() - 1);
             Log.i("Last place", "onDestroy: " + lastPlace.getName());

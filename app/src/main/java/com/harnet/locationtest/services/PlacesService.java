@@ -16,7 +16,7 @@ public class PlacesService {
 
     private PlacesService() {
 
-        mPlacesRepository = PlacesRepository.getInstance();
+        mPlacesRepository = new PlacesRepository();
         mPlaces = mPlacesRepository.getUsersDataSet();
     }
 
@@ -25,6 +25,10 @@ public class PlacesService {
             instance = new PlacesService();
         }
         return instance;
+    }
+
+    public PlacesRepository getmPlacesRepository() {
+        return mPlacesRepository;
     }
 
     // add new place to places

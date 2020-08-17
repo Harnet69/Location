@@ -12,6 +12,7 @@ import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.repositories.PlacesRepository;
 import com.harnet.locationtest.services.BarcodeService;
 import com.harnet.locationtest.services.CameraService;
+import com.harnet.locationtest.services.PlacesService;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class QRActivityViewModel extends ViewModel {
             return;
         }
 
-        mPlacesRepository = PlacesRepository.getInstance();
+        mPlacesRepository = PlacesService.getInstance().getmPlacesRepository();
         mPlaces = mPlacesRepository.getUsersDataSet();
 
         cameraService = new CameraService(context, activity);

@@ -8,18 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlacesRepository {
-    private static PlacesRepository instance = null;
+//    private static PlacesRepository instance = null;
     private List<Place> placesDataSet = new ArrayList<>();
 
-    private PlacesRepository() {
+    //TODO check if something is in SharedPreferences and if it is - add it to placesDataSet
+    public PlacesRepository() {
     }
 
-    //TODO check if something is in SharedPreferences and if it is - add it to placesDataSet
-    public static PlacesRepository getInstance() {
-        if(instance == null){
-            instance = new PlacesRepository();
-        }
-        return instance;
+//    public static PlacesRepository getInstance() {
+//        if(instance == null){
+//            instance = new PlacesRepository();
+//        }
+//        return instance;
+//    }
+
+
+    public List<Place> getPlacesDataSet() {
+        return placesDataSet;
     }
 
     public MutableLiveData<List<Place>> getUsersDataSet() {
