@@ -145,10 +145,11 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    //TODO Problem with onDestroy!!! don't remove
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //delete last scanned place without name
+        //TODO move it to some sort map service
         List<Place> lastPlaces = PlacesRepository.getInstance().getUsersDataSet().getValue();
         if (lastPlaces != null && lastPlaces.size() > 0) {
             Place lastPlace = lastPlaces.get(lastPlaces.size() - 1);
@@ -158,7 +159,7 @@ public class MapsFragment extends Fragment {
                 lastPlaces.remove(lastPlace);
             }
         }
-
+        // stop asking for user location after fragment destroying
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
 }

@@ -153,13 +153,8 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // TODO add functionality to "GO THERE" button, dlete last added place before looking
-                                    if (mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng))) {
-                                        // redirect to maps fragment
-                                        redirectToMaps();
-                                    } else {
-                                        Toast.makeText(getContext(), "Place exists", Toast.LENGTH_SHORT).show();
-                                    }
+                                    mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
+                                    redirectToMaps();
                                 }
                             });
 
