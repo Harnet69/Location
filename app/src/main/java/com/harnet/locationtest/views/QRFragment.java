@@ -15,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.Detector;
@@ -46,6 +48,7 @@ public class QRFragment extends Fragment {
     private Button goThereBtn;
     private Button saveAndGoBtn;
     private EditText placeNameEditText;
+    private RecyclerView favoritePlacesRecyclerView;
 
     public QRFragment() {
     }
@@ -73,6 +76,7 @@ public class QRFragment extends Fragment {
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
         saveAndGoBtn = (Button) view.findViewById(R.id.save_go_button);
         placeNameEditText = (EditText) view.findViewById(R.id.editTextTextPlaceName);
+        favoritePlacesRecyclerView = (RecyclerView) view.findViewById(R.id.favorite_places_recyclerView);
 
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
@@ -144,6 +148,7 @@ public class QRFragment extends Fragment {
                             goThereBtn.setVisibility(View.VISIBLE);
                             saveAndGoBtn.setVisibility(View.VISIBLE);
                             placeNameEditText.setVisibility(View.VISIBLE);
+                            favoritePlacesRecyclerView.setVisibility(View.INVISIBLE);
 
                             // get and parse plase coordinates
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
