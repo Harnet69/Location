@@ -1,6 +1,8 @@
 package com.harnet.locationtest.models;
 
-public class Place {
+import java.io.Serializable;
+
+public class Place implements Serializable {
     private String name;
     private double lat;
     private double lng;
