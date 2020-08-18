@@ -154,13 +154,10 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //TODO fix a bug!!! redirect to a point from QR code, not to the last added
-//                                    mQrActivityViewModel.addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
-                                    if(PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng))) {
-                                        redirectToMaps();
-                                    }else{
-                                        //TODO make some argument for a simple showing a saved point
-                                    }
+                                    //redirect to a point from QR code, not to the last added
+                                    PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
+                                    redirectToMaps();
+//
                                 }
                             });
 
@@ -168,16 +165,15 @@ public class QRFragment extends Fragment {
                             saveAndGoBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // checl if place name is empty and oif place exists in places
+                                    // check if place name is empty and if place exists in places
                                     if (!placeNameEditText.getText().toString().equals("")) {
-//                                        PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng));
                                         if (PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
                                             // redirect to maps fragment
                                             redirectToMaps();
                                         } else {
-                                        Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
                                         }
-                                    }else {
+                                    } else {
                                         Toast.makeText(getContext(), "Name is empty!", Toast.LENGTH_SHORT).show();
                                     }
                                 }

@@ -194,12 +194,14 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         //TODO move it to some sort map service
         List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
         if (lastPlaces != null && lastPlaces.size() > 0) {
-            Place lastPlace = lastPlaces.get(lastPlaces.size() - 1);
-            Log.i("Last place", "onDestroy: " + lastPlace.getName());
-            // remove place from JUST GO button
-            if (lastPlace.getName() != null && lastPlace.getName().equals("")) {
-                lastPlaces.remove(lastPlace);
+            for(Place place : lastPlaces){
+                // remove place from JUST GO button
+                if (place.getName() != null && place.getName().equals("")) {
+                    lastPlaces.remove(place);
+                }
             }
+//            Place lastPlace = lastPlaces.get(lastPlaces.size() - 1);
+//            Log.i("Last place", "onDestroy: " + lastPlace.getName());
         }
         // stop asking for user location after fragment destroying
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
