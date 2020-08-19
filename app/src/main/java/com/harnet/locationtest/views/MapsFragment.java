@@ -48,7 +48,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Log.i("Clickkk", "onMapLongClick: ");
     }
 
     // interface for exchanging data between fragments
@@ -96,29 +95,33 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                         placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
                         lastAddedPlace = placeCoords;
                     }
-                    Log.i("newPlaceLatLng", "onChanged: " + getActivity().getIntent().getStringExtra("newPlaceLatLng"));
-                    String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
+                    // focus camera on the last added place
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
+                } else {
+                    // if any place in favorite places - focus to user position
+                    if (userMarker != null) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+                    }
+                }
 
-                    // focus on place
-                    if (placeForFocus != null && !placeForFocus.equals("")) {
-                        Place focusPlace = null;
-                        try {
-                            focusPlace = (Place) PlacesService.getInstance().getObjectSerializeService().deserialize(placeForFocus);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if(focusPlace != null){
-                            LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
+                // focus on place from QR scanner
+                String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
+
+                if (placeForFocus != null && !placeForFocus.equals("")) {
+                    Place focusPlace = null;
+                    try {
+                        focusPlace = (Place) PlacesService.getInstance().getObjectSerializeService().deserialize(placeForFocus);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(focusPlace != null){
+                        LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
                         mMap.addMarker(new MarkerOptions().position(focusPlaceLatLng));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(focusPlaceLatLng));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(focusPlaceLatLng, 12));
-                            Log.i("newPlaceLatLng", "Focused on new Place ");
-                        }
-                    } else {
-                        // focus camera on the last added place
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
-                            Log.i("newPlaceLatLng", "Focused on last place ");
+                        getActivity().getIntent().removeExtra("newPlaceLatLng");
                     }
                 }
             }
@@ -152,7 +155,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
             @Override
             public void onChanged(List<UserCoords> coords) {
                 if (coords != null && coords.size() > 0) {
-                    Log.i("TestLoc:", "Coordinates on a map were changed" + coords.get(0).getLat() + ":" + coords.get(0).getLng());
                     //update user position on a map
                     if (userMarker != null && mMap != null) {
                         LatLng userCoords = new LatLng(coords.get(0).getLat(), coords.get(0).getLng());
@@ -181,7 +183,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     //TODO implement new place saving
     @SuppressLint("ShowToast")
     private void longClickOnMap(LatLng latLng) throws IOException {
-        Log.i("Clickkk", "onMapLongClick: " + latLng.latitude + " : " + latLng.longitude);
         Geocoder geocoder = new Geocoder(getContext());
         List<Address> placesFromCoords = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
         String placeAddress = placesFromCoords.get(0).getThoroughfare();
@@ -211,18 +212,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        //delete last scanned place without name
-//        //TODO move it to some sort map service
-//        List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
-//        Log.i("newPlaceLatLng", "onDestroy: " + lastPlaces);
-//        if (lastPlaces != null && lastPlaces.size() > 0) {
-//            for (int i = 0; i < lastPlaces.size(); i++) {
-////                // remove place from JUST GO button
-//                if (lastPlaces.get(i).getName() != null && lastPlaces.get(i).getName().equals("")) {
-//                    lastPlaces.remove(lastPlaces.get(i));
-//                }
-//            }
-//        }
         // stop asking for user location after fragment destroying
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
