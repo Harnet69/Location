@@ -5,20 +5,27 @@
     android:padding="15dp"
     android:id="@+id/parent_layout">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image"
-        android:layout_width="80dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/image_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Some Place"
-        android:layout_toEndOf="@+id/image"
-        android:textColor="#000"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="30dp"
-        android:textSize="17sp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/image_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:text="Some Place"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:textColor="#000"
+            android:textSize="17sp" />
+    </LinearLayout>
 </RelativeLayout>

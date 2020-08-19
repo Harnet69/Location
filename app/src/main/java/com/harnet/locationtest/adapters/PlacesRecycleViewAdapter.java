@@ -49,7 +49,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         // Set the name
         ((ViewHolder) viewHolder).mName.setText(mFavoritePlaces.get(i).getName());
-        //TODO implement redirection to a place
+        //redirection to the place
         ((ViewHolder) viewHolder).mName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +61,6 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 }
             }
         });
-
 
         // Set the image
         RequestOptions defaultOptions = new RequestOptions()
