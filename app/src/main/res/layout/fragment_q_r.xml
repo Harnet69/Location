@@ -12,7 +12,7 @@
     <SurfaceView
         android:id="@+id/camera_preview_surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -39,35 +39,35 @@
         android:id="@+id/go_there_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
         android:background="@android:color/holo_green_light"
         android:padding="10dp"
         android:text="JUST GO"
         android:textSize="20sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPlaceName" />
 
     <Button
         android:id="@+id/save_go_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
         android:background="@android:color/holo_green_light"
         android:padding="10dp"
         android:text="SAVE and GO"
         android:textSize="20sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPlaceName" />
 
     <EditText
         android:id="@+id/editTextTextPlaceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/place"
         android:inputType="textPersonName"

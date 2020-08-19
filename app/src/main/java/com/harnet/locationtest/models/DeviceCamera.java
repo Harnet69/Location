@@ -1,9 +1,12 @@
 package com.harnet.locationtest.models;
 
 import android.content.Context;
+import android.hardware.Camera;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import java.util.List;
 
 public class DeviceCamera {
     private String name;
