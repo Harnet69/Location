@@ -50,6 +50,7 @@ public class QRFragment extends Fragment {
     private Button saveAndGoBtn;
     private EditText placeNameEditText;
     private RecyclerView favoritePlacesRecyclerView;
+    private TextView favoritePlacesTextView;
 
     public QRFragment() {
     }
@@ -78,6 +79,7 @@ public class QRFragment extends Fragment {
         saveAndGoBtn = (Button) view.findViewById(R.id.save_go_button);
         placeNameEditText = (EditText) view.findViewById(R.id.editTextTextPlaceName);
         favoritePlacesRecyclerView = (RecyclerView) view.findViewById(R.id.favorite_places_recyclerView);
+        favoritePlacesTextView = (TextView) view.findViewById(R.id.favorite_places_textView);
 
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
@@ -150,6 +152,7 @@ public class QRFragment extends Fragment {
                             saveAndGoBtn.setVisibility(View.VISIBLE);
                             placeNameEditText.setVisibility(View.VISIBLE);
                             favoritePlacesRecyclerView.setVisibility(View.INVISIBLE);
+                            favoritePlacesTextView.setVisibility(View.INVISIBLE);
 
                             // get and parse plase coordinates
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
