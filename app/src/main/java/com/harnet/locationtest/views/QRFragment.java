@@ -2,6 +2,7 @@ package com.harnet.locationtest.views;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,12 +16,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -38,6 +42,7 @@ import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class QRFragment extends Fragment {
     private String name = "qr";
@@ -100,6 +105,8 @@ public class QRFragment extends Fragment {
             prepareAndStartBarcodeDetector();
         }
 
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         return view;
     }
 
@@ -151,6 +158,16 @@ public class QRFragment extends Fragment {
                             goThereBtn.setVisibility(View.VISIBLE);
                             saveAndGoBtn.setVisibility(View.VISIBLE);
                             placeNameEditText.setVisibility(View.VISIBLE);
+                            // make keyboard hide by click outside am editView
+                            placeNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View v, boolean hasFocus) {
+                                    if (!hasFocus) {
+                                        hideKeyboard(v);
+                                    }
+                                }
+                            });
+
                             favoritePlacesRecyclerView.setVisibility(View.INVISIBLE);
                             favoritePlacesTextView.setVisibility(View.INVISIBLE);
 
@@ -204,6 +221,7 @@ public class QRFragment extends Fragment {
         });
     }
 
+
     // redirect to a maps fragment
     private void redirectToMaps(LatLng newPlaceLatLng) throws IOException {
         Intent fragmentIntent = getActivity().getIntent();
@@ -213,5 +231,11 @@ public class QRFragment extends Fragment {
         fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
+    }
+
+    // hiding keyboard
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
