@@ -20,7 +20,7 @@ import com.harnet.locationtest.viewmodels.LocationMapsActivityViewModel;
 import java.util.Locale;
 
 public class LocationService {
-    LocationMapsActivityViewModel mLocationMapsActivityViewModel;
+    private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
 
     private Context context;
     private Activity activity;

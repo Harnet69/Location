@@ -45,7 +45,7 @@ public class LocationFragment extends Fragment {
 
     private boolean isMuted;
 
-    OnMessageSendListener onMessageSendListener;
+    private OnMessageSendListener onMessageSendListener;
 
     // interface for exchanging data between fragments
     public interface OnMessageSendListener{

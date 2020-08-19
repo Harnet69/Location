@@ -22,7 +22,7 @@ public class MainMenuFragment extends Fragment {
     private ImageButton mapsBtn;
     private ImageButton qrBtn;
 
-    LocationFragment.OnMessageSendListener onMessageSendListener;
+    private LocationFragment.OnMessageSendListener onMessageSendListener;
 
     public MainMenuFragment() {
     }

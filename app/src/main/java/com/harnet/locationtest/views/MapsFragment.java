@@ -44,7 +44,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     private Marker placeMarker;
 
     private LocationMapsActivityViewModel mLocationMapsActivityViewModel;
-    OnMessageSendListener onMessageSendListener;
+    private OnMessageSendListener onMessageSendListener;
 
     @Override
     public void onMapLongClick(LatLng latLng) {
@@ -213,6 +213,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     public void onDestroy() {
         super.onDestroy();
         // stop asking for user location after fragment destroying
+
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
 }
