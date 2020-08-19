@@ -40,14 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/camera_preview_surfaceView"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:text="Please focus on QR code"
         android:textAlignment="center"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/camera_preview_surfaceView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_preview_surfaceView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/go_there_button"
@@ -81,14 +81,15 @@
         android:id="@+id/editTextTextPlaceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/place"
-        android:visibility="invisible"
         android:inputType="textPersonName"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_preview_TextView"
+        app:layout_constraintTop_toBottomOf="@+id/camera_preview_surfaceView"
         tools:text="place's name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
