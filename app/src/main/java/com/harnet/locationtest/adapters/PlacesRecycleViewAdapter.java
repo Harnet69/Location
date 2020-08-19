@@ -6,15 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.views.QRFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Place> mFavoritePlaces;
     private Context mContext;
+    private QRFragment qrFragment;
 
-    public PlacesRecycleViewAdapter(Context context, List<Place> favoritePlaces) {
+    public PlacesRecycleViewAdapter(Context context, List<Place> favoritePlaces, QRFragment qrFragment) {
         mFavoritePlaces = favoritePlaces;
         mContext = context;
+        this.qrFragment = qrFragment;
     }
 
     @NonNull
@@ -43,6 +49,19 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         // Set the name
         ((ViewHolder) viewHolder).mName.setText(mFavoritePlaces.get(i).getName());
+        //TODO implement redirection to a place
+        ((ViewHolder) viewHolder).mName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                try {
+                    qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         // Set the image
         RequestOptions defaultOptions = new RequestOptions()

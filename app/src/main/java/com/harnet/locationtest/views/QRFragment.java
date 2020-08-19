@@ -230,7 +230,7 @@ public class QRFragment extends Fragment {
 
 
     // redirect to a maps fragment
-    private void redirectToMaps(LatLng newPlaceLatLng) throws IOException {
+    public void redirectToMaps(LatLng newPlaceLatLng) throws IOException {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         //TODO can be a problem, because second argument isn't a string
@@ -246,8 +246,9 @@ public class QRFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    // initiate placesRecyclerView
     private void initRecyclerView(){
-        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
+        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet(), this);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
