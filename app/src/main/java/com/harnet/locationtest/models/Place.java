@@ -6,7 +6,9 @@ public class Place implements Serializable {
     private String name;
     private double lat;
     private double lng;
+    private int image;
 
+    //TODO make image parameter when get it by a camera will be implemented
     public Place(String name, double lat, double lng) {
         this.name = name;
         this.lat = lat;
@@ -23,5 +25,9 @@ public class Place implements Serializable {
 
     public double getLng() {
         return lng;
+    }
+
+    public int getImage() {
+        return image;
     }
 }
