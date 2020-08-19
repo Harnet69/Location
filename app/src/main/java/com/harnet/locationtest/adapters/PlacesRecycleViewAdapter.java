@@ -69,6 +69,17 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 .setDefaultRequestOptions(defaultOptions)
                 .load(mFavoritePlaces.get(i).getImage()) //TODO can be a cause of crash. Image feature haven't implemented yet
                 .into(((ViewHolder) viewHolder).mImage);
+        ((ViewHolder) viewHolder).mImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                try {
+                    qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
