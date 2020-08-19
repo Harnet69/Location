@@ -1,6 +1,7 @@
 package com.harnet.locationtest.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Place> mFavoritePlaces = new ArrayList<>();
+    private List<Place> mFavoritePlaces;
     private Context mContext;
 
     public PlacesRecycleViewAdapter(Context context, List<Place> favoritePlaces) {
@@ -40,7 +41,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        // Set the name of the 'NicePlace'
+        // Set the name
         ((ViewHolder) viewHolder).mName.setText(mFavoritePlaces.get(i).getName());
 
         // Set the image
@@ -64,8 +65,8 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mImage = itemView.findViewById(R.id.place_ImageView);
-            mName = itemView.findViewById(R.id.place_textView);
+            mImage = itemView.findViewById(R.id.image);
+            mName = itemView.findViewById(R.id.image_name);
         }
     }
 }

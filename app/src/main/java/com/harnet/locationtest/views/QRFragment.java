@@ -28,12 +28,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.adapters.PlacesRecycleViewAdapter;
 import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.services.ObjectSerializeService;
@@ -47,6 +49,8 @@ import java.util.Objects;
 public class QRFragment extends Fragment {
     private String name = "qr";
 
+    private PlacesRecycleViewAdapter mAdapter;
+
     private QRActivityViewModel mQrActivityViewModel;
 
     private SurfaceView surfaceView;
@@ -54,7 +58,7 @@ public class QRFragment extends Fragment {
     private Button goThereBtn;
     private Button saveAndGoBtn;
     private EditText placeNameEditText;
-    private RecyclerView favoritePlacesRecyclerView;
+    private RecyclerView mRecyclerView;
     private TextView favoritePlacesTextView;
 
     public QRFragment() {
@@ -83,8 +87,8 @@ public class QRFragment extends Fragment {
         goThereBtn = (Button) view.findViewById(R.id.go_there_button);
         saveAndGoBtn = (Button) view.findViewById(R.id.save_go_button);
         placeNameEditText = (EditText) view.findViewById(R.id.editTextTextPlaceName);
-        favoritePlacesRecyclerView = (RecyclerView) view.findViewById(R.id.favorite_places_recyclerView);
         favoritePlacesTextView = (TextView) view.findViewById(R.id.favorite_places_textView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.favorite_places_recyclerView);
 
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
@@ -105,8 +109,11 @@ public class QRFragment extends Fragment {
             prepareAndStartBarcodeDetector();
         }
 
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // init recycler view
+        initRecyclerView();
+
         return view;
     }
 
@@ -168,7 +175,7 @@ public class QRFragment extends Fragment {
                                 }
                             });
 
-                            favoritePlacesRecyclerView.setVisibility(View.INVISIBLE);
+                            mRecyclerView.setVisibility(View.INVISIBLE);
                             favoritePlacesTextView.setVisibility(View.INVISIBLE);
 
                             // get and parse plase coordinates
@@ -237,5 +244,12 @@ public class QRFragment extends Fragment {
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void initRecyclerView(){
+        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }
