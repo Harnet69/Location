@@ -32,6 +32,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.services.ObjectSerializeService;
 import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
@@ -154,14 +155,19 @@ public class QRFragment extends Fragment {
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
                             double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
                             double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
+                            LatLng newPlaceLatLng = new LatLng(newPlaceLat, newPlaceLng);
 
                             //JUST GO button
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //redirect to a point from QR code, not to the last added
-                                    PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
-                                    redirectToMaps();
+//                                    PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
+                                    try {
+                                        redirectToMaps(newPlaceLatLng);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 //
                                 }
                             });
@@ -174,7 +180,11 @@ public class QRFragment extends Fragment {
                                     if (!placeNameEditText.getText().toString().equals("")) {
                                         if (PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
                                             // redirect to maps fragment
-                                            redirectToMaps();
+                                            try {
+                                                redirectToMaps(newPlaceLatLng);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                         } else {
                                             Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
                                         }
@@ -192,9 +202,12 @@ public class QRFragment extends Fragment {
     }
 
     // redirect to a maps fragment
-    private void redirectToMaps() {
+    private void redirectToMaps(LatLng newPlaceLatLng) throws IOException {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
+        //TODO can be a problem, because second argument isn't a string
+
+        fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }

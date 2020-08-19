@@ -45,6 +45,10 @@ public class PlacesService {
         return mPlacesRepository;
     }
 
+    public ObjectSerializeService getObjectSerializeService() {
+        return objectSerializeService;
+    }
+
     // add new place to places
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
