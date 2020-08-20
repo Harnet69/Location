@@ -120,7 +120,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                         LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
                         mMap.addMarker(new MarkerOptions().position(focusPlaceLatLng));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(focusPlaceLatLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(focusPlaceLatLng, 12));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(focusPlaceLatLng, 14));
                         getActivity().getIntent().removeExtra("newPlaceLatLng");
                     }
                 }
