@@ -1,6 +1,6 @@
 # Location Manager
 
-##Description:
+## Description:
   Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes), save and see favorite places, see user location and address in real time, without Internet connection. 
 
 ## Application features: 
@@ -15,6 +15,13 @@
    - shows place from QR code
    - show favorite places
    - user can mark and save favorite places as well
+   
+## Application screenshots:
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
+   
 
 ## Used technologies:
 - MVVM architecture pattern
@@ -24,7 +31,7 @@
 - soundPool
 - sharredPreferences
 
-##Future plans:
+## Future plans:
 - edit/delete/change favorite places and their order
 - add places photo by a camera
 - recognize different kinds of barcodes (for example URL QR codes will show a page in a browser, Google location QR code)
