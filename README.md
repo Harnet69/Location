@@ -16,6 +16,11 @@
    - show favorite places
    - user can mark and save favorite places as well
    
+## Online QR code generator page
+[Generate QR location code](https://qrickit.com/qrickit_apps/qrickit_qrcode_creator_text.php)
+### Warsaw
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Warsaw.png)
+   
 ## Application screenshots:
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
