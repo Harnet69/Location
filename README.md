@@ -2,6 +2,12 @@
 
 ## Description:
   Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes), save and see favorite places, see user location and address in real time, without Internet connection. 
+  
+## Application screenshots:
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
 
 ## Application features: 
 - QR scanner:
@@ -17,16 +23,18 @@
    - user can mark and save favorite places as well
    
 ## Online QR code generator page
+You can generate location code for any place (we recomend min. 300x300 px. resolution)
 [Generate QR location code](https://qrickit.com/qrickit_apps/qrickit_qrcode_creator_text.php)
 ### Warsaw
+Example of QR code for testing purposes: 
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Warsaw.png)
-   
-## Application screenshots:
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
-   
+
+## Application installation:
+- download .apk [Location manager installer](https://drive.google.com/file/d/1ei8HSaC6wGgUoAcRrGC3ehEx4yVbQVt9/view?usp=sharing)
+- run it on your Android phone
+
+## Application pdf presentation: 
+[Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
 
 ## Used technologies:
 - MVVM architecture pattern
