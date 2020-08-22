@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,24 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         menuInflater.inflate(R.menu.main_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    // interacting with menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+       super.onOptionsItemSelected(item);
+       boolean isSelected = false;
+       switch (item.getItemId()){
+           case R.id.settings :
+                     isSelected = true;
+                     Log.i("AppMenu", "onOptionsItemSelected: " + item);
+                     break;
+           case R.id.help:
+                     isSelected = true;
+                    Log.i("AppMenu", "onOptionsItemSelected: " + item);
+                    break;
+       }
+       return isSelected;
     }
 
     final String FRAGMENT_INTENT = "fragmentIntent";
