@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
            case R.id.help:
               Log.i("AppMenu", "onOptionsItemSelected: Help ");
               isSelected = true;
+              startFragment(new HelpFragment(), Fragments.HELP.toString());
               break;
        }
        return isSelected;
