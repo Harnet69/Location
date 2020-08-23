@@ -4,7 +4,10 @@ public enum Fragments {
     MAIN("main"),
     LOCATION("location"),
     MAPS("maps"),
-    QR("qr");
+    QR("qr"),
+    PROFILE("profile"),
+    SETTINGS("settings"),
+    HELP("help");
 
     private String name;
 

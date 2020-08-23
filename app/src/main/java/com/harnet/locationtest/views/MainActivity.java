@@ -14,17 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Fragments;
-import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.services.PlacesService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
     final String FRAGMENT_INTENT = "fragmentIntent";
@@ -54,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
            case R.id.profile:
                isSelected = true;
                Log.i("AppMenu", "onOptionsItemSelected: Profile");
+               //TODO here start a new fragment from menu
+                startFragment(new ProfileFragment(), Fragments.PROFILE.toString());
                break;
            case R.id.settings :
                Log.i("AppMenu", "onOptionsItemSelected: Settings");
@@ -153,10 +150,10 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 locationFragment = (LocationFragment) fragment; // for correct work of location
                 break;
             case "maps":
-                mapsFragment = (MapsFragment) fragment; // for correct work of location
+                mapsFragment = (MapsFragment) fragment; // for correct work of maps
                 break;
             case "gr":
-                qrFragment = (QRFragment) fragment; // for correct work of location
+                qrFragment = (QRFragment) fragment; // for correct work of QR
                 break;
         }
 
