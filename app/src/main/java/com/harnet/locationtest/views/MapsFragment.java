@@ -82,6 +82,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
             }
 
             // long click on a map
+            //TODO Set dialog alert if user really want to save the place
             if (mMap != null) {
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override

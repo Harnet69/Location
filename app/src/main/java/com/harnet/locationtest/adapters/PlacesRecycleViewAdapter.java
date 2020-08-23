@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,53 +46,18 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        TextView placeName = ((ViewHolder) viewHolder).mName;
+        CircleImageView placeImg = ((ViewHolder) viewHolder).mImage;
 
-        // Set the name
-        ((ViewHolder) viewHolder).mName.setText(mFavoritePlaces.get(i).getName());
+        // Set the name and click functionality to a place name textView
+        placeName.setText(mFavoritePlaces.get(i).getName());
+        shortClick(placeName, i);
+        longClick(placeName, i);
 
-        //short click redirect to the place on Google maps
-        ((ViewHolder) viewHolder).mName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
-                try {
-                    qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        // long click call a alert dialog window to ask for going to a edit place
-        //TODO here you should work with editing a place
-        ((ViewHolder) viewHolder).mName.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.i("LongClickOnPlace", "onLongClick: " + mFavoritePlaces.get(i).getName());
-                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-
-
-        // Set the image
-        RequestOptions defaultOptions = new RequestOptions()
-                .error(R.drawable.ic_launcher_background);
-        Glide.with(mContext)
-                .setDefaultRequestOptions(defaultOptions)
-                .load(mFavoritePlaces.get(i).getImage()) //TODO can be a cause of crash. Image feature haven't implemented yet
-                .into(((ViewHolder) viewHolder).mImage);
-        ((ViewHolder) viewHolder).mImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
-                try {
-                    qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        // Set image and click functionality to a place image ImageView
+        setImage(placeImg, i);
+        shortClick(placeImg, i);
+        longClick(placeImg, i);
     }
 
     @Override
@@ -109,5 +75,42 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
             mImage = itemView.findViewById(R.id.image);
             mName = itemView.findViewById(R.id.image_name);
         }
+    }
+
+    // set short click redirection to Google Map functionality on element
+    private void shortClick(View elementToClick, int i) {
+        elementToClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                try {
+                    qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // set long click edit functionality on element
+    //TODO here you should work with editing a place
+    private void longClick(View elementToClick, int i){
+        elementToClick.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+    }
+
+    // Set the image to ImageView
+    private void setImage(View elementToSetImage, int i){
+        RequestOptions defaultOptions = new RequestOptions()
+                .error(R.drawable.ic_launcher_background);
+        Glide.with(mContext)
+                .setDefaultRequestOptions(defaultOptions)
+                .load(mFavoritePlaces.get(i).getImage()) //TODO can be a cause of crash. Image feature haven't implemented yet
+                .into((ImageView) elementToSetImage);
     }
 }
