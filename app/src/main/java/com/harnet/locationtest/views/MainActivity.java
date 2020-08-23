@@ -41,15 +41,20 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
        super.onOptionsItemSelected(item);
        boolean isSelected = false;
+
        switch (item.getItemId()){
+           case R.id.profile:
+               isSelected = true;
+               Log.i("AppMenu", "onOptionsItemSelected: Profile");
+               break;
            case R.id.settings :
-                     isSelected = true;
-                     Log.i("AppMenu", "onOptionsItemSelected: " + item);
-                     break;
+               Log.i("AppMenu", "onOptionsItemSelected: Settings");
+               isSelected = true;
+               break;
            case R.id.help:
-                     isSelected = true;
-                    Log.i("AppMenu", "onOptionsItemSelected: " + item);
-                    break;
+              Log.i("AppMenu", "onOptionsItemSelected: Help ");
+              isSelected = true;
+              break;
        }
        return isSelected;
     }
