@@ -6,10 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -18,13 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -38,13 +34,11 @@ import com.harnet.locationtest.R;
 import com.harnet.locationtest.adapters.PlacesRecycleViewAdapter;
 import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
-import com.harnet.locationtest.services.ObjectSerializeService;
 import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.viewmodels.QRActivityViewModel;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 public class QRFragment extends Fragment {
     private String name = "qr";
@@ -98,7 +92,6 @@ public class QRFragment extends Fragment {
             @Override
             public void onChanged(List<Place> places) {
                 if (places != null && places.size() > 0) {
-                    Log.i("TestLoc:", "Place was added" + places.get(places.size() - 1).getLat());
                     //TODO do something after adding new place
                 }
             }
@@ -108,8 +101,6 @@ public class QRFragment extends Fragment {
             prepareAndStartCamera();
             prepareAndStartBarcodeDetector();
         }
-
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // init recycler view
         initRecyclerView();
@@ -165,6 +156,7 @@ public class QRFragment extends Fragment {
                             goThereBtn.setVisibility(View.VISIBLE);
                             saveAndGoBtn.setVisibility(View.VISIBLE);
                             placeNameEditText.setVisibility(View.VISIBLE);
+
                             // make keyboard hide by click outside am editView
                             placeNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                 @Override
@@ -178,7 +170,7 @@ public class QRFragment extends Fragment {
                             mRecyclerView.setVisibility(View.INVISIBLE);
                             favoritePlacesTextView.setVisibility(View.INVISIBLE);
 
-                            // get and parse plase coordinates
+                            // get and parse place coordinates
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
                             double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
                             double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
@@ -188,8 +180,7 @@ public class QRFragment extends Fragment {
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //redirect to a point from QR code, not to the last added
-//                                    PlacesService.getInstance().addNewPlace("", new LatLng(newPlaceLat, newPlaceLng));
+                                    //just redirect to a point from QR code
                                     try {
                                         redirectToMaps(newPlaceLatLng);
                                     } catch (IOException e) {
@@ -199,12 +190,13 @@ public class QRFragment extends Fragment {
                                 }
                             });
 
-                            //Save $ Go button
+                            //Save&Go button
                             saveAndGoBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     // check if place name is empty and if place exists in places
                                     if (!placeNameEditText.getText().toString().equals("")) {
+                                        // add new Place to Places List
                                         if (PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
                                             // redirect to maps fragment
                                             try {

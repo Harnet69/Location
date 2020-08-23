@@ -43,13 +43,13 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return vh;
     }
 
-    //TODO short click send to Google Map and show the place. Long allow to edit
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         // Set the name
         ((ViewHolder) viewHolder).mName.setText(mFavoritePlaces.get(i).getName());
-        //redirection to the place
+
+        //short click redirect to the place on Google maps
         ((ViewHolder) viewHolder).mName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +61,18 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 }
             }
         });
+
+        // long click call a alert dialog window to ask for going to a edit place
+        //TODO here you should work with editing a place
+        ((ViewHolder) viewHolder).mName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.i("LongClickOnPlace", "onLongClick: " + mFavoritePlaces.get(i).getName());
+                Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+
 
         // Set the image
         RequestOptions defaultOptions = new RequestOptions()

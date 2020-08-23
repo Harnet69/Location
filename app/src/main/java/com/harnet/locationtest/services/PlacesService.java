@@ -2,7 +2,6 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -13,9 +12,7 @@ import com.harnet.locationtest.repositories.PlacesRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class PlacesService {
     private static PlacesService instance;
@@ -26,10 +23,7 @@ public class PlacesService {
 
     private MutableLiveData<List<Place>> mPlaces;
 
-
-
     private PlacesService() {
-
         mPlacesRepository = new PlacesRepository();
         mPlaces = mPlacesRepository.getUsersDataSet();
     }
@@ -38,6 +32,7 @@ public class PlacesService {
         if(instance == null){
             instance = new PlacesService();
         }
+
         return instance;
     }
 
@@ -53,12 +48,13 @@ public class PlacesService {
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
         List<Place> currentPlaces = mPlaces.getValue();
-
+        // if place doesn't exist in Places List
         if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, latLng)) {
             currentPlaces.add(newPlace);
             mPlaces.postValue(currentPlaces);
             return true;
         }
+
         return false;
     }
 
@@ -69,6 +65,7 @@ public class PlacesService {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -81,7 +78,7 @@ public class PlacesService {
     // retrieve places from SharedPreferences and fill Places List
     public void retrieveFromSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
-        List<Place> retrievedPlaces = (List<Place>) objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())));
+        List<Place> retrievedPlaces = (List<Place>) objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
         for (Place place : retrievedPlaces) {
             PlacesService.getInstance().addNewPlace(place.getName(), new LatLng(place.getLat(), place.getLng()));
         }
@@ -89,7 +86,7 @@ public class PlacesService {
 
     public boolean isPlacesInSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
-        Log.i("Retrieved", "isPlacesInSharedPref: " + sharedPreferences);
+
         return sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
     }
 }
