@@ -12,7 +12,7 @@
 ## Application modules: 
 - QR scanner:
    - recognizes and scans QR location codes
-   - shows favorite places
+   - list of favorite places(short click redirect to the place on Google Maps, long click - to an edit page)
 - hiking tool:
    - displays user lat, long, alt and address
    - informs user with sound (mutable) when location updates
