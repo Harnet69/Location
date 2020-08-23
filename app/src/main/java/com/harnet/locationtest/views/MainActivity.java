@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
            case R.id.settings :
                Log.i("AppMenu", "onOptionsItemSelected: Settings");
                isSelected = true;
+               startFragment(new SettingsFragment(), Fragments.SETTINGS.toString());
                break;
            case R.id.help:
               Log.i("AppMenu", "onOptionsItemSelected: Help ");
