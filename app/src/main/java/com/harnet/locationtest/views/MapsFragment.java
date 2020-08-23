@@ -66,62 +66,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         return mLocationMapsActivityViewModel;
     }
 
+    // when Google map was downloaded and ready
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             // set initial user previous coordinates
             if (mLocationMapsActivityViewModel != null && mLocationMapsActivityViewModel.getmPersons().getValue().size() > 0) {
-
-                // shows user position
-                LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
-                if (userMarker == null) {
-                    MarkerOptions options = new MarkerOptions().position(userCoords)
-                            .title("User")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_marker));
-                    userMarker = mMap.addMarker(options);
-                }
-
-                // shows places from Places List on Google map
-                List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
-                LatLng placeCoords;
-                if (lastPlaces != null && lastPlaces.size() > 0) {
-                    LatLng lastAddedPlace = null;
-                    for (Place place : lastPlaces) {
-                        placeCoords = new LatLng(place.getLat(), place.getLng());
-                        placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
-                        lastAddedPlace = placeCoords;
-                    }
-                    // focus camera on the last added place
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
-                } else {
-                    // if any place in favorite places - focus to user position
-                    if (userMarker != null) {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
-                    }
-                }
-
-                // get Place from Intent Extra (from QR scanner) and focus camera on it
-                String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
-
-                if (placeForFocus != null && !placeForFocus.equals("")) {
-                    Place focusPlace = null;
-                    try {
-                        focusPlace = (Place) PlacesService.getInstance().getObjectSerializeService().deserialize(placeForFocus);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if(focusPlace != null){
-                        LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
-                        mMap.addMarker(new MarkerOptions().position(focusPlaceLatLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(focusPlaceLatLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(focusPlaceLatLng, 14));
-                        getActivity().getIntent().removeExtra("newPlaceLatLng");
-                    }
-                }
+                // find and show user coordinates
+                LatLng usersCoords = showUserPosition();
+                // retrieve and show Places from Places List
+                showPlaces(googleMap, usersCoords);
+                // show place from QR "just Go"
+                showPlaceFromQR();
             }
 
             // long click on a map
@@ -178,8 +135,63 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         }
     }
 
+    // show user position on Google Map
+    private LatLng showUserPosition(){
+        LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
+        if (userMarker == null) {
+            MarkerOptions options = new MarkerOptions().position(userCoords)
+                    .title("User")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_marker));
+            userMarker = mMap.addMarker(options);
+        }
+        return userCoords;
+    }
+
+    // shows places from Places List on Google map
+    private void showPlaces(GoogleMap googleMap, LatLng userCoords){
+        List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
+        LatLng placeCoords;
+        if (lastPlaces != null && lastPlaces.size() > 0) {
+            LatLng lastAddedPlace = null;
+            for (Place place : lastPlaces) {
+                placeCoords = new LatLng(place.getLat(), place.getLng());
+                placeMarker = googleMap.addMarker(new MarkerOptions().position(placeCoords).title(place.getName()));
+                lastAddedPlace = placeCoords;
+            }
+            // focus camera on the last added place
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(lastAddedPlace));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastAddedPlace, 12));
+        } else {
+            // if any place in favorite places - focus to user position
+            if (userMarker != null) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userCoords));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCoords, 12));
+            }
+        }
+    }
+
+    // get Place from Intent Extra (from QR scanner) and focus camera on it
+    private void showPlaceFromQR(){
+        String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
+
+        if (placeForFocus != null && !placeForFocus.equals("")) {
+            Place focusPlace = null;
+            try {
+                focusPlace = (Place) PlacesService.getInstance().getObjectSerializeService().deserialize(placeForFocus);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(focusPlace != null){
+                LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
+                mMap.addMarker(new MarkerOptions().position(focusPlaceLatLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(focusPlaceLatLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(focusPlaceLatLng, 14));
+                getActivity().getIntent().removeExtra("newPlaceLatLng");
+            }
+        }
+    }
+
     // handle long click on a map
-    //TODO implement new place saving
     @SuppressLint("ShowToast")
     private void longClickOnMap(LatLng latLng) throws IOException {
         Geocoder geocoder = new Geocoder(getContext());
