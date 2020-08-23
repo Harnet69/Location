@@ -9,7 +9,7 @@
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
 
-## Application features: 
+## Application modules: 
 - QR scanner:
    - recognizes and scans QR location codes
    - shows favorite places
@@ -21,6 +21,10 @@
    - shows place from QR code
    - show favorite places
    - user can mark and save favorite places as well
+- menu:
+   - profile
+   - settings
+   - help
    
 ## Online QR code generator page
 You can generate location code for any place (we recomend min. 300x300 px. resolution)
@@ -39,14 +43,18 @@ Example of QR code for testing purposes:
 ## Used technologies:
 - MVVM architecture pattern
 - Google Maps API
-- fragments
-- recycleView
-- soundPool
-- sharredPreferences
+- Fragments
+- RecycleView
+- SoundPool
+- SharredPreferences
 
 ## Future plans:
-- edit/delete/change favorite places and their order
+- edit/delete/change favorite places and their order in QR scanner&places module
 - add places photo by a camera
 - recognize different kinds of barcodes (for example URL QR codes will show a page in a browser, Google location QR code)
-- user settings : changing quantity of location updating, application sounds volume, map scale, etc
+- menu:
+   - profile page: Google Oauth / Facebook authorization, user's photo
+   - user settings page: changing quantity of location updating, application sounds volume, map scale, etc
+   - hepl
+- remote SQL database for keeping user data(favorite places and settings)
 - sharing user location and favorite places with friends (Facebook, Gmail)
