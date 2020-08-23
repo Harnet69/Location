@@ -83,12 +83,10 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                     userMarker = mMap.addMarker(options);
                 }
 
-                // shows places from places list on Google map
-                //TODO can be a cause of some bug
+                // shows places from Places List on Google map
                 List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
                 LatLng placeCoords;
                 if (lastPlaces != null && lastPlaces.size() > 0) {
-//                    Log.i("Places", "onMapReady: " + lastPlaces);
                     LatLng lastAddedPlace = null;
                     for (Place place : lastPlaces) {
                         placeCoords = new LatLng(place.getLat(), place.getLng());
@@ -106,7 +104,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                     }
                 }
 
-                // focus on place from QR scanner
+                // get Place from Intent Extra (from QR scanner) and focus camera on it
                 String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
 
                 if (placeForFocus != null && !placeForFocus.equals("")) {
@@ -125,6 +123,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                     }
                 }
             }
+
             // long click on a map
             if (mMap != null) {
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -213,7 +212,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     public void onDestroy() {
         super.onDestroy();
         // stop asking for user location after fragment destroying
-
         mLocationMapsActivityViewModel.getLocationService().getLocationManager().removeUpdates(mLocationMapsActivityViewModel.getLocationService().getLocationListener());
     }
 }

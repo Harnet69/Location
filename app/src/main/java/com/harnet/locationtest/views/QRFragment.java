@@ -233,8 +233,7 @@ public class QRFragment extends Fragment {
     public void redirectToMaps(LatLng newPlaceLatLng) throws IOException {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
-        //TODO can be a problem, because second argument isn't a string
-
+        // put serialized Place object to Intent's extra
         fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);

@@ -27,6 +27,14 @@ import java.util.Objects;
 import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
+    final String FRAGMENT_INTENT = "fragmentIntent";
+    private Fragment fragment;
+    private Bundle exchangeBundle; // bundle to keep data for exchanging
+
+    private LocationFragment locationFragment;
+    private MapsFragment mapsFragment;
+    private QRFragment qrFragment;
+
     // create application menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,14 +67,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
        return isSelected;
     }
 
-    final String FRAGMENT_INTENT = "fragmentIntent";
-    private Fragment fragment;
-    private Bundle exchangeBundle; // bundle to keep data for exchanging
-
-    private LocationFragment locationFragment;
-    private MapsFragment mapsFragment;
-    private QRFragment qrFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +74,9 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
         exchangeBundle = new Bundle();
 
-        //display default menu
         if (savedInstanceState == null) {
             try {
-                // retrieve saved places from SharedPreferences
+                // retrieve saved places from SharedPreferences and fill Places List
                 if (PlacesService.getInstance().isPlacesInSharedPref(this)) {
                     PlacesService.getInstance().retrieveFromSharedPref(this);
                 }
