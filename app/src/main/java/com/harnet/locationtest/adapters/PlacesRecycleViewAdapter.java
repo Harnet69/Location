@@ -113,7 +113,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                         .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_SHORT).show();
                                 try {
                                     //save favorite places in SharedPreferences
                                     PlacesService.getInstance().saveToSharedPref(mContext, PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
@@ -132,7 +132,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                                     Toast.makeText(mContext, placeForDelete.getName() + " was deleted", Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
                                 }else{
-                                    Toast.makeText(mContext, "Smth wrong with " + placeForDelete.getName() + " deleting", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(mContext, "Smth wrong with " + placeForDelete.getName() + " deleting", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })

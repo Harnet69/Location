@@ -1,6 +1,7 @@
 package com.harnet.locationtest.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,8 +13,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.services.PlacesService;
 
@@ -78,6 +82,7 @@ public class PlaceEditorFragment extends Fragment {
             public void onClick(View v) {
                 //TODO implement redirection to QR@favourite without changes saving
                 System.out.println("Discard");
+                redirectToQR();
             }
         });
     }
@@ -89,6 +94,13 @@ public class PlaceEditorFragment extends Fragment {
             public void onClick(View v) {
                 //TODO implement saving changes and redirection to QR@favourite
                 System.out.println("Save");
+                // try to save place
+                if(PlacesService.getInstance().editPlace(placeForEdit)){
+                    Toast.makeText(getContext(), "Place saved", Toast.LENGTH_SHORT).show();
+                    redirectToQR();
+                }else{
+                    Toast.makeText(getContext(), "Place did not save", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -108,5 +120,16 @@ public class PlaceEditorFragment extends Fragment {
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    // redirect to a QR&Favourite fragment
+    public void redirectToQR(){
+        Intent fragmentIntent = getActivity().getIntent();
+        fragmentIntent.putExtra("fragmentIntent", Fragments.QR.toString());
+        // put serialized Place object to Intent's extra
+//        fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
+
+        getActivity().finish();
+        getActivity().startActivity(fragmentIntent);
     }
 }

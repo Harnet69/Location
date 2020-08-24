@@ -74,6 +74,11 @@ public class PlacesService {
         return false;
     }
 
+    public boolean editPlace(Place placeForEdit){
+
+        return false;
+    }
+
     // check if the place in places repository already
     private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
         for (Place place : places) {
