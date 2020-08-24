@@ -7,7 +7,8 @@ public enum Fragments {
     QR("qr"),
     PROFILE("profile"),
     SETTINGS("settings"),
-    HELP("help");
+    HELP("help"),
+    PLACE_EDITOR("place_editor");
 
     private String name;
 

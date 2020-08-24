@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -227,6 +228,17 @@ public class QRFragment extends Fragment {
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         // put serialized Place object to Intent's extra
         fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
+        getActivity().finish();
+        getActivity().startActivity(fragmentIntent);
+    }
+
+    // redirect to places editor
+    //TODO work with places editor
+    public void redirectToPlacesEditor(LatLng newPlaceLatLng) throws IOException {
+        Intent fragmentIntent = getActivity().getIntent();
+        fragmentIntent.putExtra("fragmentIntent", Fragments.PLACE_EDITOR.toString());
+        // put serialized Place object to Intent's extra
+        fragmentIntent.putExtra("editedPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }

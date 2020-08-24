@@ -94,6 +94,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setTitle("Save this place?")
                                 .setMessage("Make it favorite?")
+
                                 .setPositiveButton("Save and mark", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

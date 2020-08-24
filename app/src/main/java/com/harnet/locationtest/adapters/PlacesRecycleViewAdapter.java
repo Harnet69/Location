@@ -99,6 +99,11 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                try {
+                    qrFragment.redirectToPlacesEditor(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });

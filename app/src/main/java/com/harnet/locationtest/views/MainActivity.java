@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                     case "main":
                         startFragment(new MainMenuFragment(), Fragments.MAIN.toString());
                         break;
+                    case "place_editor":
+                        startFragment(new PlaceEditorFragment(), Fragments.PLACE_EDITOR.toString());
+                        break;
                 }
             }
         }
@@ -130,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         exchangeBundle.putString("message", message);
         switch (message) {
             case "location":
-                //TODO ENUM of fragment names
                 startFragment(new LocationFragment(), "location");
                 break;
             case "maps":
@@ -138,6 +140,11 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 break;
             case "qr":
                 startFragment(new QRFragment(), "gr");
+                break;
+            //TODO here is the problem with redirection
+            case "place_editor":
+                Log.i("RedirectingToFrag", "onMessageSend: " + message);
+                startFragment(new PlaceEditorFragment(), "place_editor");
                 break;
             default:
                 startFragment(new MainMenuFragment(), "main");
