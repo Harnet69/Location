@@ -90,31 +90,35 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                     @Override
                     public void onMapLongClick(LatLng latLng) {
 
-                        new AlertDialog.Builder(getContext())
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setTitle("Save this place?")
-                                .setMessage("Make it favorite?")
+                        try {
+                            new AlertDialog.Builder(getContext())
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setTitle("Save \"" + getAddressFromCoord(latLng) + "\"?")
+                                    .setMessage("Do you want to add the place to favorite?")
 
-                                .setPositiveButton("Save and mark", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        try {
-                                            longClickOnMap(latLng);
-                                            Toast.makeText(getContext(), "Saved!", Toast.LENGTH_SHORT).show();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
+                                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            try {
+                                                longClickOnMap(latLng);
+                                                Toast.makeText(getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                    }
-                                })
-                                .setNegativeButton("Just mark", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //  TODO mark the place
-                                        MarkerOptions options = new MarkerOptions().position(latLng);
-                                        mMap.addMarker(options);
-                                    }
-                                })
-                                .show();
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //  TODO mark the place
+//                                            MarkerOptions options = new MarkerOptions().position(latLng);
+//                                            mMap.addMarker(options);
+                                        }
+                                    })
+                                    .show();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -215,24 +219,30 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
         }
     }
 
-    //TODO just mark a place
-
     // handle long click on a map
     @SuppressLint("ShowToast")
     private void longClickOnMap(LatLng latLng) throws IOException {
+        //get address
+        String placeAddress = getAddressFromCoord(latLng);
+
+        if (placeAddress != null && !placeAddress.equals("")) {
+            MarkerOptions options = new MarkerOptions().position(latLng)
+                    .title(placeAddress);
+            mMap.addMarker(options);
+
+            PlacesService.getInstance().addNewPlace(placeAddress, latLng);
+        } else {
+            Toast.makeText(getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // get address from place coordinates
+    private String getAddressFromCoord(LatLng latLng) throws IOException {
         Geocoder geocoder = new Geocoder(getContext());
         List<Address> placesFromCoords = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
         String placeAddress = placesFromCoords.get(0).getThoroughfare();
 
-        if (placeAddress != null && !placeAddress.equals("")) {
-            MarkerOptions options = new MarkerOptions().position(latLng)
-                    .title(placesFromCoords.get(0).getThoroughfare());
-            mMap.addMarker(options);
-
-            PlacesService.getInstance().addNewPlace(placesFromCoords.get(0).getThoroughfare(), latLng);
-        } else {
-            Toast.makeText(getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
-        }
+        return placeAddress;
     }
 
     @Override
