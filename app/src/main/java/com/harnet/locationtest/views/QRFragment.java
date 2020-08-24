@@ -234,11 +234,11 @@ public class QRFragment extends Fragment {
 
     // redirect to places editor
     //TODO work with places editor
-    public void redirectToPlacesEditor(LatLng newPlaceLatLng) throws IOException {
+    public void redirectToPlacesEditor(Place placeForEdit) throws IOException {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.PLACE_EDITOR.toString());
         // put serialized Place object to Intent's extra
-        fragmentIntent.putExtra("editedPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
+        fragmentIntent.putExtra("editedPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(placeForEdit));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }
