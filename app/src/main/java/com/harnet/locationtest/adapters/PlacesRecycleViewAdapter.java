@@ -1,6 +1,8 @@
 package com.harnet.locationtest.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,12 +100,33 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
         elementToClick.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
-                try {
-                    qrFragment.redirectToPlacesEditor(mFavoritePlaces.get(i));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                new AlertDialog.Builder(mContext)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete or Edit \"" + mFavoritePlaces.get(i).getName()+ "\" place?")
+                        .setMessage("Do you want edit or delete the place from favourite?")
+
+                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                                try {
+                                    qrFragment.redirectToPlacesEditor(mFavoritePlaces.get(i));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mContext, "Delete " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .show();
+
+
+
                 return true;
             }
         });

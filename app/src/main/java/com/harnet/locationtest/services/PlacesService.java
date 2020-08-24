@@ -58,6 +58,10 @@ public class PlacesService {
         return false;
     }
 
+//    public boolean deletePlace(){
+//
+//    }
+
     // check if the place in places repository already
     private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
         for (Place place : places) {

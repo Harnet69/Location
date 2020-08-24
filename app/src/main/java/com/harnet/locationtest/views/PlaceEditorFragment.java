@@ -38,7 +38,6 @@ public class PlaceEditorFragment extends Fragment {
         // set place name in EditText field
         placeName.setText(placeForEdit.getName());
 
-
         return view;
     }
 

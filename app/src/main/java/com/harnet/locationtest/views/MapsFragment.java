@@ -110,14 +110,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            //  TODO mark the place
 //                                            MarkerOptions options = new MarkerOptions().position(latLng);
 //                                            mMap.addMarker(options);
                                         }
                                     })
                                     .show();
                         } catch (IOException e) {
-                                e.printStackTrace();
+                            e.printStackTrace();
                         }
                     }
                 });
