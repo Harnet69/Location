@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.views.QRFragment;
 
 import java.io.IOException;
@@ -96,14 +97,14 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     // set long click edit functionality on element
     //TODO here you should work with editing a place
-    private void longClick(View elementToClick, int i){
+    private void longClick(View elementToClick, int i) {
         elementToClick.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
                 new AlertDialog.Builder(mContext)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Delete or Edit \"" + mFavoritePlaces.get(i).getName()+ "\" place?")
+                        .setTitle("Delete or Edit \"" + mFavoritePlaces.get(i).getName() + "\" place?")
                         .setMessage("Do you want edit or delete the place from favourite?")
 
                         .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
@@ -120,11 +121,15 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                         .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(mContext, "Delete " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
+                                Place placeForDelete = mFavoritePlaces.get(i);
+                                if (PlacesService.getInstance().deletePlace(placeForDelete)) {
+                                    Toast.makeText(mContext, placeForDelete.getName() + " was deleted", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(mContext, "Smth wrong with " + placeForDelete.getName() + " deleting", Toast.LENGTH_LONG).show();
+                                }
                             }
                         })
                         .show();
-
 
 
                 return true;
@@ -133,7 +138,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     // Set the image to ImageView
-    private void setImage(View elementToSetImage, int i){
+    private void setImage(View elementToSetImage, int i) {
         RequestOptions defaultOptions = new RequestOptions()
                 .error(R.drawable.ic_launcher_background);
         Glide.with(mContext)

@@ -2,6 +2,7 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -58,9 +59,18 @@ public class PlacesService {
         return false;
     }
 
-//    public boolean deletePlace(){
-//
-//    }
+    // delete place from favourite places
+    public boolean deletePlace(Place placeForDelete){
+        List<Place> currentPlaces = mPlaces.getValue();
+
+        if (currentPlaces.size() > 0 && isPlaceInPlaces(currentPlaces, new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
+            currentPlaces.remove(placeForDelete);
+            mPlaces.postValue(currentPlaces);
+            return true;
+        }
+
+        return false;
+    }
 
     // check if the place in places repository already
     private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
