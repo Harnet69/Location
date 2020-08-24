@@ -87,6 +87,9 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View v) {
                 Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
                 try {
+                    //save favorite places in SharedPreferences
+                    PlacesService.getInstance().saveToSharedPref(mContext, PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
+                    //redirect to Google Map page
                     qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
                 } catch (IOException e) {
                     e.printStackTrace();
