@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.harnet.locationtest.R;
@@ -21,6 +22,8 @@ import java.io.IOException;
 public class PlaceEditorFragment extends Fragment {
     private EditText placeName;
     private EditText placeDescription;
+    private Button discardBtn;
+    private Button saveBtn;
 
     private Place placeForEdit;
 
@@ -36,14 +39,19 @@ public class PlaceEditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_place_editor, container, false);
+
         placeName = view.findViewById(R.id.place_name_PlainText);
         placeDescription = view.findViewById(R.id.place_description_PlainText);
-
+        discardBtn = view.findViewById(R.id.discard_button);
+        saveBtn = view.findViewById(R.id.save_button);
 
         // make keyboard hide by click outside these editViews
         hideKeyboardFromEditText(placeName, view);
         hideKeyboardFromEditText(placeDescription, view);
 
+        // set listeners to btns
+        discardChangesListener();
+        saveChangesListener();
 
         // set place name in EditText field
         placeName.setHint(placeForEdit.getName());
@@ -61,6 +69,28 @@ public class PlaceEditorFragment extends Fragment {
         }
 
         return placeForEditDeSerialized;
+    }
+
+    // discard changes and redirect to QR&Favoutite fragment
+    private void discardChangesListener(){
+        discardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement redirection to QR@favourite without changes saving
+                System.out.println("Discard");
+            }
+        });
+    }
+
+    // save changes and redirect to QR&Favourite fragment
+    private void saveChangesListener(){
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement saving changes and redirection to QR@favourite
+                System.out.println("Save");
+            }
+        });
     }
 
     public void hideKeyboardFromEditText(EditText editText, View view){
