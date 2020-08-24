@@ -41,6 +41,7 @@ public class PlacesService {
         return mPlacesRepository;
     }
 
+
     public ObjectSerializeService getObjectSerializeService() {
         return objectSerializeService;
     }
@@ -94,6 +95,7 @@ public class PlacesService {
     public void retrieveFromSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
         List<Place> retrievedPlaces = (List<Place>) objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
+        PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet().clear(); // clear favorite places before retrieving
         for (Place place : retrievedPlaces) {
             PlacesService.getInstance().addNewPlace(place.getName(), new LatLng(place.getLat(), place.getLng()));
         }
