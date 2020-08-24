@@ -17,6 +17,9 @@ import androidx.fragment.app.FragmentManager;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Fragments;
 import com.harnet.locationtest.services.PlacesService;
+import com.harnet.locationtest.views.systemMenu.HelpFragment;
+import com.harnet.locationtest.views.systemMenu.ProfileFragment;
+import com.harnet.locationtest.views.systemMenu.SettingsFragment;
 
 import java.io.IOException;
 import java.util.Objects;

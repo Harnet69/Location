@@ -1,4 +1,4 @@
-package com.harnet.locationtest.views;
+package com.harnet.locationtest.views.systemMenu;
 
 import android.os.Bundle;
 
@@ -13,7 +13,6 @@ import com.harnet.locationtest.R;
 public class HelpFragment extends Fragment {
 
     public HelpFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -23,9 +22,7 @@ public class HelpFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help, container, false);
 
         return view;

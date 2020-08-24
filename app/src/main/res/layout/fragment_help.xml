@@ -10,7 +10,7 @@ android:clickable="true"
 android:focusable="true"
 android:focusableInTouchMode="true"
 android:orientation="vertical"
-tools:context=".views.HelpFragment">
+tools:context=".views.systemMenu.HelpFragment">
 
 
     <TextView

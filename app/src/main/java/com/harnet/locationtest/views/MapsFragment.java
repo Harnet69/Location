@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -87,11 +89,31 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        try {
-                            longClickOnMap(latLng);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
+                        new AlertDialog.Builder(getContext())
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Save this place?")
+                                .setMessage("Make it favorite?")
+                                .setPositiveButton("Save and mark", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            longClickOnMap(latLng);
+                                            Toast.makeText(getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("Just mark", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //  TODO mark the place
+                                        MarkerOptions options = new MarkerOptions().position(latLng);
+                                        mMap.addMarker(options);
+                                    }
+                                })
+                                .show();
                     }
                 });
             }
@@ -137,7 +159,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     }
 
     // show user position on Google Map
-    private LatLng showUserPosition(){
+    private LatLng showUserPosition() {
         LatLng userCoords = new LatLng(mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLat(), mLocationMapsActivityViewModel.getmPersons().getValue().get(0).getLng());
         if (userMarker == null) {
             MarkerOptions options = new MarkerOptions().position(userCoords)
@@ -149,7 +171,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     }
 
     // shows places from Places List on Google map
-    private void showPlaces(GoogleMap googleMap, LatLng userCoords){
+    private void showPlaces(GoogleMap googleMap, LatLng userCoords) {
         List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
         LatLng placeCoords;
         if (lastPlaces != null && lastPlaces.size() > 0) {
@@ -172,7 +194,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
     }
 
     // get Place from Intent Extra (from QR scanner) and focus camera on it
-    private void showPlaceFromQR(){
+    private void showPlaceFromQR() {
         String placeForFocus = getActivity().getIntent().getStringExtra("newPlaceLatLng");
 
         if (placeForFocus != null && !placeForFocus.equals("")) {
@@ -182,7 +204,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(focusPlace != null){
+            if (focusPlace != null) {
                 LatLng focusPlaceLatLng = new LatLng(focusPlace.getLat(), focusPlace.getLng());
                 mMap.addMarker(new MarkerOptions().position(focusPlaceLatLng));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(focusPlaceLatLng));
@@ -191,6 +213,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
             }
         }
     }
+
+    //TODO just mark a place
 
     // handle long click on a map
     @SuppressLint("ShowToast")
