@@ -66,6 +66,7 @@ public class PlacesService {
         if (currentPlaces.size() > 0 && isPlaceInPlaces(currentPlaces, new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
             currentPlaces.remove(placeForDelete);
             mPlaces.postValue(currentPlaces);
+
             return true;
         }
 
