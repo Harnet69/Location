@@ -112,6 +112,9 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
                                 try {
+                                    //save favorite places in SharedPreferences
+                                    PlacesService.getInstance().saveToSharedPref(mContext, PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
+                                    //redirect to Edit page
                                     qrFragment.redirectToPlacesEditor(mFavoritePlaces.get(i));
                                 } catch (IOException e) {
                                     e.printStackTrace();
