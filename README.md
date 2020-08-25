@@ -1,7 +1,7 @@
 # Location Manager
 
 ## Description:
-  Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes), Save, delete, edit favorite places. Track ans see userlocation and address in real time without Internet connection. 
+  Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes). Save, delete, edit favorite places. Track and see userlocation and address in real time without Internet connection. 
   
 ## Application screenshots:
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
@@ -34,8 +34,8 @@ Example of QR code for testing purposes:
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Warsaw.png)
 
 ## Application installation:
-- download .apk [Location manager installer](https://drive.google.com/file/d/1ei8HSaC6wGgUoAcRrGC3ehEx4yVbQVt9/view?usp=sharing)
-- run it on your Android phone
+- download .apk [Location manager v.1.1 installer](https://drive.google.com/file/d/1wm_fZUILPWuW7rpSiuFAoZafVXfWpzBR/view?usp=sharing)
+- run it on Android phone
 
 ## Application pdf presentation: 
 [Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
@@ -51,10 +51,10 @@ Example of QR code for testing purposes:
 ## Future plans:
 - change an order and sort favourite places in QR&Places module
 - add places image by a camera or from gallery 
-- recognize different kinds of barcodes (for example URL QR codes will show a page in a browser, Google location QR code)
+- recognize different kinds of barcodes (for example URL QR codes will show a page in a browser, Google location QR code, etc)
 - menu:
    - profile page: Google Oauth / Facebook authorization, user's photo
    - user settings page: changing quantity of location updating, application sounds volume, map scale, etc
    - hepl
 - remote SQL database for keeping user data(favorite places and settings)
-- sharing user location and favorite places with friends (Facebook, Gmail)
+- sharing user location and favorite places with friends (via Facebook, Gmail)
