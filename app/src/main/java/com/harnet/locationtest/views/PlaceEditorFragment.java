@@ -58,7 +58,8 @@ public class PlaceEditorFragment extends Fragment {
         saveChangesListener();
 
         // set place name in EditText field
-        placeName.setHint(placeForEdit.getName());
+        placeName.setText(placeForEdit.getName());
+        placeDescription.setText(placeForEdit.getDescription());
 
         return view;
     }
@@ -80,8 +81,6 @@ public class PlaceEditorFragment extends Fragment {
         discardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implement redirection to QR@favourite without changes saving
-                System.out.println("Discard");
                 redirectToQR();
             }
         });
@@ -94,6 +93,10 @@ public class PlaceEditorFragment extends Fragment {
             public void onClick(View v) {
                 //TODO implement saving changes and redirection to QR@favourite
                 System.out.println("Save");
+                // change place fields
+                placeForEdit.setName(placeName.getText().toString());
+                placeForEdit.setDescription(placeDescription.getText().toString());
+
                 // try to save place
                 if(PlacesService.getInstance().editPlace(placeForEdit)){
                     Toast.makeText(getContext(), "Place saved", Toast.LENGTH_SHORT).show();

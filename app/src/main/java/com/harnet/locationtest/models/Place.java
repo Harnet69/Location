@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Place implements Serializable {
     private String name;
+    private String description;
     private double lat;
     private double lng;
     private int image;
@@ -19,6 +20,10 @@ public class Place implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public double getLat() {
         return lat;
     }
@@ -29,5 +34,17 @@ public class Place implements Serializable {
 
     public int getImage() {
         return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

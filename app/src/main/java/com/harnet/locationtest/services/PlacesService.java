@@ -13,7 +13,11 @@ import com.harnet.locationtest.repositories.PlacesRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class PlacesService {
     private static PlacesService instance;
@@ -30,7 +34,7 @@ public class PlacesService {
     }
 
     public static PlacesService getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new PlacesService();
         }
 
@@ -61,7 +65,7 @@ public class PlacesService {
     }
 
     // delete place from favourite places
-    public boolean deletePlace(Place placeForDelete){
+    public boolean deletePlace(Place placeForDelete) {
         List<Place> currentPlaces = mPlaces.getValue();
 
         if (currentPlaces.size() > 0 && isPlaceInPlaces(currentPlaces, new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
@@ -74,8 +78,31 @@ public class PlacesService {
         return false;
     }
 
-    public boolean editPlace(Place placeForEdit){
+    public boolean editPlace(Place placeForEdit) {
+        List<Place> currentPlaces = mPlaces.getValue();
+        //TODO edit functionality
+        if (currentPlaces != null && currentPlaces.size() > 0 && placeForEdit != null) {
 
+            for (Place place : currentPlaces) {
+                if (placeForEdit.getLat() == place.getLat() && placeForEdit.getLng() == place.getLng()) {
+
+                    // if place was edited
+//                    if (place.getDescription() != null || !placeForEdit.getName().equals(place.getName()) ||
+//                            !placeForEdit.getDescription().equals(place.getDescription()) ||
+//                            placeForEdit.getImage() != place.getImage()) {
+                        //TODO implement verification if changes were done
+                    place.setName(placeForEdit.getName());
+                    place.setDescription(placeForEdit.getDescription());
+
+                        return true;
+//                    }
+
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
+
+        }
         return false;
     }
 
@@ -90,6 +117,13 @@ public class PlacesService {
         return false;
     }
 
+    private Place getPlaceFromFavourite(List<Place> favPlaces, LatLng placeCoords) {
+        return favPlaces.stream()
+                .filter(x -> x.getLat() == placeCoords.latitude)
+                .filter(x -> x.getLng() == placeCoords.longitude)
+                .collect(Collectors.toList()).get(0);
+    }
+
     // save places to SharedPreferences
     public void saveToSharedPref(Context context, List<Place> places) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
@@ -99,10 +133,18 @@ public class PlacesService {
     // retrieve places from SharedPreferences and fill Places List
     public void retrieveFromSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
-        List<Place> retrievedPlaces = (List<Place>) objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
-//        PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet().clear(); // clear favorite places before retrieving
-        for (Place place : retrievedPlaces) {
-            PlacesService.getInstance().addNewPlace(place.getName(), new LatLng(place.getLat(), place.getLng()));
+        Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
+        List<Place> retrievedPlaces = null;
+        try{
+            retrievedPlaces = Collections.unmodifiableList((List<Place>) retrievedPlacesObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(retrievedPlaces != null && retrievedPlaces.size() > 0) {
+            for (Place place : retrievedPlaces) {
+                PlacesService.getInstance().addNewPlace(place.getName(), new LatLng(place.getLat(), place.getLng()));
+            }
         }
     }
 
