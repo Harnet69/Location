@@ -99,10 +99,10 @@ public class PlaceEditorFragment extends Fragment {
 
                 // try to save place
                 if(PlacesService.getInstance().editPlace(placeForEdit)){
-                    Toast.makeText(getContext(), "Place saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Changes were saved", Toast.LENGTH_SHORT).show();
                     redirectToQR();
                 }else{
-                    Toast.makeText(getContext(), "Place did not save", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Can't apply changes", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -2,7 +2,6 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -15,8 +14,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class PlacesService {
@@ -50,13 +47,28 @@ public class PlacesService {
         return objectSerializeService;
     }
 
-    // add new place to places
+    // add new place to places with QR code or manually by Google maps
+    //TODO problem with saving description is here
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
         List<Place> currentPlaces = mPlaces.getValue();
         // if place doesn't exist in Places List
         if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, latLng)) {
             currentPlaces.add(newPlace);
+            mPlaces.postValue(currentPlaces);
+            return true;
+        }
+
+        return false;
+    }
+
+    // adding functionality for retrieving
+    public boolean addNewPlace(Place place) {
+//        Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
+        List<Place> currentPlaces = mPlaces.getValue();
+        // if place doesn't exist in Places List
+        if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, new LatLng(place.getLat(), place.getLng()))) {
+            currentPlaces.add(place);
             mPlaces.postValue(currentPlaces);
             return true;
         }
@@ -86,19 +98,12 @@ public class PlacesService {
             for (Place place : currentPlaces) {
                 if (placeForEdit.getLat() == place.getLat() && placeForEdit.getLng() == place.getLng()) {
 
-                    // if place was edited
-//                    if (place.getDescription() != null || !placeForEdit.getName().equals(place.getName()) ||
-//                            !placeForEdit.getDescription().equals(place.getDescription()) ||
-//                            placeForEdit.getImage() != place.getImage()) {
-                        //TODO implement verification if changes were done
+                    //TODO implement verification if changes were done
                     place.setName(placeForEdit.getName());
                     place.setDescription(placeForEdit.getDescription());
-
-                        return true;
-//                    }
-
-                } else {
-                    throw new NoSuchElementException();
+                    // save changes in repository
+                    mPlaces.postValue(currentPlaces);
+                    return true;
                 }
             }
 
@@ -135,15 +140,15 @@ public class PlacesService {
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
         Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
         List<Place> retrievedPlaces = null;
-        try{
+        try {
             retrievedPlaces = Collections.unmodifiableList((List<Place>) retrievedPlacesObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(retrievedPlaces != null && retrievedPlaces.size() > 0) {
+        if (retrievedPlaces != null && retrievedPlaces.size() > 0) {
             for (Place place : retrievedPlaces) {
-                PlacesService.getInstance().addNewPlace(place.getName(), new LatLng(place.getLat(), place.getLng()));
+                PlacesService.getInstance().addNewPlace(place);
             }
         }
     }
