@@ -91,19 +91,28 @@ public class PlaceEditorFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implement saving changes and redirection to QR@favourite
-                System.out.println("Save");
-                // change place fields
-                placeForEdit.setName(placeName.getText().toString());
-                placeForEdit.setDescription(placeDescription.getText().toString());
+                String newPlaceName = placeName.getText().toString();
+                String newPlaceDescription = placeDescription.getText().toString();
+                // check if something have been changed
 
-                // try to save place
-                if(PlacesService.getInstance().editPlace(placeForEdit)){
-                    Toast.makeText(getContext(), "Changes were saved", Toast.LENGTH_SHORT).show();
-                    redirectToQR();
+                    Log.i("PlacesChanges", "New name: " + newPlaceName + " old: " + placeForEdit.getName() );
+                    Log.i("PlacesChanges", "New desc: " + newPlaceDescription + " old: " + placeForEdit.getDescription() );
+                if(!placeForEdit.getName().equals(newPlaceName) || !placeForEdit.getDescription().equals(newPlaceDescription)){
+                    // change place fields
+                    placeForEdit.setName(newPlaceName);
+                    placeForEdit.setDescription(newPlaceDescription);
+
+                    // try to save place
+                    if(PlacesService.getInstance().editPlace(placeForEdit)){
+                        Toast.makeText(getContext(), "Changes were saved", Toast.LENGTH_SHORT).show();
+                        redirectToQR();
+                    }else{
+                        Toast.makeText(getContext(), "Can't apply changes", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(getContext(), "Can't apply changes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You changed nothing!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }

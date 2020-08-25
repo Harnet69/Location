@@ -14,6 +14,7 @@ public class Place implements Serializable {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
+        this.description = "";
     }
 
     public String getName() {
