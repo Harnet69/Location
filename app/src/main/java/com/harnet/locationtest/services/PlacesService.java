@@ -48,7 +48,7 @@ public class PlacesService {
     }
 
     // add new place to places with QR code or manually by Google maps
-    //TODO problem with saving description is here
+    //TODO make all cases of using this method get Place as argument
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
         List<Place> currentPlaces = mPlaces.getValue();
