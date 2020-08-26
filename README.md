@@ -34,8 +34,9 @@ Example of QR code for testing purposes:
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Warsaw.png)
 
 ## Application installation:
-- download .apk [Location manager v.1.1 installer](https://drive.google.com/file/d/1wm_fZUILPWuW7rpSiuFAoZafVXfWpzBR/view?usp=sharing)
-- run it on Android phone
+- download app from [Google Play](https://play.google.com/store/apps/details?id=com.harnet.locationtest)
+- download .apk [Location manager v.1.1 installer](https://drive.google.com/file/d/1wm_fZUILPWuW7rpSiuFAoZafVXfWpzBR/view?usp=sharing) and run it on Android phone
+- clone a project code from this repo to your computer, and run it via Android studio or another Android emulator
 
 ## Application pdf presentation: 
 [Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
