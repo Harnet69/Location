@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlacesService {
+    private final String SHARED_PREFERENCES_NAME = "com.harnet.sharedpreferences";
     private static PlacesService instance;
 
     private PlacesRepository mPlacesRepository;
@@ -41,7 +42,6 @@ public class PlacesService {
     public PlacesRepository getmPlacesRepository() {
         return mPlacesRepository;
     }
-
 
     public ObjectSerializeService getObjectSerializeService() {
         return objectSerializeService;
@@ -131,13 +131,13 @@ public class PlacesService {
 
     // save places to SharedPreferences
     public void saveToSharedPref(Context context, List<Place> places) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) getmPlacesRepository().getPlacesDataSet())).apply();
     }
 
     // retrieve places from SharedPreferences and fill Places List
     public void retrieveFromSharedPref(Context context) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
         List<Place> retrievedPlaces = null;
         try {
@@ -154,7 +154,7 @@ public class PlacesService {
     }
 
     public boolean isPlacesInSharedPref(Context context) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.harnet.sharedpreferences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 
         return sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
     }
