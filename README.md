@@ -3,6 +3,16 @@
 ## Description:
   Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes). Save, delete, edit favorite places. Track and see userlocation and address in real time without Internet connection. 
   
+## Application installation:
+- download app from [Google Play](https://play.google.com/store/apps/details?id=com.harnet.locationtest) or scan this QR code by your Android phone
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/locationManagerGooglePlay.png)
+- download .apk [Location manager v.1.1 installer](https://drive.google.com/file/d/1wm_fZUILPWuW7rpSiuFAoZafVXfWpzBR/view?usp=sharing) and run it on Android phone
+- clone a project code from this repo to your computer, and run it via Android studio or another Android emulator
+
+## Application pdf presentation: 
+[Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
+
+  
 ## Application screenshots:
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
@@ -32,14 +42,6 @@ You can generate location code for any place (we recomend min. 300x300px. resolu
 ### Warsaw
 Example of QR code for testing purposes: 
 ![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Warsaw.png)
-
-## Application installation:
-- download app from [Google Play](https://play.google.com/store/apps/details?id=com.harnet.locationtest)
-- download .apk [Location manager v.1.1 installer](https://drive.google.com/file/d/1wm_fZUILPWuW7rpSiuFAoZafVXfWpzBR/view?usp=sharing) and run it on Android phone
-- clone a project code from this repo to your computer, and run it via Android studio or another Android emulator
-
-## Application pdf presentation: 
-[Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
 
 ## Used technologies:
 - MVVM architecture pattern
