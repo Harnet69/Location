@@ -23,12 +23,15 @@ public class PlacesService {
 
     private ObjectSerializeService objectSerializeService = new ObjectSerializeService();
 
+    private SharedPreferencesService sharedPreferencesService = new SharedPreferencesService(objectSerializeService);
+
     private PlacesService() {
     }
 
     public static PlacesService getInstance() {
         if (instance == null) {
             instance = new PlacesService();
+
         }
         return instance;
     }
@@ -88,32 +91,49 @@ public class PlacesService {
     //TODO SharedPreferences functionality
 
     // save places to SharedPreferences
-    public void saveToSharedPref(Context context, List<Place> places) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll())).apply();
+    public void saveToSharedPref(Context context) throws IOException {
+        sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory);
     }
 
     // retrieve places from SharedPreferences and fill places List
     public void retrieveFromSharedPref(Context context) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
-        List<Place> retrievedPlaces = null;
-        try {
-            retrievedPlaces = Collections.unmodifiableList((List<Place>) retrievedPlacesObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // record all favourite places to SHaredPreferences
-        if (retrievedPlaces != null && retrievedPlaces.size() > 0) {
-            for (Place place : retrievedPlaces) {
-                PlacesService.getInstance().addNewPlace(place);
-            }
-        }
+        sharedPreferencesService.retrieveFromSharedPref(context);
     }
 
-    // check is place in favourites
+    // check is place in favourite places
     public boolean isPlacesInSharedPref(Context context) throws IOException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
+        return sharedPreferencesService.isPlacesInSharedPref(context);
     }
+
+//    // save places to SharedPreferences
+//    public void saveToSharedPref(Context context, List<Place> places) throws IOException {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+//        sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll())).apply();
+//    }
+//
+//    // retrieve places from SharedPreferences and fill places List
+//    public void retrieveFromSharedPref(Context context) throws IOException {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+//        Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
+//        List<Place> retrievedPlaces = null;
+//        try {
+//            retrievedPlaces = Collections.unmodifiableList((List<Place>) retrievedPlacesObject);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        // record all favourite places to SHaredPreferences
+//        if (retrievedPlaces != null && retrievedPlaces.size() > 0) {
+//            for (Place place : retrievedPlaces) {
+//                PlacesService.getInstance().addNewPlace(place);
+//            }
+//        }
+//    }
+//
+//    // check is place in favourite places
+//    public boolean isPlacesInSharedPref(Context context) throws IOException {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+//        return sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
+//    }
+
+    //TODO SQLite
 }

@@ -88,7 +88,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
                 try {
                     //save favorite places in SharedPreferences
-                    PlacesService.getInstance().saveToSharedPref(mContext, PlacesService.getInstance().getFavouritePlaces());
+                    PlacesService.getInstance().saveToSharedPref(mContext);
                     //redirect to Google Map page
                     qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
                 } catch (IOException e) {
@@ -117,7 +117,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                                 Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_SHORT).show();
                                 try {
                                     //save favorite places in SharedPreferences
-                                    PlacesService.getInstance().saveToSharedPref(mContext, places);
+                                    PlacesService.getInstance().saveToSharedPref(mContext);
                                     //redirect to Edit page
                                     qrFragment.redirectToPlacesEditor(mFavoritePlaces.get(i));
                                 } catch (IOException e) {
@@ -134,7 +134,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                                     notifyDataSetChanged();
                                     // update data in SharedPreferences after place deleting
                                     try {
-                                        PlacesService.getInstance().saveToSharedPref(mContext, places);
+                                        PlacesService.getInstance().saveToSharedPref(mContext);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
