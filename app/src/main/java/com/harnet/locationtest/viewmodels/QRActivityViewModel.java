@@ -41,8 +41,7 @@ public class QRActivityViewModel extends ViewModel {
             return;
         }
 
-        mPlacesRepository = PlacesService.getInstance().getmPlacesRepository();
-        mPlaces = mPlacesRepository.getUsersDataSet();
+        mPlaces = PlacesService.getInstance().getmPlacesRepository();
 
         cameraService = new CameraService(context, activity);
 

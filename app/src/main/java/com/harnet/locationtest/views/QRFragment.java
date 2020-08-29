@@ -249,7 +249,7 @@ public class QRFragment extends Fragment {
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         // put serialized Place object to Intent's extra
         fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
-
+        Log.i("Werere", "redirectToMaps: " + PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }
@@ -273,7 +273,7 @@ public class QRFragment extends Fragment {
 
     // initiate placesRecyclerView
     private void initRecyclerView(){
-        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet(), this);
+        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getFavouritePlaces(), this);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

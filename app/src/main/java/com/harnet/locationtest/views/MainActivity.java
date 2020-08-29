@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     protected void onStop() {
         super.onStop();
         try {
-            PlacesService.getInstance().saveToSharedPref(this, PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet());
+            PlacesService.getInstance().saveToSharedPref(this, PlacesService.getInstance().getFavouritePlaces());
         } catch (IOException e) {
             e.printStackTrace();
         }

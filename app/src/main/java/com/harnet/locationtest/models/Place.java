@@ -3,7 +3,7 @@ package com.harnet.locationtest.models;
 import java.io.Serializable;
 
 public class Place implements Serializable {
-    private Integer id;
+    private Integer id = 0;
     private String name;
     private String description;
     private double lat;

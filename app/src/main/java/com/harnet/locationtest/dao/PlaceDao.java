@@ -1,37 +1,30 @@
 package com.harnet.locationtest.dao;
 
-import com.harnet.locationtest.models.Place;
+import com.google.android.gms.maps.model.LatLng;
 
-import java.sql.SQLException;
 import java.util.List;
 
-public interface PlaceDao {
+public interface PlaceDao<Place> extends Dao<Place> {
     /**
      * Add a new object to database, and set the new ID
      *
-     * @param place a new object, with ID not set yet (null)
+     * @param name a name of new object
+     * @param latLng are place coordinates
      */
-    void add(Place place) throws SQLException;
+    void add(String name, LatLng latLng);
 
     /**
      * Update existing object's data in the database
      *
-     * @param place an object from the database, with ID already set
+     * @param placeForUpdate an object from the database, with ID already set
      */
-    void update(Place place, int id) throws SQLException;
+    //TODO think is id necessary
+    void update(Place placeForUpdate, int id);
 
     /**
-     * Get object by ID
+     * check if the place in places repository already
      *
-     * @param id ID to search by
-     * @return Object with a given ID, or null if not found
+     * @return boolean
      */
-    Place get(int id) throws SQLException;
-
-    /**
-     * Get all objects
-     *
-     * @return List of all objects of this type in the database
-     */
-    List<Place> getAll() throws SQLException;
+    boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords);
 }

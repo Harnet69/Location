@@ -176,7 +176,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
 
     // shows places from Places List on Google map
     private void showPlaces(GoogleMap googleMap, LatLng userCoords) {
-        List<Place> lastPlaces = PlacesService.getInstance().getmPlacesRepository().getPlacesDataSet();
+        List<Place> lastPlaces = PlacesService.getInstance().getFavouritePlaces();
         LatLng placeCoords;
         if (lastPlaces != null && lastPlaces.size() > 0) {
             LatLng lastAddedPlace = null;
@@ -230,6 +230,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapLongClickLi
             mMap.addMarker(options);
 
             PlacesService.getInstance().addNewPlace(placeAddress, latLng);
+            Log.i("Werere", "longClickOnMap: " + placeAddress + " : " + latLng);
         } else {
             Toast.makeText(getContext(), "Place's address doesn't exist!", Toast.LENGTH_SHORT).show();
         }

@@ -19,6 +19,13 @@ public interface Dao<T> {
     void update(T item, int id) throws SQLException;
 
     /**
+     * delete existing object's data in the database
+     *
+     * @param item an object from the database, with ID already set
+     */
+    void delete(T item) throws SQLException;
+
+    /**
      * Get object by ID
      *
      * @param id ID to search by

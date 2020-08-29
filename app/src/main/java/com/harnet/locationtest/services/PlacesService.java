@@ -2,10 +2,12 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.harnet.locationtest.dao.PlaceDaoInMemory;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.repositories.PlacesRepository;
 
@@ -20,15 +22,11 @@ public class PlacesService {
     private final String SHARED_PREFERENCES_NAME = "com.harnet.sharedpreferences";
     private static PlacesService instance;
 
-    private PlacesRepository mPlacesRepository;
+    private PlaceDaoInMemory placeDaoInMemory = new PlaceDaoInMemory();
 
     private ObjectSerializeService objectSerializeService = new ObjectSerializeService();
 
-    private MutableLiveData<List<Place>> mPlaces;
-
     private PlacesService() {
-        mPlacesRepository = new PlacesRepository();
-        mPlaces = mPlacesRepository.getUsersDataSet();
     }
 
     public static PlacesService getInstance() {
@@ -39,8 +37,8 @@ public class PlacesService {
         return instance;
     }
 
-    public PlacesRepository getmPlacesRepository() {
-        return mPlacesRepository;
+    public MutableLiveData<List<Place>> getmPlacesRepository(){
+        return placeDaoInMemory.getmPlaces();
     }
 
     public ObjectSerializeService getObjectSerializeService() {
@@ -51,25 +49,19 @@ public class PlacesService {
     //TODO make all cases of using this method get Place as argument
     public boolean addNewPlace(String name, LatLng latLng) {
         Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
-        List<Place> currentPlaces = mPlaces.getValue();
-        // if place doesn't exist in Places List
-        if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, latLng)) {
-            currentPlaces.add(newPlace);
-            mPlaces.postValue(currentPlaces);
+        if (!placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), latLng)) {
+            placeDaoInMemory.add(newPlace);
             return true;
         }
-
+        // TODO think about changing boolean to Exceptions
         return false;
     }
 
     // adding functionality for retrieving
     public boolean addNewPlace(Place place) {
-//        Place newPlace = new Place(name, latLng.latitude, latLng.longitude);
-        List<Place> currentPlaces = mPlaces.getValue();
         // if place doesn't exist in Places List
-        if (currentPlaces != null && !isPlaceInPlaces(currentPlaces, new LatLng(place.getLat(), place.getLng()))) {
-            currentPlaces.add(place);
-            mPlaces.postValue(currentPlaces);
+        if (place != null && placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), new LatLng(place.getLat(), place.getLng()))) {
+            placeDaoInMemory.add(place);
             return true;
         }
 
@@ -78,12 +70,8 @@ public class PlacesService {
 
     // delete place from favourite places
     public boolean deletePlace(Place placeForDelete) {
-        List<Place> currentPlaces = mPlaces.getValue();
-
-        if (currentPlaces.size() > 0 && isPlaceInPlaces(currentPlaces, new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
-            currentPlaces.remove(placeForDelete);
-            mPlaces.postValue(currentPlaces);
-
+        if (placeForDelete != null && placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
+            placeDaoInMemory.delete(placeForDelete);
             return true;
         }
 
@@ -92,48 +80,22 @@ public class PlacesService {
 
     // edit place fields
     public boolean editPlace(Place placeForEdit) {
-        List<Place> currentPlaces = mPlaces.getValue();
-
-        if (currentPlaces != null && currentPlaces.size() > 0 && placeForEdit != null) {
-
-            for (Place place : currentPlaces) {
-                if (placeForEdit.getLat() == place.getLat() && placeForEdit.getLng() == place.getLng()) {
-
-                    //TODO implement image changing
-                    place.setName(placeForEdit.getName());
-                    place.setDescription(placeForEdit.getDescription());
-                    // save changes in repository
-                    mPlaces.postValue(currentPlaces);
-                    return true;
-                }
-            }
+        if (placeForEdit != null && placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), new LatLng(placeForEdit.getLat(), placeForEdit.getLng()))) {
+            placeDaoInMemory.update(placeForEdit, placeForEdit.getId());
+            return true;
         }
         return false;
     }
 
-    // check if the place in places repository already
-    private boolean isPlaceInPlaces(List<Place> places, LatLng placeCoords) {
-        for (Place place : places) {
-            if (placeCoords.latitude == place.getLat() && placeCoords.longitude == place.getLng()) {
-                return true;
-            }
-        }
-
-        return false;
+    public List<Place> getFavouritePlaces(){
+        return placeDaoInMemory.getAll();
     }
-
-    //TODO think about implementing this approach
-    private Place getPlaceFromFavourite(List<Place> favPlaces, LatLng placeCoords) {
-        return favPlaces.stream()
-                .filter(x -> x.getLat() == placeCoords.latitude)
-                .filter(x -> x.getLng() == placeCoords.longitude)
-                .collect(Collectors.toList()).get(0);
-    }
+    // SharedPreferences functionality
 
     // save places to SharedPreferences
     public void saveToSharedPref(Context context, List<Place> places) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) getmPlacesRepository().getPlacesDataSet())).apply();
+        sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll())).apply();
     }
 
     // retrieve places from SharedPreferences and fill Places List
