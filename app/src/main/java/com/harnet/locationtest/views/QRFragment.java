@@ -249,7 +249,6 @@ public class QRFragment extends Fragment {
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         // put serialized Place object to Intent's extra
         fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
-        Log.i("Werere", "redirectToMaps: " + PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }

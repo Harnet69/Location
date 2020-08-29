@@ -2,21 +2,18 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.dao.PlaceDaoInMemory;
 import com.harnet.locationtest.models.Place;
-import com.harnet.locationtest.repositories.PlacesRepository;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlacesService {
     private final String SHARED_PREFERENCES_NAME = "com.harnet.sharedpreferences";
@@ -33,7 +30,6 @@ public class PlacesService {
         if (instance == null) {
             instance = new PlacesService();
         }
-
         return instance;
     }
 
@@ -60,11 +56,10 @@ public class PlacesService {
     // adding functionality for retrieving
     public boolean addNewPlace(Place place) {
         // if place doesn't exist in Places List
-        if (place != null && placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), new LatLng(place.getLat(), place.getLng()))) {
+        if (place != null && !placeDaoInMemory.isPlaceInPlaces(placeDaoInMemory.getAll(), new LatLng(place.getLat(), place.getLng()))) {
             placeDaoInMemory.add(place);
             return true;
         }
-
         return false;
     }
 
@@ -74,7 +69,6 @@ public class PlacesService {
             placeDaoInMemory.delete(placeForDelete);
             return true;
         }
-
         return false;
     }
 
@@ -90,7 +84,8 @@ public class PlacesService {
     public List<Place> getFavouritePlaces(){
         return placeDaoInMemory.getAll();
     }
-    // SharedPreferences functionality
+
+    //TODO SharedPreferences functionality
 
     // save places to SharedPreferences
     public void saveToSharedPref(Context context, List<Place> places) throws IOException {
@@ -98,7 +93,7 @@ public class PlacesService {
         sharedPreferences.edit().putString("lovedPlaces", objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll())).apply();
     }
 
-    // retrieve places from SharedPreferences and fill Places List
+    // retrieve places from SharedPreferences and fill places List
     public void retrieveFromSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
@@ -119,7 +114,6 @@ public class PlacesService {
     // check is place in favourites
     public boolean isPlacesInSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-
         return sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
     }
 }
