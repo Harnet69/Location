@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SharedPreferencesService {
+    //TODO think about do this method universal
     private final String SHARED_PREFERENCES_NAME = "com.harnet.sharedpreferences";
     private final String SHARED_PREFERENCES_SAVE_NAME;
 
@@ -30,10 +31,11 @@ public class SharedPreferencesService {
     }
 
     // save places to SharedPreferences
-    public void saveToSharedPref(Context context, PlaceDaoInMemory placeDaoInMemory) throws IOException {
+    //TODO make a second argument as generic to make class universal
+    public void saveToSharedPref(Context context, List<Place> places) throws IOException {
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
                 .edit()
-                .putString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll()))
+                .putString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize((Serializable) places))
                 .apply();
     }
 

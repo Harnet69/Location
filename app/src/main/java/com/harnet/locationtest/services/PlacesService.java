@@ -89,7 +89,7 @@ public class PlacesService {
 
     // save places to SharedPreferences
     public void saveToSharedPref(Context context) throws IOException {
-        sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory);
+        sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
     }
 
     // retrieve places from SharedPreferences and fill places List
