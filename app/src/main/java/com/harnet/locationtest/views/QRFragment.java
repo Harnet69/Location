@@ -144,6 +144,7 @@ public class QRFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 // get a data after scanning of a QR code
                 final SparseArray<Barcode> qrCode = detections.getDetectedItems();
+                final LatLng[] newPlaceLatLng = {null};
 
                 if (qrCode.size() != 0) {
                     textView.post(new Runnable() {
@@ -173,21 +174,28 @@ public class QRFragment extends Fragment {
 
                             // get and parse place coordinates
                             String newPlaceCoord = qrCode.valueAt(0).displayValue;
-                            double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
-                            double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
-                            LatLng newPlaceLatLng = new LatLng(newPlaceLat, newPlaceLng);
+
+                            // prevent to crash when user scans not appropriate QR code
+                            try {
+                                double newPlaceLat = Double.parseDouble((newPlaceCoord.split(",")[0]));
+                                double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
+                                newPlaceLatLng[0] = new LatLng(newPlaceLat, newPlaceLng);
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }
 
                             //JUST GO button
                             goThereBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //just redirect to a point from QR code
-                                    try {
-                                        redirectToMaps(newPlaceLatLng);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                    if(newPlaceLatLng[0] != null){
+                                        try {
+                                            redirectToMaps(newPlaceLatLng[0]);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-//
                                 }
                             });
 
@@ -198,10 +206,10 @@ public class QRFragment extends Fragment {
                                     // check if place name is empty and if place exists in places
                                     if (!placeNameEditText.getText().toString().equals("")) {
                                         // add new Place to Places List
-                                        if (PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), new LatLng(newPlaceLat, newPlaceLng))) {
+                                        if (newPlaceLatLng[0] != null && PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), newPlaceLatLng[0])) {
                                             // redirect to maps fragment
                                             try {
-                                                redirectToMaps(newPlaceLatLng);
+                                                redirectToMaps(newPlaceLatLng[0]);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
