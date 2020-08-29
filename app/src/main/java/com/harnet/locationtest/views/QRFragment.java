@@ -43,6 +43,7 @@ import java.util.List;
 
 public class QRFragment extends Fragment {
     private String name = "qr";
+    private final String BAD_LOCATTION_FORMAT = "Bad QR location format";
 
     private PlacesRecycleViewAdapter mAdapter;
 
@@ -181,6 +182,8 @@ public class QRFragment extends Fragment {
                                 double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                 newPlaceLatLng[0] = new LatLng(newPlaceLat, newPlaceLng);
                             } catch (NumberFormatException e) {
+                                // TODO create a link to a webView for going to the link
+                                textView.setText(BAD_LOCATTION_FORMAT + " go here to create a correct one: https://qrickit.com/qrickit_apps/qrickit_qrcode_creator_text.php");
                                 e.printStackTrace();
                             }
 
@@ -190,11 +193,15 @@ public class QRFragment extends Fragment {
                                 public void onClick(View v) {
                                     //just redirect to a point from QR code
                                     if(newPlaceLatLng[0] != null){
+                                        textView.setText("");
                                         try {
                                             redirectToMaps(newPlaceLatLng[0]);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
+                                    }else{
+                                        textView.setText(BAD_LOCATTION_FORMAT);
+                                        Toast.makeText(getContext(), BAD_LOCATTION_FORMAT, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -203,21 +210,27 @@ public class QRFragment extends Fragment {
                             saveAndGoBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // check if place name is empty and if place exists in places
-                                    if (!placeNameEditText.getText().toString().equals("")) {
-                                        // add new Place to Places List
-                                        if (newPlaceLatLng[0] != null && PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), newPlaceLatLng[0])) {
-                                            // redirect to maps fragment
-                                            try {
-                                                redirectToMaps(newPlaceLatLng[0]);
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
+                                    // check if QR code is in appropriate format
+                                    if(newPlaceLatLng[0] != null) {
+                                        // check if place name is empty and if place exists in places
+                                        if (!placeNameEditText.getText().toString().equals("")) {
+                                            // add new Place to Places List
+                                            if (newPlaceLatLng[0] != null && PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), newPlaceLatLng[0])) {
+                                                // redirect to maps fragment
+                                                try {
+                                                    redirectToMaps(newPlaceLatLng[0]);
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
-                                            Toast.makeText(getContext(), "Place exists!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Name is empty!", Toast.LENGTH_SHORT).show();
                                         }
-                                    } else {
-                                        Toast.makeText(getContext(), "Name is empty!", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        textView.setText(BAD_LOCATTION_FORMAT);
+                                        Toast.makeText(getContext(), BAD_LOCATTION_FORMAT, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
