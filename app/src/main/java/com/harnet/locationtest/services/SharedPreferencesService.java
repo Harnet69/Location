@@ -14,31 +14,33 @@ import java.util.List;
 
 public class SharedPreferencesService {
     private final String SHARED_PREFERENCES_NAME = "com.harnet.sharedpreferences";
-//    private Context context;
+    private final String SHARED_PREFERENCES_SAVE_NAME;
+
     private ObjectSerializeService objectSerializeService;
 
-    public SharedPreferencesService(ObjectSerializeService objectSerializeService) {
+    public SharedPreferencesService(String nameInSharedPref, ObjectSerializeService objectSerializeService) {
         this.objectSerializeService = objectSerializeService;
+        SHARED_PREFERENCES_SAVE_NAME = nameInSharedPref;
     }
 
     // check is place in favourite places
     public boolean isPlacesInSharedPref(Context context) throws IOException {
         return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-                .getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<String>())) != null;
+                .getString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize(new ArrayList<String>())) != null;
     }
 
     // save places to SharedPreferences
     public void saveToSharedPref(Context context, PlaceDaoInMemory placeDaoInMemory) throws IOException {
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
                 .edit()
-                .putString("lovedPlaces", objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll()))
+                .putString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize((Serializable) placeDaoInMemory.getAll()))
                 .apply();
     }
 
     // retrieve places from SharedPreferences and fill places List
     public void retrieveFromSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString("lovedPlaces", objectSerializeService.serialize(new ArrayList<Place>())));
+        Object retrievedPlacesObject = objectSerializeService.deserialize(sharedPreferences.getString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize(new ArrayList<Place>())));
         List<Place> retrievedPlaces = null;
         try {
             retrievedPlaces = Collections.unmodifiableList((List<Place>) retrievedPlacesObject);
