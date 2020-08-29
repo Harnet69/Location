@@ -83,22 +83,23 @@ public class PlacesService {
         if (currentPlaces.size() > 0 && isPlaceInPlaces(currentPlaces, new LatLng(placeForDelete.getLat(), placeForDelete.getLng()))) {
             currentPlaces.remove(placeForDelete);
             mPlaces.postValue(currentPlaces);
-            // TODO think about updating data in SharedPreferences after deleting here
+
             return true;
         }
 
         return false;
     }
 
+    // edit place fields
     public boolean editPlace(Place placeForEdit) {
         List<Place> currentPlaces = mPlaces.getValue();
-        //TODO edit functionality
+
         if (currentPlaces != null && currentPlaces.size() > 0 && placeForEdit != null) {
 
             for (Place place : currentPlaces) {
                 if (placeForEdit.getLat() == place.getLat() && placeForEdit.getLng() == place.getLng()) {
 
-                    //TODO implement verification if changes were done
+                    //TODO implement image changing
                     place.setName(placeForEdit.getName());
                     place.setDescription(placeForEdit.getDescription());
                     // save changes in repository
@@ -106,7 +107,6 @@ public class PlacesService {
                     return true;
                 }
             }
-
         }
         return false;
     }
@@ -122,6 +122,7 @@ public class PlacesService {
         return false;
     }
 
+    //TODO think about implementing this approach
     private Place getPlaceFromFavourite(List<Place> favPlaces, LatLng placeCoords) {
         return favPlaces.stream()
                 .filter(x -> x.getLat() == placeCoords.latitude)
@@ -145,7 +146,7 @@ public class PlacesService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        // record all favourite places to SHaredPreferences
         if (retrievedPlaces != null && retrievedPlaces.size() > 0) {
             for (Place place : retrievedPlaces) {
                 PlacesService.getInstance().addNewPlace(place);
@@ -153,6 +154,7 @@ public class PlacesService {
         }
     }
 
+    // check is place in favourites
     public boolean isPlacesInSharedPref(Context context) throws IOException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 
