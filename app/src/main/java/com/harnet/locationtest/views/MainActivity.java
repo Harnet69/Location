@@ -210,8 +210,10 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         try {
             PlacesService.getInstance(this).saveToSharedPref();
             //TODO for test SQLite database puproses
-            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", 52.241236, 21.008272));
-
+//            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", 52.241236, 21.008272));
+            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
+                Log.i("SQLITEEE", "onStop: place :" + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
+            }
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }

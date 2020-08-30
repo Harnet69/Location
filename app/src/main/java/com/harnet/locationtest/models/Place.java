@@ -18,6 +18,14 @@ public class Place implements Serializable {
         this.description = "";
     }
 
+    public Place(String name, String description, double lat, double lng, int image) {
+        this.name = name;
+        this.description = description;
+        this.lat = lat;
+        this.lng = lng;
+        this.image = image;
+    }
+
     public int getId() {
         return id;
     }

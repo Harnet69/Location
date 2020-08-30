@@ -53,6 +53,6 @@ public class PlaceDaoDatabase implements Dao<Place> {
 
     @Override
     public List<Place> getAll() throws SQLException {
-        return null;
+        return placeDaoSQL.getAllPlaces();
     }
 }

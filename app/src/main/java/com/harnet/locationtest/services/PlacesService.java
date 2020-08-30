@@ -114,4 +114,8 @@ public class PlacesService {
     public void addPlaceToDatabase(Place place) throws SQLException {
         placeDaoDatabase.add(place);
     }
+
+    public List<Place> getAllPlacesFromDB() throws SQLException {
+        return placeDaoDatabase.getAll();
+    }
 }
