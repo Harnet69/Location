@@ -55,4 +55,8 @@ public class PlaceDaoDatabase implements Dao<Place> {
     public List<Place> getAll() throws SQLException {
         return placeDaoSQL.getAllPlaces();
     }
+
+    public void clearPlacesTable(){
+        placeDaoSQL.clearPlacesTable();
+    }
 }

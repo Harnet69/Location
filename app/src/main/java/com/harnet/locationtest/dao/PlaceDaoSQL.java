@@ -20,13 +20,13 @@ public class PlaceDaoSQL {
 
     // create Places table
     public void createPlacesTable(){
-        String sql = "CREATE TABLE IF NOT EXISTS places (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, lat REAL, lng REAL, image int)";
+        String sql = "CREATE TABLE IF NOT EXISTS places (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, lat REAL, lng REAL, image int)";
         SQLiteStatement stmt = db.compileStatement(sql);
         stmt.execute();
         Log.i("SQLITEEE", "createPlacesTable: ");
     }
 
-    // add book to a database
+    // add Place to a places table
     public void addPlaceToDb(Place place) throws SQLException {
         //TODO think about using transaction instead binding
         String sql = "INSERT INTO places (name, description, lat, lng, image) VALUES (?, ?, ?, ?, ?)";
@@ -52,6 +52,7 @@ public class PlaceDaoSQL {
         Log.i("SQLITEEE", "addPlaceToDb: Place was added to row: " + rowId);
     }
 
+    // get all places from SQLite database
     public List<Place> getAllPlaces(){
         List<Place> places = new ArrayList<>();
         Cursor cursor = db.rawQuery("select * from places",null);
@@ -59,18 +60,53 @@ public class PlaceDaoSQL {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 //Parse table row for data
+//                Log.i("SQLITEEE", "getAllPlaces: " + cursor.getString(cursor.getColumnIndex("id")));
+                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 Double lat = Double.valueOf(cursor.getString(cursor.getColumnIndex("lat")));
                 Double lng = Double.valueOf(cursor.getString(cursor.getColumnIndex("lng")));
 //                int image = Integer.parseInt(cursor.getString(cursor.getColumnIndex("image")));
 
-                places.add(new Place(name, description, lat, lng, 0));
+                Place newPlace = new Place(name, description, lat, lng, 0);
+                newPlace.setId(id);
+                places.add(newPlace);
                 cursor.moveToNext();
             }
         }
         cursor.close();
 
         return places;
+    }
+
+    public void deletePlaceFromDB(){
+//        try {
+//            db.beginTransaction();
+//            String sql = "DELETE FROM " + places +
+//                    " WHERE " + column_1 + " = ?";
+//            SQLiteStatement statement = db.compileStatement(sql);
+//
+//            for (Long id : words) {
+//                statement.clearBindings();
+//                statement.bindLong(1, id);
+//                statement.executeUpdateDelete();
+//            }
+//
+//            db.setTransactionSuccessful();
+//
+//        } catch (SQLException e) {
+//            Log.w("Exception:", e);
+//        } finally {
+//            db.endTransaction();
+//        }
+    }
+
+    public void clearPlacesTable(){
+        Cursor cursor = db.rawQuery("DELETE FROM places",null);
+
+        cursor.close();
+
+//        db.execSQL("DELETE FROM places ");
+//        db.execSQL("VACUUM");
     }
 }

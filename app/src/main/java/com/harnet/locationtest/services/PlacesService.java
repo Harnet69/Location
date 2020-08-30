@@ -118,4 +118,8 @@ public class PlacesService {
     public List<Place> getAllPlacesFromDB() throws SQLException {
         return placeDaoDatabase.getAll();
     }
+
+    public void clearPlacesTable(){
+        placeDaoDatabase.clearPlacesTable();
+    }
 }
