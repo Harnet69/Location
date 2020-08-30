@@ -208,18 +208,26 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     protected void onStop() {
         super.onStop();
         try {
-            PlacesService.getInstance(this).saveToSharedPref();
-            //TODO for test SQLite database puproses
-            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", "The best place for living", 52.241236, 21.008272, 0));
-            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
-                Log.i("SQLITEEE", "Before clearing onStop: place :" + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
-            }
-            PlacesService.getInstance(this).clearPlacesTable();
+            //TODO here will be switcher for switch between SharedPreferences and SQLite datakeeping approach
 
-            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
-                Log.i("SQLITEEE", "After clearing onStop: place :"+ place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
-            }
-        } catch (IOException | SQLException e) {
+            // save in SharedPreferences
+            PlacesService.getInstance(this).saveToSharedPref();
+            // save in SQLite database
+
+            //TODO for test SQLite database purposes
+//            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", "The best place for living", 52.241236, 21.008272, 0));
+//            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
+//                Log.i("SQLITEEE", "Before clearing onStop: place :" + place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
+//            }
+//            PlacesService.getInstance(this).clearPlacesTable();
+//
+//            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
+//                Log.i("SQLITEEE", "After clearing onStop: place :"+ place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
+//            }
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

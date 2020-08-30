@@ -102,11 +102,6 @@ public class PlaceDaoSQL {
     }
 
     public void clearPlacesTable(){
-        Cursor cursor = db.rawQuery("DELETE FROM places",null);
-
-        cursor.close();
-
-//        db.execSQL("DELETE FROM places ");
-//        db.execSQL("VACUUM");
+        db.delete("places", null, null);
     }
 }

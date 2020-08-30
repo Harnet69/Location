@@ -22,14 +22,16 @@ public class PlacesService {
     private Context context;
 
     private PlaceDaoInMemory placeDaoInMemory = new PlaceDaoInMemory();
-    private PlaceDaoDatabase placeDaoDatabase;
-
     private ObjectSerializeService objectSerializeService = new ObjectSerializeService();
 
-    private SharedPreferencesService sharedPreferencesService = new SharedPreferencesService("favouritePlaces", objectSerializeService);
+    // work with sharedPreferences
+    private SharedPreferencesService sharedPreferencesService;
+    // work with SQLite database
+    private PlaceDaoDatabase placeDaoDatabase;
 
     private PlacesService(Context context) {
         this.context = context;
+        sharedPreferencesService = new SharedPreferencesService("favouritePlaces", objectSerializeService);
         placeDaoDatabase = new PlaceDaoDatabase(context);
     }
 
