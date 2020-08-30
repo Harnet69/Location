@@ -51,11 +51,17 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         TextView placeName = ((ViewHolder) viewHolder).mName;
         CircleImageView placeImg = ((ViewHolder) viewHolder).mImage;
+        TextView placeDescription = ((ViewHolder) viewHolder).mDescription;
 
         // Set the name and click functionality to a place name textView
         placeName.setText(mFavoritePlaces.get(i).getName());
         shortClick(placeName, i);
         longClick(placeName, i);
+
+        // Set the description and click functionality to a place description textView
+        placeDescription.setText(mFavoritePlaces.get(i).getDescription());
+        shortClick(placeDescription, i);
+        longClick(placeDescription, i);
 
         // Set image and click functionality to a place image ImageView
         setImage(placeImg, i);
@@ -72,11 +78,13 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         private CircleImageView mImage;
         private TextView mName;
+        private TextView mDescription;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mImage = itemView.findViewById(R.id.image);
             mName = itemView.findViewById(R.id.image_name);
+            mDescription = itemView.findViewById(R.id.placeDescription_TextView);
         }
     }
 
