@@ -88,7 +88,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 Toast.makeText(mContext, mFavoritePlaces.get(i).getName(), Toast.LENGTH_LONG).show();
                 try {
                     //save favorite places in SharedPreferences
-                    PlacesService.getInstance().saveToSharedPref(mContext);
+                    PlacesService.getInstance(mContext).saveToSharedPref();
                     //redirect to Google Map page
                     qrFragment.redirectToMaps(new LatLng(mFavoritePlaces.get(i).getLat(), mFavoritePlaces.get(i).getLng()));
                 } catch (IOException e) {
@@ -101,7 +101,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
     // set long click edit functionality on element
     //TODO here you should work with editing a place
     private void longClick(View elementToClick, int i) {
-        List<Place> places = PlacesService.getInstance().getFavouritePlaces();
+        List<Place> places = PlacesService.getInstance(mContext).getFavouritePlaces();
         elementToClick.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -117,7 +117,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                                 Toast.makeText(mContext, "editing " + mFavoritePlaces.get(i).getName(), Toast.LENGTH_SHORT).show();
                                 try {
                                     //save favorite places in SharedPreferences
-                                    PlacesService.getInstance().saveToSharedPref(mContext);
+                                    PlacesService.getInstance(mContext).saveToSharedPref();
                                     //redirect to Edit page
                                     qrFragment.redirectToPlacesEditor(mFavoritePlaces.get(i));
                                 } catch (IOException e) {
@@ -129,12 +129,12 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Place placeForDelete = mFavoritePlaces.get(i);
-                                if (PlacesService.getInstance().deletePlace(placeForDelete)) {
+                                if (PlacesService.getInstance(mContext).deletePlace(placeForDelete)) {
                                     Toast.makeText(mContext, placeForDelete.getName() + " was deleted", Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
                                     // update data in SharedPreferences after place deleting
                                     try {
-                                        PlacesService.getInstance().saveToSharedPref(mContext);
+                                        PlacesService.getInstance(mContext).saveToSharedPref();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }

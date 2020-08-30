@@ -68,7 +68,7 @@ public class PlaceEditorFragment extends Fragment {
         String placeForEditSerialized = getActivity().getIntent().getStringExtra("editedPlaceLatLng");
         Place placeForEditDeSerialized = null;
         try {
-            placeForEditDeSerialized = (Place) PlacesService.getInstance().getObjectSerializeService().deserialize(placeForEditSerialized);
+            placeForEditDeSerialized = (Place) PlacesService.getInstance(getContext()).getObjectSerializeService().deserialize(placeForEditSerialized);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,7 +106,7 @@ public class PlaceEditorFragment extends Fragment {
                     if (!newPlaceName.equals("")) {
 
                         // try to save place
-                        if (PlacesService.getInstance().editPlace(placeForEdit)) {
+                        if (PlacesService.getInstance(getContext()).editPlace(placeForEdit)) {
                             Toast.makeText(getContext(), "Changes were saved", Toast.LENGTH_SHORT).show();
                             redirectToQR();
                         } else {

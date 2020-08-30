@@ -3,7 +3,6 @@ package com.harnet.locationtest.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.harnet.locationtest.dao.PlaceDaoInMemory;
 import com.harnet.locationtest.models.Place;
 
 import java.io.IOException;
@@ -52,7 +51,7 @@ public class SharedPreferencesService {
         // record all favourite places to SHaredPreferences
         if (retrievedPlaces != null && retrievedPlaces.size() > 0) {
             for (Place place : retrievedPlaces) {
-                PlacesService.getInstance().addNewPlace(place);
+                PlacesService.getInstance(context).addNewPlace(place);
             }
         }
     }

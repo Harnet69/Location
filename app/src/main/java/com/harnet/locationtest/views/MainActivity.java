@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         if (savedInstanceState == null) {
             try {
                 // retrieve saved places from SharedPreferences and fill Places List
-                if (PlacesService.getInstance().isPlacesInSharedPref(this)) {
-                    PlacesService.getInstance().retrieveFromSharedPref(this);
+                if (PlacesService.getInstance(this).isPlacesInSharedPref()) {
+                    PlacesService.getInstance(this).retrieveFromSharedPref();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     protected void onStop() {
         super.onStop();
         try {
-            PlacesService.getInstance().saveToSharedPref(this);
+            PlacesService.getInstance(this).saveToSharedPref();
         } catch (IOException e) {
             e.printStackTrace();
         }

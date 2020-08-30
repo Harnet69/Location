@@ -215,7 +215,7 @@ public class QRFragment extends Fragment {
                                         // check if place name is empty and if place exists in places
                                         if (!placeNameEditText.getText().toString().equals("")) {
                                             // add new Place to Places List
-                                            if (newPlaceLatLng[0] != null && PlacesService.getInstance().addNewPlace(placeNameEditText.getText().toString(), newPlaceLatLng[0])) {
+                                            if (newPlaceLatLng[0] != null && PlacesService.getInstance(getContext()).addNewPlace(placeNameEditText.getText().toString(), newPlaceLatLng[0])) {
                                                 // redirect to maps fragment
                                                 try {
                                                     redirectToMaps(newPlaceLatLng[0]);
@@ -248,7 +248,7 @@ public class QRFragment extends Fragment {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.MAPS.toString());
         // put serialized Place object to Intent's extra
-        fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
+        fragmentIntent.putExtra("newPlaceLatLng", PlacesService.getInstance(getContext()).getObjectSerializeService().serialize(new Place("", newPlaceLatLng.latitude, newPlaceLatLng.longitude)));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }
@@ -259,7 +259,7 @@ public class QRFragment extends Fragment {
         Intent fragmentIntent = getActivity().getIntent();
         fragmentIntent.putExtra("fragmentIntent", Fragments.PLACE_EDITOR.toString());
         // put serialized Place object to Intent's extra
-        fragmentIntent.putExtra("editedPlaceLatLng", PlacesService.getInstance().getObjectSerializeService().serialize(placeForEdit));
+        fragmentIntent.putExtra("editedPlaceLatLng", PlacesService.getInstance(getContext()).getObjectSerializeService().serialize(placeForEdit));
         getActivity().finish();
         getActivity().startActivity(fragmentIntent);
     }
@@ -272,7 +272,7 @@ public class QRFragment extends Fragment {
 
     // initiate placesRecyclerView
     private void initRecyclerView(){
-        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance().getFavouritePlaces(), this);
+        mAdapter = new PlacesRecycleViewAdapter(getContext(), PlacesService.getInstance(getContext()).getFavouritePlaces(), this);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
