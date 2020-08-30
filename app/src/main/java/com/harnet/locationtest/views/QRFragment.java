@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -182,8 +183,16 @@ public class QRFragment extends Fragment {
                                 double newPlaceLng = Double.parseDouble((newPlaceCoord.split(",")[1]));
                                 newPlaceLatLng[0] = new LatLng(newPlaceLat, newPlaceLng);
                             } catch (NumberFormatException e) {
-                                // TODO create a link to a webView for going to the link
-                                textView.setText(BAD_LOCATTION_FORMAT + " go here to create a correct one: https://qrickit.com/qrickit_apps/qrickit_qrcode_creator_text.php");
+                                // if scanned bad QR code there is a link to QR code generator
+                                textView.setText(BAD_LOCATTION_FORMAT + "! click here to go QR code generator page");
+                                // go to a QR generator site
+                                textView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        openWebsite();
+                                    }
+                                });
+
                                 e.printStackTrace();
                             }
 
@@ -276,5 +285,17 @@ public class QRFragment extends Fragment {
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    // go to QR generator internet page
+    public void openWebsite() {
+        String webpage = "https://qrickit.com/qrickit_apps/qrickit_qrcode_creator_text.php";
+        Uri uri = Uri.parse(webpage);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d("ImplicitIntents", "Can't handle this!");
+        }
     }
 }
