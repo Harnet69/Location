@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:text="Settings"
         android:textSize="30sp"
@@ -35,6 +35,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:layout_weight="1"
+        android:alpha="0.5"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
+        android:alpha="0.5"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +87,39 @@
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/muteSounds_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="0.3"
+            android:scaleX="1.5"
+            android:scaleY="1.5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/switchToSQLite_linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/muteSounds_linearLayout">
+
+        <TextView
+            android:id="@+id/switchToSQLite_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:text="SQLite database mode"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchToSQLite_switch"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_marginEnd="20dp"
