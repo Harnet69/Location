@@ -12,6 +12,7 @@ import com.harnet.locationtest.models.Place;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -110,7 +111,7 @@ public class PlacesService {
     //TODO SQLite
 
     // add place to SQLite database
-    private void addPlaceToDatabase(Place place){
-
+    public void addPlaceToDatabase(Place place) throws SQLException {
+        placeDaoDatabase.add(place);
     }
 }

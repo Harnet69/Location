@@ -16,12 +16,14 @@ import androidx.fragment.app.FragmentManager;
 
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.models.Fragments;
+import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.services.PlacesService;
 import com.harnet.locationtest.views.systemMenu.HelpFragment;
 import com.harnet.locationtest.views.systemMenu.ProfileFragment;
 import com.harnet.locationtest.views.systemMenu.SettingsFragment;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements LocationFragment.OnMessageSendListener, MapsFragment.OnMessageSendListener {
@@ -207,7 +209,10 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         super.onStop();
         try {
             PlacesService.getInstance(this).saveToSharedPref();
-        } catch (IOException e) {
+            //TODO for test SQLite database puproses
+            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", 52.241236, 21.008272));
+
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }

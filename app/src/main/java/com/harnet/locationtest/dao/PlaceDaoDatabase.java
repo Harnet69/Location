@@ -2,6 +2,7 @@ package com.harnet.locationtest.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.harnet.locationtest.models.Place;
 
@@ -26,6 +27,7 @@ public class PlaceDaoDatabase implements Dao<Place> {
         // instantiate class for working with SQL queries
         placeDaoSQL = new PlaceDaoSQL(db);
         //create Places table
+        Log.i("SQLITEEE", "initDB: ");
         placeDaoSQL.createPlacesTable();
     }
 

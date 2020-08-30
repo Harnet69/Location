@@ -20,6 +20,7 @@ public class PlaceDaoSQL {
         String sql = "CREATE TABLE IF NOT EXISTS places (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, lat REAL, lng REAL, image INTEGER)";
         SQLiteStatement stmt = db.compileStatement(sql);
         stmt.execute();
+        Log.i("SQLITEEE", "createPlacesTable: ");
     }
 
     // add book to a database
