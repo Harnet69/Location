@@ -3,6 +3,7 @@ package com.harnet.locationtest.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -104,6 +105,7 @@ public class PlacesService {
 
     // migrate to SharedPreferences from SQLite
     public void migrateToSharedPreferences(){
+        Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
         Log.i("Migration", "migrateToSharedPreferences: ");
     }
 
@@ -130,6 +132,7 @@ public class PlacesService {
 
     // migrate to SQLite from SharedPreferences
     public void migrateToSQLite(){
+        Toast.makeText(context, "SQLite mode", Toast.LENGTH_SHORT).show();
         Log.i("Migration", "migrateToSQLite: ");
     }
 

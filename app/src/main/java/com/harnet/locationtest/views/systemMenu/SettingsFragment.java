@@ -60,19 +60,18 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PlacesService.getInstance(context).switchSQLite();
                 boolean isSQLite = PlacesService.getInstance(context).isSQLite();
-
+                //TODO make switcher disabled while thread works
                 progressBar.setVisibility(View.VISIBLE);
                 //TODO make a migration from/to SQLite
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
-                        if(!isSQLite) {
+                        if (!isSQLite) {
                             PlacesService.getInstance(context).migrateToSharedPreferences();
-                        }else{
+                        } else {
                             PlacesService.getInstance(context).migrateToSQLite();
                         }
-                        Toast.makeText(context, "SQLite " + isSQLite, Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
 
@@ -87,8 +86,6 @@ public class SettingsFragment extends Fragment {
                         return null;
                     }
                 }.execute();
-//
-//                Toast.makeText(context, "SQLite " + isSQLite, Toast.LENGTH_SHORT).show();
             }
         });
     }
