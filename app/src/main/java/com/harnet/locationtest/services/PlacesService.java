@@ -29,6 +29,8 @@ public class PlacesService {
     // work with SQLite database
     private PlaceDaoDatabase placeDaoDatabase;
 
+    private boolean isSQLite;
+
     private PlacesService(Context context) {
         this.context = context;
         sharedPreferencesService = new SharedPreferencesService("favouritePlaces", objectSerializeService);
@@ -44,6 +46,10 @@ public class PlacesService {
 
     public MutableLiveData<List<Place>> getmPlacesRepository(){
         return placeDaoInMemory.getmPlaces();
+    }
+
+    public boolean isSQLite() {
+        return isSQLite;
     }
 
     public ObjectSerializeService getObjectSerializeService() {
@@ -111,6 +117,10 @@ public class PlacesService {
     }
 
     //TODO SQLite
+
+    public boolean switchSQLite(){
+        return isSQLite = !isSQLite;
+    }
 
     // add place to SQLite database
     public void addPlaceToDatabase(Place place) throws SQLException {
