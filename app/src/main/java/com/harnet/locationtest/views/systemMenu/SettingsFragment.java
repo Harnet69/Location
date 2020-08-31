@@ -43,18 +43,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appSettingsActivityViewModel = new AppSettingsActivityViewModel();
 
-        //MVVM approach
-        appSettingsActivityViewModel.init();
-        appSettingsActivityViewModel.getmAppSettings().observe(getActivity(), new Observer<List<AppSetting>>() {
-            @Override
-            public void onChanged(List<AppSetting> appSettings) {
-                //TODO if settings was changed
-                Log.i("MVVMinAction", "onChanged: ");
-                setSettings();
-            }
-        });
     }
 
     @Override
@@ -68,8 +57,20 @@ public class SettingsFragment extends Fragment {
         sqliteSwitch = (SwitchCompat) view.findViewById(R.id.SQLite_switch);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
-        SQLiteSwitch(sqliteSwitch);
 
+        //MVVM approach
+        appSettingsActivityViewModel = new AppSettingsActivityViewModel();
+        appSettingsActivityViewModel.init();
+        appSettingsActivityViewModel.getmAppSettings().observe(getActivity(), new Observer<List<AppSetting>>() {
+            @Override
+            public void onChanged(List<AppSetting> appSettings) {
+                //TODO if settings was changed
+                Log.i("MVVMinAction", "onChanged: ");
+                setSettings();
+            }
+        });
+
+        SQLiteSwitch(sqliteSwitch);
 
 
         return view;
@@ -78,16 +79,17 @@ public class SettingsFragment extends Fragment {
     //TODO make universal method for all switchers
     //set listener to SQLite switch
     public void SQLiteSwitch(SwitchCompat SQLiteSwitcher) {
+        //TODO
         // set switcher on/off
-        sqliteSwitch.setChecked(PlacesService.getInstance(context).isSQLite());
+//        sqliteSwitch.setChecked(PlacesService.getInstance(context).isSQLite());
 
         SQLiteSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PlacesService.getInstance(context).switchSQLite();
-                boolean isSQLite = PlacesService.getInstance(context).isSQLite();
-                if (isSQLite) {
+
+                if (!isSQLite()) {
                     Toast.makeText(context, "SQLite mode", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
@@ -98,15 +100,15 @@ public class SettingsFragment extends Fragment {
                     @Override
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
-                        if (!isSQLite) {
+                        if (!isSQLite()) {
                             //MVVM
-                            appSettingsActivityViewModel.switchSQLiteMode("SQLiteMode", false);
+                            appSettingsActivityViewModel.switchOnSQLiteMode("SQLiteMode");
 
                             PlacesService.getInstance(context).migrateToSharedPreferences();
                         } else {
                             try {
                                 //MVVM
-                                appSettingsActivityViewModel.switchSQLiteMode("SQLiteMode", true);
+                                appSettingsActivityViewModel.switchOffSQLiteMode("SQLiteMode");
 
                                 PlacesService.getInstance(context).saveToSQLite();
                             } catch (IOException | SQLException e) {
@@ -132,10 +134,32 @@ public class SettingsFragment extends Fragment {
     }
 
     //setup app settings when they changed
-    public void setSettings(){
+    public void setSettings() {
         Log.i("MVVMinAction", "setSettings: ");
-//        if(){
-//
-//        }
+        List<AppSetting> appSettings = appSettingsActivityViewModel.getmAppSettings().getValue();
+        if (appSettings != null) {
+            for (AppSetting appSetting : appSettings) {
+                if (appSetting.getName().equals("SQLiteMode")) {
+                    Log.i("MVVMinAction", "setSettings: " + appSetting.getIsOn());
+                    if (appSetting.getIsOn()) {
+                        sqliteSwitch.setChecked(true); // set SQLite mode switcher
+                    } else {
+                        sqliteSwitch.setChecked(false); // set SQLite mode switcher
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isSQLite() {
+        List<AppSetting> appSettings = appSettingsActivityViewModel.getmAppSettings().getValue();
+        if (appSettings != null) {
+            for (AppSetting appSetting : appSettings) {
+                if (appSetting.getName().equals("SQLiteMode")) {
+                    return appSetting.getIsOn();
+                }
+            }
+        }
+        return false;
     }
 }

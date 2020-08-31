@@ -8,13 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppSettingsRepository {
+    private static AppSettingsRepository instance;
     private List<AppSetting> appSettingsDataSet = new ArrayList<>();
 
     //TODO is necessary to do it as a singleton?
-    public AppSettingsRepository() {
+    private AppSettingsRepository() {
         appSettingsDataSet.add(new AppSetting("darkMode"));
         appSettingsDataSet.add(new AppSetting("muteSounds"));
         appSettingsDataSet.add(new AppSetting("SQLiteMode"));
+    }
+
+    public static AppSettingsRepository getInstance() {
+        if(instance == null){
+            instance = new AppSettingsRepository();
+        }
+        return instance;
     }
 
     public List<AppSetting> getAppSettings() {

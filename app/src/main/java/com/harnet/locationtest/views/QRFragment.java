@@ -90,7 +90,6 @@ public class QRFragment extends Fragment {
         mQrActivityViewModel = new QRActivityViewModel();
         mQrActivityViewModel.init(getContext(), getActivity());
         mQrActivityViewModel.getmPlaces().observe(getActivity(), new Observer<List<Place>>() {
-
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<Place> places) {

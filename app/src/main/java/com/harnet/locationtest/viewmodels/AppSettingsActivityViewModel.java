@@ -25,24 +25,34 @@ public class AppSettingsActivityViewModel {
             return;
         }
 
-        appSettingsRepository = new AppSettingsRepository();
+        appSettingsRepository = AppSettingsRepository.getInstance();
         mAppSettings = appSettingsRepository.getAppSettingsSet();
     }
 
-    //TODO here is methods for handling with settings repository
+    //TODO try to do separate methods for each cases
 
     //switch on SQLite mode
-    public void switchSQLiteMode(String settingName, boolean turnOn) {
+    public void switchOnSQLiteMode(String settingName) {
         List<AppSetting> updatedAppSettings = mAppSettings.getValue();
 
         if (updatedAppSettings != null && updatedAppSettings.size() > 0) {
             for (AppSetting appSetting : updatedAppSettings) {
                 if (appSetting.getName().equals(settingName)) {
-                    if (turnOn) {
-                        appSetting.setOn();
-                    } else {
-                        appSetting.setOff();
-                    }
+                    appSetting.setOn();
+                    mAppSettings.setValue(updatedAppSettings);
+                }
+            }
+        }
+    }
+
+    //switch off SQLite mode
+    public void switchOffSQLiteMode(String settingName) {
+        List<AppSetting> updatedAppSettings = mAppSettings.getValue();
+
+        if (updatedAppSettings != null && updatedAppSettings.size() > 0) {
+            for (AppSetting appSetting : updatedAppSettings) {
+                if (appSetting.getName().equals(settingName)) {
+                    appSetting.setOff();
                     mAppSettings.setValue(updatedAppSettings);
                 }
             }

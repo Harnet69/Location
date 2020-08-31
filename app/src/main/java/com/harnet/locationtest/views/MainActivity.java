@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     protected void onStop() {
         super.onStop();
-
         //TODO delete it after implementing retrieving from ShP/SQLite
         try {
             PlacesService.getInstance(this).saveToSQLite();

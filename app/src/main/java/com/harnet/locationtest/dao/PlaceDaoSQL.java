@@ -68,8 +68,8 @@ public class PlaceDaoSQL {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 //Parse table row for data
-//                Log.i("SQLITEEE", "getAllPlaces: " + cursor.getString(cursor.getColumnIndex("id")));
-                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
+                //TODO swiched off id because of app crash
+//                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 Double lat = Double.valueOf(cursor.getString(cursor.getColumnIndex("lat")));
@@ -77,7 +77,8 @@ public class PlaceDaoSQL {
 //                int image = Integer.parseInt(cursor.getString(cursor.getColumnIndex("image")));
 
                 Place newPlace = new Place(name, description, lat, lng, 0);
-                newPlace.setId(id);
+                //TODO swiched off id because of app crash
+//                newPlace.setId(id);
                 places.add(newPlace);
                 cursor.moveToNext();
             }

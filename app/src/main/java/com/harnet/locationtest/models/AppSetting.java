@@ -12,7 +12,7 @@ public class AppSetting {
         return name;
     }
 
-    public boolean isOn() {
+    public boolean getIsOn() {
         return isOn;
     }
 
