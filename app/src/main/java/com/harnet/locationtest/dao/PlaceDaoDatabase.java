@@ -32,8 +32,12 @@ public class PlaceDaoDatabase implements Dao<Place> {
     }
 
     @Override
-    public void add(Place item) throws SQLException {
-        placeDaoSQL.addPlaceToDb(item);
+    public void add(Place item){
+        try {
+            placeDaoSQL.addPlaceToDb(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,6 +58,10 @@ public class PlaceDaoDatabase implements Dao<Place> {
     @Override
     public List<Place> getAll() throws SQLException {
         return placeDaoSQL.getAllPlaces();
+    }
+
+    public void addAllPlacesToDb(List<Place> places){
+        placeDaoSQL.addPlacesToDB(places);
     }
 
     public void clearPlacesTable(){

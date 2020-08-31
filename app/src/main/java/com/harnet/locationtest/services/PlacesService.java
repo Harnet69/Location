@@ -104,8 +104,8 @@ public class PlacesService {
     //TODO SharedPreferences functionality
 
     // migrate to SharedPreferences from SQLite
-    public void migrateToSharedPreferences(){
-        Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
+    public void migrateToSharedPreferences() throws SQLException {
+        Toast.makeText(context, "Saved " + placeDaoDatabase.getAll().size() + " places", Toast.LENGTH_SHORT).show();
         Log.i("Migration", "migrateToSharedPreferences: ");
     }
 
@@ -131,9 +131,17 @@ public class PlacesService {
     }
 
     // migrate to SQLite from SharedPreferences
-    public void migrateToSQLite(){
-        Toast.makeText(context, "SQLite mode", Toast.LENGTH_SHORT).show();
-        Log.i("Migration", "migrateToSQLite: ");
+    public void migrateToSQLite() throws IOException, SQLException {
+        List<Place> places = PlacesService.getInstance(context).getFavouritePlaces();
+
+        saveToSharedPref();
+        retrieveFromSharedPref();
+
+        placeDaoDatabase.clearPlacesTable();
+        placeDaoDatabase.addAllPlacesToDb(places);
+
+        Toast.makeText(context, "Saved " + placeDaoDatabase.getAll().size() + " places", Toast.LENGTH_SHORT).show();
+
     }
 
     // add place to SQLite database

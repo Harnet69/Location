@@ -23,7 +23,6 @@ public class PlaceDaoSQL {
         String sql = "CREATE TABLE IF NOT EXISTS places (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, lat REAL, lng REAL, image int)";
         SQLiteStatement stmt = db.compileStatement(sql);
         stmt.execute();
-        Log.i("SQLITEEE", "createPlacesTable: ");
     }
 
     // add Place to a places table
@@ -49,7 +48,16 @@ public class PlaceDaoSQL {
         stmt.bindDouble(5, 0);
 
         long rowId = stmt.executeInsert();
-        Log.i("SQLITEEE", "addPlaceToDb: Place was added to row: " + rowId);
+    }
+
+    public void addPlacesToDB(List<Place> places){
+        for(Place place : places){
+            try{
+                addPlaceToDb(place);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // get all places from SQLite database

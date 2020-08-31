@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.harnet.locationtest.R;
 import com.harnet.locationtest.services.PlacesService;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class SettingsFragment extends Fragment {
     private Context context;
 
@@ -60,6 +63,12 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PlacesService.getInstance(context).switchSQLite();
                 boolean isSQLite = PlacesService.getInstance(context).isSQLite();
+                if(isSQLite){
+                    Toast.makeText(context, "SQLite mode", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
+                }
+
                 //TODO make switcher disabled while thread works
                 progressBar.setVisibility(View.VISIBLE);
                 //TODO make a migration from/to SQLite
@@ -68,9 +77,17 @@ public class SettingsFragment extends Fragment {
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
                         if (!isSQLite) {
-                            PlacesService.getInstance(context).migrateToSharedPreferences();
+                            try {
+                                PlacesService.getInstance(context).migrateToSharedPreferences();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         } else {
-                            PlacesService.getInstance(context).migrateToSQLite();
+                            try {
+                                PlacesService.getInstance(context).migrateToSQLite();
+                            } catch (IOException | SQLException e) {
+                                e.printStackTrace();
+                            }
                         }
                         progressBar.setVisibility(View.INVISIBLE);
                     }
