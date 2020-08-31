@@ -141,11 +141,7 @@ public class PlacesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.
                                     Toast.makeText(mContext, placeForDelete.getName() + " was deleted", Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
                                     // update data in SharedPreferences after place deleting
-                                    try {
-                                        PlacesService.getInstance(mContext).saveToSharedPref();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                                    PlacesService.getInstance(mContext).saveToSharedPref();
                                 }else{
                                     Toast.makeText(mContext, "Smth wrong with " + placeForDelete.getName() + " deleting", Toast.LENGTH_SHORT).show();
                                 }

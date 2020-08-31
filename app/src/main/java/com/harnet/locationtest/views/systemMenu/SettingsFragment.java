@@ -63,9 +63,9 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PlacesService.getInstance(context).switchSQLite();
                 boolean isSQLite = PlacesService.getInstance(context).isSQLite();
-                if(isSQLite){
+                if (isSQLite) {
                     Toast.makeText(context, "SQLite mode", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
                 }
 
@@ -77,11 +77,7 @@ public class SettingsFragment extends Fragment {
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
                         if (!isSQLite) {
-                            try {
-                                PlacesService.getInstance(context).migrateToSharedPreferences();
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
+                            PlacesService.getInstance(context).migrateToSharedPreferences();
                         } else {
                             try {
                                 PlacesService.getInstance(context).migrateToSQLite();

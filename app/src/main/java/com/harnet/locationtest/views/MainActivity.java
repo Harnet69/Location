@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
         if (savedInstanceState == null) {
             try {
                 // retrieve saved places from SharedPreferences and fill Places List
+                //TODO implement retrieving data from SQLite or SharedPreferences(now it's only from ShP)
                 if (PlacesService.getInstance(this).isPlacesInSharedPref()) {
                     PlacesService.getInstance(this).retrieveFromSharedPref();
                 }
@@ -207,14 +208,13 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     protected void onStop() {
         super.onStop();
-        try {
-            //TODO here will be switcher for switch between SharedPreferences and SQLite datakeeping approach
+        //TODO here will be switcher for switch between SharedPreferences and SQLite datakeeping approach
 
-            // save in SharedPreferences
-            PlacesService.getInstance(this).saveToSharedPref();
-            // save in SQLite database
+        // save in SharedPreferences
+        PlacesService.getInstance(this).saveToSharedPref();
+        // save in SQLite database
 
-            //TODO for test SQLite database purposes
+        //TODO for test SQLite database purposes
 //            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", "The best place for living", 52.241236, 21.008272, 0));
 //            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
 //                Log.i("SQLITEEE", "Before clearing onStop: place :" + place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
@@ -226,9 +226,5 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 //            }
 //        }catch (SQLException e) {
 //            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

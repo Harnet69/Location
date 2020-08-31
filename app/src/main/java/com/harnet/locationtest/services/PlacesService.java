@@ -104,19 +104,27 @@ public class PlacesService {
     //TODO SharedPreferences functionality
 
     // migrate to SharedPreferences from SQLite
-    public void migrateToSharedPreferences() throws SQLException {
-        Toast.makeText(context, "Saved " + placeDaoDatabase.getAll().size() + " places", Toast.LENGTH_SHORT).show();
-        Log.i("Migration", "migrateToSharedPreferences: ");
+    public void migrateToSharedPreferences(){
+        saveToSharedPref();
+        Toast.makeText(context, "Saved " + placeDaoInMemory.getAll().size() + " places", Toast.LENGTH_SHORT).show();
     }
 
     // save places to SharedPreferences
-    public void saveToSharedPref() throws IOException {
-        sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
+    public void saveToSharedPref(){
+        try{
+            sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // retrieve places from SharedPreferences and fill places List
-    public void retrieveFromSharedPref() throws IOException {
-        sharedPreferencesService.retrieveFromSharedPref(context);
+    public void retrieveFromSharedPref(){
+        try {
+            sharedPreferencesService.retrieveFromSharedPref(context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // check is place in favourite places
@@ -133,9 +141,6 @@ public class PlacesService {
     // migrate to SQLite from SharedPreferences
     public void migrateToSQLite() throws IOException, SQLException {
         List<Place> places = PlacesService.getInstance(context).getFavouritePlaces();
-
-        saveToSharedPref();
-        retrieveFromSharedPref();
 
         placeDaoDatabase.clearPlacesTable();
         placeDaoDatabase.addAllPlacesToDb(places);
