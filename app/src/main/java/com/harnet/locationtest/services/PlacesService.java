@@ -2,6 +2,7 @@ package com.harnet.locationtest.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -101,6 +102,11 @@ public class PlacesService {
 
     //TODO SharedPreferences functionality
 
+    // migrate to SharedPreferences from SQLite
+    public void migrateToSharedPreferences(){
+        Log.i("Migration", "migrateToSharedPreferences: ");
+    }
+
     // save places to SharedPreferences
     public void saveToSharedPref() throws IOException {
         sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
@@ -118,8 +124,13 @@ public class PlacesService {
 
     //TODO SQLite
 
-    public boolean switchSQLite(){
-        return isSQLite = !isSQLite;
+    public void switchSQLite(){
+        isSQLite = !isSQLite;
+    }
+
+    // migrate to SQLite from SharedPreferences
+    public void migrateToSQLite(){
+        Log.i("Migration", "migrateToSQLite: ");
     }
 
     // add place to SQLite database
