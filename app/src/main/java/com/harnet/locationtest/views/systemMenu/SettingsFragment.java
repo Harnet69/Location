@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +19,18 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.harnet.locationtest.R;
+import com.harnet.locationtest.models.AppSetting;
 import com.harnet.locationtest.services.PlacesService;
+import com.harnet.locationtest.viewmodels.AppSettingsActivityViewModel;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class SettingsFragment extends Fragment {
     private Context context;
+
+    private AppSettingsActivityViewModel appSettingsActivityViewModel;
 
     private SwitchCompat darkModeSwitch;
     private SwitchCompat muteSoundsSwitch;
@@ -35,12 +43,25 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appSettingsActivityViewModel = new AppSettingsActivityViewModel();
 
+        //MVVM approach
+        appSettingsActivityViewModel.init();
+        appSettingsActivityViewModel.getmAppSettings().observe(getActivity(), new Observer<List<AppSetting>>() {
+            @Override
+            public void onChanged(List<AppSetting> appSettings) {
+                //TODO if settings was changed
+                Log.i("MVVMinAction", "onChanged: ");
+                setSettings();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+
         context = getContext();
         darkModeSwitch = (SwitchCompat) view.findViewById(R.id.darkMode_switch);
         muteSoundsSwitch = (SwitchCompat) view.findViewById(R.id.muteSounds_switch);
@@ -48,6 +69,8 @@ public class SettingsFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
         SQLiteSwitch(sqliteSwitch);
+
+
 
         return view;
     }
@@ -69,8 +92,6 @@ public class SettingsFragment extends Fragment {
                 } else {
                     Toast.makeText(context, "SharedPreferences mode", Toast.LENGTH_SHORT).show();
                 }
-
-                //TODO make switcher disabled while thread works
                 progressBar.setVisibility(View.VISIBLE);
                 //TODO make a migration from/to SQLite
                 new AsyncTask<Void, Void, Void>() {
@@ -78,9 +99,15 @@ public class SettingsFragment extends Fragment {
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
                         if (!isSQLite) {
+                            //MVVM
+                            appSettingsActivityViewModel.switchSQLiteMode("SQLiteMode", false);
+
                             PlacesService.getInstance(context).migrateToSharedPreferences();
                         } else {
                             try {
+                                //MVVM
+                                appSettingsActivityViewModel.switchSQLiteMode("SQLiteMode", true);
+
                                 PlacesService.getInstance(context).saveToSQLite();
                             } catch (IOException | SQLException e) {
                                 e.printStackTrace();
@@ -102,5 +129,13 @@ public class SettingsFragment extends Fragment {
                 }.execute();
             }
         });
+    }
+
+    //setup app settings when they changed
+    public void setSettings(){
+        Log.i("MVVMinAction", "setSettings: ");
+//        if(){
+//
+//        }
     }
 }
