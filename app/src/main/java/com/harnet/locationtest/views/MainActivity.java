@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,25 +48,25 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     // interacting with menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       super.onOptionsItemSelected(item);
-       boolean isSelected = false;
+        super.onOptionsItemSelected(item);
+        boolean isSelected = false;
 
-       switch (item.getItemId()){
-           case R.id.profile:
-               isSelected = true;
-               //TODO here start a new fragment from menu
+        switch (item.getItemId()) {
+            case R.id.profile:
+                isSelected = true;
+                //TODO here start a new fragment from menu
                 startFragment(new ProfileFragment(), Fragments.PROFILE.toString());
-               break;
-           case R.id.settings :
-               isSelected = true;
-               startFragment(new SettingsFragment(), Fragments.SETTINGS.toString());
-               break;
-           case R.id.help:
-              isSelected = true;
-              startFragment(new HelpFragment(), Fragments.HELP.toString());
-              break;
-       }
-       return isSelected;
+                break;
+            case R.id.settings:
+                isSelected = true;
+                startFragment(new SettingsFragment(), Fragments.SETTINGS.toString());
+                break;
+            case R.id.help:
+                isSelected = true;
+                startFragment(new HelpFragment(), Fragments.HELP.toString());
+                break;
+        }
+        return isSelected;
     }
 
     @Override
@@ -77,10 +78,19 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
 
         if (savedInstanceState == null) {
             try {
+                //TODO retrieve system settings from ShP/SQLite
+
                 // retrieve saved places from SharedPreferences and fill Places List
                 //TODO implement retrieving data from SQLite or SharedPreferences(now it's only from ShP)
-                if (PlacesService.getInstance(this).isPlacesInSharedPref()) {
-                    PlacesService.getInstance(this).retrieveFromSharedPref();
+                if (!PlacesService.getInstance(this).isSQLite()) {
+                    if (PlacesService.getInstance(this).isPlacesInSharedPref()) {
+                        PlacesService.getInstance(this).retrieveFromSharedPref();
+                        Toast.makeText(this, "Places from SharedPreferences", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //TODO make retrieving from SQLite here
+                    PlacesService.getInstance(this).retrieveFromDB();
+                    Toast.makeText(this, "Places from SQLite", Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -208,23 +218,23 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO here will be switcher for switch between SharedPreferences and SQLite datakeeping approach
 
-        // save in SharedPreferences
-        PlacesService.getInstance(this).saveToSharedPref();
-        // save in SQLite database
+        //TODO delete it after implementing retrieving from ShP/SQLite
+        try {
+            PlacesService.getInstance(this).saveToSQLite();
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
 
-        //TODO for test SQLite database purposes
-//            PlacesService.getInstance(this).addPlaceToDatabase(new Place("Warsaw", "The best place for living", 52.241236, 21.008272, 0));
-//            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
-//                Log.i("SQLITEEE", "Before clearing onStop: place :" + place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
-//            }
-//            PlacesService.getInstance(this).clearPlacesTable();
-//
-//            for(Place place : PlacesService.getInstance(this).getAllPlacesFromDB()){
-//                Log.i("SQLITEEE", "After clearing onStop: place :"+ place.getId()+ " / " + place.getName() + " / " + place.getDescription() + " / " + place.getLat() + " / " + place.getLng() + " / " + place.getImage() );
-//            }
-//        }catch (SQLException e) {
-//            e.printStackTrace();
+        if (PlacesService.getInstance(this).isSQLite()) {
+            try {
+                PlacesService.getInstance(this).saveToSQLite();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            PlacesService.getInstance(this).saveToSharedPref();
+        }
+        //TODO save system settings from ShP/SQLite
     }
 }

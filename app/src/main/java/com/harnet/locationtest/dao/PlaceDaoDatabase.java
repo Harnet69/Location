@@ -5,8 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.harnet.locationtest.models.Place;
+import com.harnet.locationtest.services.PlacesService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,7 +58,7 @@ public class PlaceDaoDatabase implements Dao<Place> {
     }
 
     @Override
-    public List<Place> getAll() throws SQLException {
+    public List<Place> getAll(){
         return placeDaoSQL.getAllPlaces();
     }
 

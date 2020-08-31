@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.harnet.locationtest.models.Place;
 import com.harnet.locationtest.repositories.PlacesRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceDaoInMemory implements PlaceDao<Place> {
@@ -99,5 +100,10 @@ public class PlaceDaoInMemory implements PlaceDao<Place> {
             }
         }
         return false;
+    }
+
+    //clear places in memory
+    public void clearPlacesInMemory() {
+        mPlaces.postValue(new ArrayList<>());
     }
 }

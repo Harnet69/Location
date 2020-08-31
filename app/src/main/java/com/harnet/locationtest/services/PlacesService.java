@@ -46,7 +46,7 @@ public class PlacesService {
         return instance;
     }
 
-    public MutableLiveData<List<Place>> getmPlacesRepository(){
+    public MutableLiveData<List<Place>> getmPlacesRepository() {
         return placeDaoInMemory.getmPlaces();
     }
 
@@ -97,29 +97,25 @@ public class PlacesService {
         return false;
     }
 
-    public List<Place> getFavouritePlaces(){
+    public List<Place> getFavouritePlaces() {
         return placeDaoInMemory.getAll();
     }
 
     //TODO SharedPreferences functionality
 
     // migrate to SharedPreferences from SQLite
-    public void migrateToSharedPreferences(){
+    public void migrateToSharedPreferences() {
         saveToSharedPref();
         Toast.makeText(context, "Saved " + placeDaoInMemory.getAll().size() + " places", Toast.LENGTH_SHORT).show();
     }
 
     // save places to SharedPreferences
-    public void saveToSharedPref(){
-        try{
-            sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void saveToSharedPref() {
+        sharedPreferencesService.saveToSharedPref(context, placeDaoInMemory.getAll());
     }
 
     // retrieve places from SharedPreferences and fill places List
-    public void retrieveFromSharedPref(){
+    public void retrieveFromSharedPref() {
         try {
             sharedPreferencesService.retrieveFromSharedPref(context);
         } catch (IOException e) {
@@ -134,15 +130,15 @@ public class PlacesService {
 
     //TODO SQLite
 
-    public void switchSQLite(){
+    public void switchSQLite() {
         isSQLite = !isSQLite;
     }
 
     // migrate to SQLite from SharedPreferences
-    public void migrateToSQLite() throws IOException, SQLException {
+    public void saveToSQLite() throws IOException, SQLException {
         List<Place> places = PlacesService.getInstance(context).getFavouritePlaces();
 
-        placeDaoDatabase.clearPlacesTable();
+        clearPlacesTable();
         placeDaoDatabase.addAllPlacesToDb(places);
 
         Toast.makeText(context, "Saved " + placeDaoDatabase.getAll().size() + " places", Toast.LENGTH_SHORT).show();
@@ -158,7 +154,24 @@ public class PlacesService {
         return placeDaoDatabase.getAll();
     }
 
-    public void clearPlacesTable(){
+    // retrieve places from Database and fill places List
+    public void retrieveFromDB() {
+        List<Place> placesFromDB = placeDaoDatabase.getAll();
+
+        clearPlacesInMemory();
+
+        for (Place place : placesFromDB) {
+            PlacesService.getInstance(context).addNewPlace(place);
+        }
+    }
+
+    // clear Places table in SQLite database
+    public void clearPlacesTable() {
         placeDaoDatabase.clearPlacesTable();
+    }
+
+    // clear Places in memory
+    public void clearPlacesInMemory() {
+        placeDaoInMemory.clearPlacesInMemory();
     }
 }

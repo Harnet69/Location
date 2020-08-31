@@ -31,11 +31,15 @@ public class SharedPreferencesService {
 
     // save places to SharedPreferences
     //TODO make a second argument as generic to make class universal
-    public void saveToSharedPref(Context context, List<Place> places) throws IOException {
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize((Serializable) places))
-                .apply();
+    public void saveToSharedPref(Context context, List<Place> places){
+        try {
+            context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putString(SHARED_PREFERENCES_SAVE_NAME, objectSerializeService.serialize((Serializable) places))
+                    .apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // retrieve places from SharedPreferences and fill places List

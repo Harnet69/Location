@@ -8,9 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -57,6 +55,9 @@ public class SettingsFragment extends Fragment {
     //TODO make universal method for all switchers
     //set listener to SQLite switch
     public void SQLiteSwitch(SwitchCompat SQLiteSwitcher) {
+        // set switcher on/off
+        sqliteSwitch.setChecked(PlacesService.getInstance(context).isSQLite());
+
         SQLiteSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("StaticFieldLeak")
             @Override
@@ -80,7 +81,7 @@ public class SettingsFragment extends Fragment {
                             PlacesService.getInstance(context).migrateToSharedPreferences();
                         } else {
                             try {
-                                PlacesService.getInstance(context).migrateToSQLite();
+                                PlacesService.getInstance(context).saveToSQLite();
                             } catch (IOException | SQLException e) {
                                 e.printStackTrace();
                             }
