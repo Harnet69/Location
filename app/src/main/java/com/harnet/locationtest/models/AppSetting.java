@@ -1,6 +1,8 @@
 package com.harnet.locationtest.models;
 
-public class AppSetting {
+import java.io.Serializable;
+
+public class AppSetting implements Serializable {
     private String name;
     private boolean isOn;
 

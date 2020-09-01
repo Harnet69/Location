@@ -29,6 +29,10 @@ public class AppSettingsRepository {
         return appSettingsDataSet;
     }
 
+    public void setAppSettingsDataSet(List<AppSetting> appSettingsDataSet) {
+        this.appSettingsDataSet = appSettingsDataSet;
+    }
+
     public MutableLiveData<List<AppSetting>> getAppSettingsSet() {
         MutableLiveData<List<AppSetting>> data = new MutableLiveData<>();
         data.setValue(appSettingsDataSet);

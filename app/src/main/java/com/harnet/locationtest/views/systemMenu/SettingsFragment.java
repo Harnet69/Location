@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment {
 
 
         //MVVM approach
-        appSettingsActivityViewModel = new AppSettingsActivityViewModel();
+        appSettingsActivityViewModel = new AppSettingsActivityViewModel(context);
         appSettingsActivityViewModel.init();
         appSettingsActivityViewModel.getmAppSettings().observe(getActivity(), new Observer<List<AppSetting>>() {
             @Override
@@ -70,8 +70,9 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        appSettingsActivityViewModel.retrieveFromShredPreferences();
         SQLiteSwitch(sqliteSwitch);
-
+        setSettings();
 
         return view;
     }
@@ -161,5 +162,12 @@ public class SettingsFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("StopStop", "onStop: ");
+        appSettingsActivityViewModel.saveToShredPreferences();
     }
 }

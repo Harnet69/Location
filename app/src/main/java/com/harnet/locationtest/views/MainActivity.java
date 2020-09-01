@@ -235,5 +235,6 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
             PlacesService.getInstance(this).saveToSharedPref();
         }
         //TODO save system settings from ShP/SQLite
+
     }
 }
