@@ -152,9 +152,10 @@ public class QRFragment extends Fragment {
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
-                            Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            assert vibrator != null;
-                            vibrator.vibrate(100);
+                            if(getContext() != null && getContext().getSystemService(Context.VIBRATOR_SERVICE) != null){
+                                Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                vibrator.vibrate(100);
+                            }
                             // TODO do all work with received data here
                             textView.setText(qrCode.valueAt(0).displayValue);
                             goThereBtn.setVisibility(View.VISIBLE);
