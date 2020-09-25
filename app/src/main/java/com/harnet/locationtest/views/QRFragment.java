@@ -151,6 +151,9 @@ public class QRFragment extends Fragment {
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
+                            if(getContext() != null && getContext().getSystemService(Context.VIBRATOR_SERVICE) != null){
+
+                            }
                             Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                             assert vibrator != null;
                             vibrator.vibrate(100);

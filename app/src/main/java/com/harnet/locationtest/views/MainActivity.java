@@ -179,11 +179,11 @@ public class MainActivity extends AppCompatActivity implements LocationFragment.
                 break;
         }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCont, fragment)
-                .addToBackStack(fragmentName)
-                .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentCont, fragment)
+                    .addToBackStack(fragmentName)
+                    .commit();
     }
 
     // have to be here, because of a bug of requestPermissions from fragments

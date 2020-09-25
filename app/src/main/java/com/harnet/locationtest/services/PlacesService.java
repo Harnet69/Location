@@ -156,13 +156,14 @@ public class PlacesService {
 
     // retrieve places from Database and fill places List
     public void retrieveFromDB() {
+        MutableLiveData<List<Place>> places = getmPlacesRepository();
         List<Place> placesFromDB = placeDaoDatabase.getAll();
-
-        clearPlacesInMemory();
-
-        for (Place place : placesFromDB) {
-            PlacesService.getInstance(context).addNewPlace(place);
-        }
+        places.setValue(placesFromDB);
+//        clearPlacesInMemory();
+//
+//        for (Place place : placesFromDB) {
+//            PlacesService.getInstance(context).addNewPlace(place);
+//        }
     }
 
     // clear Places table in SQLite database
