@@ -2,6 +2,15 @@
 
 ## Description:
   Lightweight application for handling Android phone location features. Allows to scan location QR(barcodes). Save, delete, edit favorite places. Track and see userlocation and address in real time without Internet connection. 
+
+## Application screenshots:
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
+
+## Application video:
+![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/location_manager.gif)
   
 ## Application installation:
 - download app from [Google Play](https://play.google.com/store/apps/details?id=com.harnet.locationtest) or scan this QR code by your Android phone
@@ -13,11 +22,6 @@
 [Location manager presentation](https://drive.google.com/file/d/1DdzJGwpPzItiWG67BYHCk3LdBrFXkCwb/view?usp=sharing)
 
   
-## Application screenshots:
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/main_screen_v.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/QR_scan_fav_pl.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/hike.png)
-![Game process](https://github.com/Harnet69/Location/blob/master/app/GitHubMediaFile/Google_maps.png)
 
 ## Application modules: 
 - QR scanner:
